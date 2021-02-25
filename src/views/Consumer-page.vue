@@ -2,28 +2,25 @@
   <div>
     <h1>Consumer page</h1>
 
-    <div v-show="uploaderScelto == null">
-      <h2>Lista Uploader con documenti</h2>
-      <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
-    </div>
     <div v-if="uploaderScelto != null">
       <!--non v-show perché altrimenti lo deve fare subito e non può perché null non ha elementi-->
-      <h2>Lista Files caricati da {{ uploaderScelto[0].name }}</h2>
-      <img
-        :src="`${uploaderScelto[0].logo}`"
-        style="background-color: black; width: 10em; height: 10em; float:left"
-      />
+      <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
+      <b-img
+        left rounded 
+        :src="`${uploaderScelto.logo}`"
+         alt="Logo uploader"
+      ></b-img>
 
-      <form @submit.prevent="hashtagFilter">
-        <input
+      <b-form @submit.prevent="hashtagFilter">
+        <b-form-input
           id="hashtag"
           name="hashtag"
           type="text"
           v-model="hashtag"
           placeholder="hashtag"
         />
-        <input type="submit" value="Filtra" />
-      </form>
+        <b-button type="submit" variant="primary" size="sm">Filtra hashtag        </b-button>
+      </b-form>
 
       <Files :files="filesUploader" :ruolo="ruolo" @download-file="download" />
 
@@ -35,6 +32,11 @@
         Vedi tutti gli uploaders
       </b-button>
       <!-- devo aggiungere per modificare l'info -->
+    </div>
+
+    <div v-else>
+      <h2>Lista Uploader con documenti</h2>
+      <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
     </div>
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
@@ -69,6 +71,11 @@ export default {
       filesUploader: [],
     };
   },
+  // watch: {
+  //   uploaders: function() {
+      
+  //   },
+  // },
   methods: {
     showUploaders() {
       this.uploaderScelto = null;
@@ -113,19 +120,17 @@ export default {
       this.filesUploader = this.filesConsumer.filter(
         (file) =>
           file.hashtag.includes(this.hashtag) &&
-          file.usernameUpl === this.uploaderScelto[0].username
+          file.usernameUpl === this.uploaderScelto.username
       );
     },
   },
   created() {
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
-      .then((res) => {
-        this.uploaders = res.data;
-        if (this.uploaders.length === 1) {
-          this.uploaderScelto = this.uploaders[0].username;
-        }
-      })
+      .then((res) => {this.uploaders = res.data;
+      if (this.uploaders.length === 1) {
+        this.uploaderScelto = this.uploaders[0];
+      }})
       .catch((err) => this.showMsg(err));
 
     //uso la sessione in corso per reperire subito TUTTI i filesConsumer che sono stati elargiti al consumer
