@@ -1,5 +1,7 @@
 <template>
   <div>
+    <b-button @click="nonStacked">Tipologia tabella</b-button>
+
     <div v-if="files.length == 0"><p>Nessun documento</p></div>
     <!--NON può capitare nel caso del consumer-->
 
@@ -11,22 +13,24 @@
       v-else-if="ruolo == 'uploader'"
     >
       <template #cell(actions)="row">
-        <b-button @click.native="$emit('del-file', row.item.id)" class="del">
+        <b-button @click="$emit('del-file', row.item.id)" class="del">
           Elimina
         </b-button>
       </template>
     </b-table>
 
-    <b-container v-else> <!--fluid="sm" style="max-width:100%;"-->
-      <b-table 
+    <b-container fluid v-else>
+      <!--fluid="sm" style="max-width:100%;"-->
+      <b-table
+        id="tableT"
         striped
+        
         :items="files"
         :fields="fieldsC"
         :tbody-tr-class="highlightNew"
-        
       >
         <template #cell(actions)="row">
-          <b-button @click.native="$emit('download-file', row.item.id)">
+          <b-button @click="$emit('download-file', row.item.id)">
             Download
           </b-button>
         </template>
@@ -86,6 +90,14 @@ export default {
     highlightNew(item, type) {
       if (!item || type !== "row") return;
       if (item.dataVisualizzazione === "") return "table-warning";
+    },
+    nonStacked() {//todo: lasciare?
+      let x = document.getElementById("tableT");
+      let classeTotale = "table b-table table-striped ";
+      let classeVoluta = "b-table-stacked";
+      if (x.className == classeTotale + classeVoluta)
+        x.className = classeTotale;
+      else x.className = classeTotale + classeVoluta;
     },
   },
 };
