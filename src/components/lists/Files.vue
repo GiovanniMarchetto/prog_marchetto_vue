@@ -17,13 +17,21 @@
       </template>
     </b-table>
 
-    <b-table striped :items="files" :fields="fieldsC" :tbody-tr-class="highlightNew" v-else>
-      <template #cell(actions)="row">
-        <b-button @click.native="$emit('download-file', row.item.id)">
-          Download
-        </b-button>
-      </template>
-    </b-table>
+    <b-container v-else> <!--fluid="sm" style="max-width:100%;"-->
+      <b-table 
+        striped
+        :items="files"
+        :fields="fieldsC"
+        :tbody-tr-class="highlightNew"
+        
+      >
+        <template #cell(actions)="row">
+          <b-button @click.native="$emit('download-file', row.item.id)">
+            Download
+          </b-button>
+        </template>
+      </b-table>
+    </b-container>
   </div>
 </template>
 
@@ -70,17 +78,16 @@ export default {
           sortable: true,
         },
         "hashtag",
-        "actions"
-      ]
+        "actions",
+      ],
     };
   },
-  methods:{
-    highlightNew(item, type){
-        if (!item || type !== 'row') return
-        if (item.dataVisualizzazione === "") return 'table-warning'
-
-    }
-  }
+  methods: {
+    highlightNew(item, type) {
+      if (!item || type !== "row") return;
+      if (item.dataVisualizzazione === "") return "table-warning";
+    },
+  },
 };
 </script>
 

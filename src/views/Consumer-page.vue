@@ -6,12 +6,12 @@
       <!--non v-show perché altrimenti lo deve fare subito e non può perché null non ha elementi-->
       <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
       <b-img
-        left rounded 
+        v-bind="imgProps"
         :src="`${uploaderScelto.logo}`"
-         alt="Logo uploader"
+        alt="Logo uploader"
       ></b-img>
 
-      <b-form @submit.prevent="hashtagFilter">
+      <b-form inline @submit.prevent="hashtagFilter">
         <b-form-input
           id="hashtag"
           name="hashtag"
@@ -19,7 +19,9 @@
           v-model="hashtag"
           placeholder="hashtag"
         />
-        <b-button type="submit" variant="primary" size="sm">Filtra hashtag        </b-button>
+        <b-button type="submit" variant="primary" size="sm"
+          >Filtra hashtag
+        </b-button>
       </b-form>
 
       <Files :files="filesUploader" :ruolo="ruolo" @download-file="download" />
@@ -69,11 +71,17 @@ export default {
       uploaders: [],
       filesConsumer: [],
       filesUploader: [],
+      imgProps: {
+        left: true,
+        rounded: true,
+        width: 400,
+        height: 400,
+      },
     };
   },
   // watch: {
   //   uploaders: function() {
-      
+
   //   },
   // },
   methods: {
@@ -126,20 +134,22 @@ export default {
   },
   created() {
     axios
-      .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
-      .then((res) => {this.uploaders = res.data;
-      if (this.uploaders.length === 1) {
-        this.uploaderScelto = this.uploaders[0];
-      }})
-      .catch((err) => this.showMsg(err));
-
-    //uso la sessione in corso per reperire subito TUTTI i filesConsumer che sono stati elargiti al consumer
-    axios
       .get(`${process.env.VUE_APP_APIROOT}/list/filesConsumer`)
       .then((res) => (this.filesConsumer = res.data))
       .catch((err) => this.showMsg(err));
 
     console.log(process.env.VUE_APP_APIROOT);
+    
+    axios
+      .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
+      .then((res) => {
+        this.uploaders = res.data;
+        if (this.uploaders.length === 1) {
+          this.uploaderScelto = this.uploaders[0];
+          this.showFiles(this.uploaderScelto.username);
+        }
+      })
+      .catch((err) => this.showMsg(err));
   },
 };
 </script>
