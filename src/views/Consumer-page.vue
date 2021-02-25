@@ -119,11 +119,7 @@ export default {
   },
   created() {
     axios
-      .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`,{
-        headers:{
-          'Authorization':`Bearer ${localStorage.getItem(
-  "jwtToken"
-)}`}})
+      .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
       .then((res) => {
         this.uploaders = res.data;
         if (this.uploaders.length === 1) {
