@@ -1,4 +1,4 @@
-# prog_marchetto
+# prog_marchetto_vue
 
 ## Project setup
 ```
