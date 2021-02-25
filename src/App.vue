@@ -34,6 +34,11 @@ export default {
   /*margin-top: 60px;*/
 }
 
+h1{
+  color: aliceblue;
+  background: #2c3e50;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -78,4 +83,14 @@ input[type="submit"]:hover {
 .nav2 :hover {
   background-color: aquamarine;
 }
+
+
+
+
+
+/* @media screen and (max-width: 400px) {
+  .table-stacked {
+     use:true;
+  }
+} */
 </style>
