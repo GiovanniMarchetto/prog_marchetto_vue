@@ -1,15 +1,22 @@
 <template>
   <div>
+    <b-container fluid v-show="uploaderScelto != null"
+        ><b-img
+          v-bind="imgProps"
+          :src="`${uploaderScelto.logo}`"
+          alt="Logo uploader"
+          style=""
+        ></b-img
+      ></b-container>
     <h1>Consumer page</h1>
-
-    <div v-if="uploaderScelto != null">
+    <div v-if="uploaderScelto == null">
+      <h2>Lista Uploader con documenti</h2>
+      <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
+    </div>
+    <div v-else>
       <!--non v-show perché altrimenti lo deve fare subito e non può perché null non ha elementi-->
       <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
-      <b-img
-        v-bind="imgProps"
-        :src="`${uploaderScelto.logo}`"
-        alt="Logo uploader"
-      ></b-img>
+      
 
       <b-form inline @submit.prevent="hashtagFilter">
         <b-form-input
@@ -34,11 +41,6 @@
         Vedi tutti gli uploaders
       </b-button>
       <!-- devo aggiungere per modificare l'info -->
-    </div>
-
-    <div v-else>
-      <h2>Lista Uploader con documenti</h2>
-      <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
     </div>
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
@@ -79,11 +81,12 @@ export default {
       },
     };
   },
-  // watch: {
-  //   uploaders: function() {
-
-  //   },
-  // },
+  watch: {
+    uploaderScelto: function() {
+      if (this.uploaderScelto != null)
+        this.showFiles(this.uploaderScelto.username);
+    },
+  },
   methods: {
     showUploaders() {
       this.uploaderScelto = null;
@@ -93,7 +96,7 @@ export default {
       this.filesUploader = this.filesConsumer.filter(
         (file) => file.usernameUpl === uplUsername
       );
-      this.uploaderScelto = this.uploaders.filter(
+      this.uploaderScelto = this.uploaders[0].filter(
         (uploader) => uploader.username === uplUsername
       );
     },
@@ -109,10 +112,10 @@ export default {
     },
     download(id) {
       axios
-        .get(`${process.env.VUE_APP_APIROOT}/files/${id}`)
+        .get(`${process.env.VUE_APP_APIROOT}/files/download/${id}`)
         .then((res) => {
           console.log(res);
-          let indexCurrent = this.filesConsumer.indexOf(
+          let indexCurrent = this.filesConsumer.findIndex(
             (file) => file.id === id
           );
           if (this.filesConsumer[indexCurrent].dataVisualizzazione === "")
@@ -134,22 +137,25 @@ export default {
   },
   created() {
     axios
-      .get(`${process.env.VUE_APP_APIROOT}/list/filesConsumer`)
-      .then((res) => (this.filesConsumer = res.data))
-      .catch((err) => this.showMsg(err));
-
-    console.log(process.env.VUE_APP_APIROOT);
-    
-    axios
       .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
       .then((res) => {
         this.uploaders = res.data;
-        if (this.uploaders.length === 1) {
+        if (this.uploaders.length === 1)
           this.uploaderScelto = this.uploaders[0];
-          this.showFiles(this.uploaderScelto.username);
-        }
       })
       .catch((err) => this.showMsg(err));
+
+    axios
+      .get(`${process.env.VUE_APP_APIROOT}/list/filesConsumer`)
+      .then((res) => {
+        this.filesConsumer = res.data;
+        setTimeout(() => {}, 1000);
+        if (this.uploaderScelto != null)
+          this.showFiles(this.uploaderScelto.username);
+      })
+      .catch((err) => this.showMsg(err));
+
+    console.log(process.env.VUE_APP_APIROOT);
   },
 };
 </script>
