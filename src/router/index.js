@@ -56,6 +56,14 @@ router.beforeEach((to, from, next) => {
         path: "/",
         query: { redirect: to.fullPath },
       });
+    } else if (from.matched.some((record) => record.meta.requiresAuth)) {
+      if (localStorage.getItem("nomeUtente").length == 4) {
+        this.$router.push("/uploader-page");
+      } else if (localStorage.getItem("nomeUtente").includes("@")) {
+        this.$router.push("/administrator-page");
+      } else {
+        this.$router.push("/consumer-page");
+      }
     } else {
       next();
     }
@@ -65,11 +73,3 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
-// } else if (from.matched.some((record) => record.meta.requiresAuth)){
-//   if (localStorage.getItem("nomeUtente").length == 4) {
-//     this.$router.push("/uploader-page");
-//   } else if (localStorage.getItem("nomeUtente").includes("@")) {
-//     this.$router.push("/administrator-page");
-//   } else {
-//     this.$router.push("/consumer-page");
-//   }
