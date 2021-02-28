@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Modifica informazioni</h1>
+    <h2>Modifica informazioni</h2>
 
     <form @submit.prevent="modInfo">
-      <UsernamePassword @change-info="change_home" />
+      <UsernamePassword v-if="role != 'consumer'" @change-info="change_home" />
 
       <UserInfo @change-info="change_home" />
 
@@ -14,7 +14,7 @@
       <b-button type="submit" variant="success">Modifica informazioni</b-button>
     </form>
 
-    <h2>Istruzioni per la modifica</h2>
+    <h3>Istruzioni per la modifica</h3>
     <p>Inserire i dati da modificare (non si può modificare l'username).</p>
     <p v-show="potere != 'consumer'">
       Se si vuole modificare le informazioni di un altro utente immettere

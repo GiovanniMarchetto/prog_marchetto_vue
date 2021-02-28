@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Eliminazione attore</h1>
+    <h2>Eliminazione attore</h2>
     <form @submit.prevent="deleteActor">
       <b-form-input
         @change="change"

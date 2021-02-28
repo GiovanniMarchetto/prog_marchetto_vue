@@ -1,6 +1,6 @@
 <template>
   <div class="registration">
-    <h1>Registration</h1>
+    <h2>Registration</h2>
 
     <b-form @submit.prevent="registration">
       <UsernamePassword @change-info="change_home" />

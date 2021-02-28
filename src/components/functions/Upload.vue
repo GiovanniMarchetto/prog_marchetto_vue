@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Caricamento file</h1>
+    <h2>Caricamento file</h2>
     <b-form @submit.prevent="upload">
       <b-form-group>
         <legend>File</legend>

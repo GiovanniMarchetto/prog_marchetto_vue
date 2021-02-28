@@ -1,33 +1,26 @@
 <template>
   <div>
-    <button @click="logout" class="btn-warn">Log out</button>
+    <b-button @click="logout" class="btn-logout">Logout</b-button>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
-
 export default {
   methods: {
     logout: function() {
-      // axios
-      //   .delete(`${process.env.VUE_APP_APIROOT}/sessioni/logout`)
-      //   .then(
-          localStorage.removeItem('jwtToken');
-          localStorage.removeItem('nomeUtente');
-          this.$emit("logout");
-          this.$router.push("/");
-        //   )
-        // .catch((err) => console.log(err));
-    }
+      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("nomeUtente");
+      this.$emit("logout");
+      this.$router.push("/");
+    },
   },
 };
 </script>
 
-<style>
-.btn-warn{
+<style scoped>
+.btn-logout {
   float: right;
   background-color: brown;
-  color:aliceblue;
+  color: aliceblue;
 }
 </style>

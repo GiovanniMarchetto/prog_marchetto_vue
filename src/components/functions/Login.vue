@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Login Page</h1>
+    <h2>Login Page</h2>
     <b-form @submit.prevent="login">
       <UsernamePassword @change-info="change_home" />
 
@@ -26,7 +26,7 @@ export default {
   methods: {
     login() {
       axios
-        .post(`${process.env.VUE_APP_APIROOT}/sessioni/login`, {
+        .post(`${process.env.VUE_APP_APIROOT}/login`, {
           username: this.username,
           password: this.password,
         })
