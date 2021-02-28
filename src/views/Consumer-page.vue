@@ -1,22 +1,28 @@
 <template>
   <div>
-    <b-container fluid v-show="uploaderScelto != null"
-        ><b-img
-          v-bind="imgProps"
-          :src="`${uploaderScelto.logo}`"
-          alt="Logo uploader"
-          style=""
-        ></b-img
-      ></b-container>
+    <b-container fluid v-show="sezione=='files'"
+      ><b-img
+        v-bind="imgProps"
+        :src="`${uploaderScelto.logo}`"
+        alt="Logo uploader"
+      ></b-img
+    ></b-container>
+
     <h1>Consumer page</h1>
-    <div v-if="uploaderScelto == null">
+
+    <b-nav pills justified class="nav2">
+      <b-nav-item @click="showSezione('')">Lista uploaders</b-nav-item>
+      <b-nav-item @click="showSezione('files')">File di un uploader</b-nav-item>
+      <b-nav-item @click="showSezione('modificaInfo')">Modifica informazioni</b-nav-item>
+    </b-nav>
+
+    <div v-show="sezione == ''">
       <h2>Lista Uploader con documenti</h2>
       <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
     </div>
-    <div v-else>
-      <!--non v-show perché altrimenti lo deve fare subito e non può perché null non ha elementi-->
+
+    <div v-show="sezione=='files'">
       <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
-      
 
       <b-form inline @submit.prevent="hashtagFilter">
         <b-form-input
@@ -29,18 +35,25 @@
         <b-button type="submit" variant="primary" size="sm"
           >Filtra hashtag
         </b-button>
+        <b-button
+          variant="danger"
+          size="sm"
+          @click="(hashtag = ''), hashtagFilter()"
+        >
+          Reset</b-button
+        >
       </b-form>
 
       <Files :files="filesUploader" :ruolo="ruolo" @download-file="download" />
 
-      <b-button
-        v-if="uploaders.length > 1"
-        variant="primary"
-        @click="showUploaders()"
-      >
-        Vedi tutti gli uploaders
-      </b-button>
-      <!-- devo aggiungere per modificare l'info -->
+    </div>
+
+    <div v-show="sezione=='modificaInfo'">
+      <ModInfo
+        :potere="ruolo"
+        :role="'consumer'"
+        @modInfo="modInfo_home"
+      />
     </div>
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
@@ -50,6 +63,7 @@
 <script>
 import Uploaders from "../components/lists/Uploaders";
 import Files from "../components/lists/Files";
+import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
@@ -61,21 +75,20 @@ export default {
   components: {
     Uploaders,
     Files,
+    ModInfo,
     Messages,
   },
   data() {
     return {
-      msg_success: "",
-      msg_error: "",
       ruolo: "consumer",
-      uploaderScelto: null,
+      uploaderScelto: "",
       hashtag: "",
       uploaders: [],
       filesConsumer: [],
       filesUploader: [],
       imgProps: {
         left: true,
-        rounded: true,
+        rounded: "circle",
         width: 400,
         height: 400,
       },
@@ -83,32 +96,27 @@ export default {
   },
   watch: {
     uploaderScelto: function() {
-      if (this.uploaderScelto != null)
+      if (this.uploaderScelto != "")
         this.showFiles(this.uploaderScelto.username);
     },
   },
   methods: {
-    showUploaders() {
-      this.uploaderScelto = null;
-    },
     showFiles(uplUsername) {
+      this.sezione="files";
       this.filesUploader = null;
       this.filesUploader = this.filesConsumer.filter(
         (file) => file.usernameUpl === uplUsername
       );
-      this.uploaderScelto = this.uploaders[0].filter(
-        (uploader) => uploader.username === uplUsername
-      );
+      this.uploaders.every((element) => {
+        if (element.username === uplUsername) {
+          this.uploaderScelto = element;
+          return false;
+        }
+        return true;
+      });
     },
-    showMsg(frase) {
-      this.$emit(frase);
-      if (frase.startsWith("ERR")) this.msg_error = frase;
-      else this.msg_success = frase;
-
-      setTimeout(() => {
-        this.msg_error = "";
-        this.msg_success = "";
-      }, 5000);
+    modInfo_home(frase) {
+      this.showMsg(frase);
     },
     download(id) {
       axios
@@ -150,7 +158,7 @@ export default {
       .then((res) => {
         this.filesConsumer = res.data;
         setTimeout(() => {}, 1000);
-        if (this.uploaderScelto != null)
+        if (this.uploaderScelto != "")
           this.showFiles(this.uploaderScelto.username);
       })
       .catch((err) => this.showMsg(err));
@@ -160,42 +168,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* .nav2 {
-  background-color: cadetblue;
-}
-.buu {
-  height: 5em;
-  width: 10em;
-  background-color: coral;
-}
-:hover.buu {
-  background-color: aquamarine;
-} */
-
-form {
-  flex-direction: row;
-}
-/* 
-#snackbar {
-  visibility: hidden;
-  min-width: 250px;
-  margin-left: -125px;
-  background-color: red;
-  color: #fff;
-  text-align: center;
-  border-radius: 2px;
-  padding: 16px;
-  position: fixed;
-  z-index: 1;
-  left: 50%;
-  bottom: 30px;
-  font-size: 17px;
-}
-
-#snackbar.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-} */
-</style>
+<style scoped></style>
