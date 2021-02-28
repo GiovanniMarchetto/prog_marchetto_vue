@@ -1,18 +1,19 @@
 <template>
   <div>
-    <div v-if="mostraLogin">
+    <h1>Home page</h1>
+    <div v-show="sezione==''">
       <Login @login="login_home" />
       <br />
-      <b-button @click="show">Non hai ancora un account</b-button>
+      <b-button @click="sezione='registration'">Non hai ancora un account</b-button>
     </div>
-    <div v-else>
+    <div v-show="sezione=='registration'">
       <Registration
-        :potere="ruolo"
-        :role="roleRegistrazione"
+        :potere="'consumer'"
+        :role="'consumer'"
         @registrazione="registration_home"
       />
       <br />
-      <b-button @click="show">Ho già un account!</b-button>
+      <b-button @click="sezione=''">Ho già un account!</b-button>
     </div>
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
@@ -31,42 +32,21 @@ export default {
     Registration,
     Messages,
   },
-  data() {
-    return {
-      mostraLogin: true,
-      ruolo: "consumer",
-      roleRegistrazione: "consumer",
-      msg_success: "",
-      msg_error: "",
-    };
-  },
   methods: {
-    show() {
-      this.mostraLogin = !this.mostraLogin;
-    },
-
-    showMsg(frase) {
-      this.$emit(frase);
-      if (frase.startsWith("ERR")) this.msg_error = frase;
-      else this.msg_success = frase;
-
-      setTimeout(() => {
-        this.msg_error = "";
-        this.msg_success = "";
-      }, 5000);
-    },
-
     login_home(frase) {
       this.showMsg(frase);
       if (!frase.startsWith("ERR")) {
-        setTimeout(() => {}, 2000);
-        if (localStorage.getItem("nomeUtente").length == 4) {
+        setTimeout(() => {
+          if (localStorage.getItem("nomeUtente").length == 4) {
           this.$router.push("/uploader-page");
         } else if (localStorage.getItem("nomeUtente").includes("@")) {
           this.$router.push("/administrator-page");
-        } else {
+        } else if (localStorage.getItem("nomeUtente").length == 16){
           this.$router.push("/consumer-page");
+        } else {
+          this.showMsg("ERR- Username non riscontrato...");
         }
+        }, 2000);
       }
     },
 

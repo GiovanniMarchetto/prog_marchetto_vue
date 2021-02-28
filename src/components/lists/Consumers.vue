@@ -1,5 +1,5 @@
 <template>
-  <b-table striped hover :items="consumers" :fields="fields">
+  <b-table striped responsive sticky-header="600px" :items="consumers" :fields="fields">
     <template #cell(actions)="row">
       <b-button variant="info" @click="$emit('cons-files', row.item.username)"
         >Mostra File di questo consumer</b-button

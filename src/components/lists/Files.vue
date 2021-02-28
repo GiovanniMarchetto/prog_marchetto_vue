@@ -3,11 +3,12 @@
     <b-button @click="nonStacked">Tipologia tabella</b-button>
 
     <div v-if="files.length == 0"><p>Nessun documento</p></div>
-    <!--NON può capitare nel caso del consumer-->
 
     <!-- SE CELLULARE stacked hover-->
     <b-table
       striped
+      responsive
+      sticky-header="600px"
       :items="files"
       :fields="fieldsU"
       v-else-if="ruolo == 'uploader'"
@@ -24,7 +25,8 @@
       <b-table
         id="tableT"
         striped
-        
+        responsive
+        sticky-header="600px"
         :items="files"
         :fields="fieldsC"
         :tbody-tr-class="highlightNew"
@@ -69,10 +71,7 @@ export default {
       ],
       fieldsC: [
         "id",
-        {
-          key: "name",
-          sortable: false,
-        },
+        "name",
         {
           key: "dataCaricamento",
           sortable: true,
@@ -91,7 +90,8 @@ export default {
       if (!item || type !== "row") return;
       if (item.dataVisualizzazione === "") return "table-warning";
     },
-    nonStacked() {//todo: lasciare?
+    nonStacked() {
+      //todo: lasciare?
       let x = document.getElementById("tableT");
       let classeTotale = "table b-table table-striped ";
       let classeVoluta = "b-table-stacked";

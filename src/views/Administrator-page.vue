@@ -44,7 +44,7 @@
       >
     </b-nav>
 
-    <div v-show="mostraSezione == ''">
+    <div v-show="sezione == ''">
       <h2>Resoconto uploader</h2>
       <b-form inline @submit.prevent="dataFilter">
         <b-form-input
@@ -75,21 +75,24 @@
       <Resume :resume="resume" />
       <!-- <Resume :resume="resume" @del-upl="deleteUploader" /> -->
     </div>
-    <div v-if="mostraSezione == 'registration'">
+
+    <div v-if="sezione == 'registration'">
       <Registration
         :potere="ruolo"
         :role="roleRegistrazione"
         @registrazione="registration_home"
       />
     </div>
-    <div v-else-if="mostraSezione == 'modInfo'">
+
+    <div v-else-if="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
         :role="roleRegistrazione"
         @modInfo="modInfo_home"
       />
     </div>
-    <div v-else-if="mostraSezione == 'deleteActor'">
+
+    <div v-else-if="sezione == 'deleteActor'">
       <DeleteActor :potere="ruolo" @deleteActor="deleteActor_home" />
     </div>
 
@@ -120,9 +123,6 @@ export default {
   },
   data() {
     return {
-      msg_success: "",
-      msg_error: "",
-      mostraSezione: "",
       ruolo: "administrator",
       resume: [],
       dateFrom: "",
@@ -132,36 +132,7 @@ export default {
       roleRegistrazione: "",
     };
   },
-  // watch: {
-  //   msg_error: function() {
-  //     this.msg_success = "";
-  //     showMsg();
-  //   },
-  //   msg_success: function() {
-  //     this.msg_error = "";
-  //     showMsg();
-  //   },
-  //   mostraSezione: function() {
-  //     this.msg_error = "";
-  //     this.msg_success = "";
-  //   },
-  // },
   methods: {
-    showSezione(sezione) {
-      this.mostraSezione = sezione;
-    },
-
-    showMsg(frase) {
-      this.$emit(frase);
-      if (frase.startsWith("ERR")) this.msg_error = frase;
-      else this.msg_success = frase;
-
-      setTimeout(() => {
-        this.msg_error = "";
-        this.msg_success = "";
-      }, 5000);
-    },
-
     registration_home(frase) {
       this.showMsg(frase);
     },
