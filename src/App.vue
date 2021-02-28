@@ -12,11 +12,6 @@ import Footer from "./components/layout/Footer";
 
 export default {
   name: "App",
-  data() {
-    return {
-      msg: "",
-    };
-  },
   components: {
     Header,
     Footer,
@@ -34,9 +29,15 @@ export default {
   /*margin-top: 60px;*/
 }
 
-h1{
+h1 {
+  padding: 10px;
   color: aliceblue;
   background: #2c3e50;
+}
+h2{
+  padding: 10px;
+  color: #2c3e50;
+  background: #E66648;
 }
 
 form {
@@ -44,10 +45,14 @@ form {
   flex-direction: column;
   max-width: 400px;
   margin: 0 auto;
-}/*
+} 
+
+
+
+/*
 input {
   border: 1px solid green;
-  padding: 10px;
+  
   margin-bottom: 20px;
 }
 input[type="submit"] {
@@ -69,11 +74,11 @@ input[type="submit"]:hover {
 .nav2{
    background-color: rgb(154, 212, 214);
 }  */
-.nav2 *{
-  color: #2c3e50;
-   background-color:  aliceblue;
-  /* border: 1px solid #333; */
- }
+.nav2 * {
+  color: aliceblue;
+  background-color: #2c3e50;
+   border: 1px solid aliceblue; 
+}
 /*
 .nav2 button {
   height: 5em;
@@ -84,13 +89,53 @@ input[type="submit"]:hover {
   background-color: aquamarine;
 }
 
-
-
-
-
 /* @media screen and (max-width: 400px) {
   .table-stacked {
      use:true;
   }
+} */
+
+
+
+
+
+
+/*CONSUMER PAGE*/ 
+/* .nav2 {
+  background-color: cadetblue;
+}
+.buu {
+  height: 5em;
+  width: 10em;
+  background-color: coral;
+}
+:hover.buu {
+  background-color: aquamarine;
+} */
+/* 
+form {
+  flex-direction: row;
+} */
+/* 
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: red;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
 } */
 </style>
