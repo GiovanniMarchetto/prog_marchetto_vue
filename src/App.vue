@@ -36,8 +36,11 @@ h1 {
 }
 h2{
   padding: 10px;
-  color: #2c3e50;
+  color: aliceblue;
   background: #E66648;
+}
+h3{
+  padding: 10px;
 }
 
 form {
@@ -74,20 +77,15 @@ input[type="submit"]:hover {
 .nav2{
    background-color: rgb(154, 212, 214);
 }  */
-.nav2 * {
+.nav2 :only-of-type {
   color: aliceblue;
   background-color: #2c3e50;
-   border: 1px solid aliceblue; 
+  /* border: 1px solid aliceblue; */
 }
-/*
-.nav2 button {
-  height: 5em;
-  width: 10em;
-  background-color: coral;
-}*/
-.nav2 :hover {
+
+/* .nav2 :hover {
   background-color: aquamarine;
-}
+} */
 
 /* @media screen and (max-width: 400px) {
   .table-stacked {
