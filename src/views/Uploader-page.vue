@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Uploader {{ localStorage.getItem("nomeUtente") }} page</h1>
+    <h1>Uploader page</h1>
 
     <b-nav pills justified class="nav2">
       <b-nav-item @click="showSezione('')">Lista consumer/file</b-nav-item>
@@ -26,40 +26,39 @@
     </b-nav>
 
     <div v-show="sezione == ''">
-      <div v-show="consumerScelto == null">
-        <h2>Lista Consumer</h2>-->
-        <Consumers
-          v-bind:consumers="consumers"
-          @cons-files="showFiles"
-          @del-cons="deleteAct"
-        />
-      </div>
-      <div v-show="consumerScelto != null">
-        <h2>Lista Files di {{ consumerScelto }}</h2>
-        <Files :files="filesConsumer" :ruolo="ruolo" @del-file="deleteAct" />
-        <b-button @click="showConsumers()">
-          Vedi tutti i consumers
-        </b-button>
-      </div>
+      <h2>Lista Consumer</h2>
+      <Consumers
+        v-bind:consumers="consumers"
+        @cons-files="showFiles"
+        @del-cons="deleteAct"
+      />
     </div>
-    <div v-if="sezione == 'registration'">
+    <div v-show="sezione == 'files'">
+      <h2>Lista Files di {{ consumerScelto }}</h2>
+      <Files :files="filesConsumer" :ruolo="ruolo" @del-file="deleteAct" />
+      <!-- <b-button @click="showConsumers()">
+          Vedi tutti i consumers
+        </b-button> -->
+    </div>
+
+    <div v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
         :role="roleRegistrazione"
         @registrazione="registration_home"
       />
     </div>
-    <div v-else-if="sezione == 'modInfo'">
+    <div v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
         :role="roleRegistrazione"
         @modInfo="modInfo_home"
       />
     </div>
-    <div v-else-if="sezione == 'upload'">
-      <Upload @upload-evento="upload_home" />
+    <div v-show="sezione == 'upload'">
+      <Upload @upload="upload_home" />
     </div>
-    <div v-else-if="sezione == 'deleteActor'">
+    <div v-show="sezione == 'deleteActor'">
       <DeleteActor :potere="ruolo" @deleteActor="deleteActor_home" />
     </div>
 
@@ -74,6 +73,7 @@ import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
 import DeleteActor from "../components/functions/DeleteActor";
+import Messages from "../components/layout/Messages";
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
   "jwtToken"
@@ -88,6 +88,7 @@ export default {
     Registration,
     ModInfo,
     DeleteActor,
+    Messages,
   },
   data() {
     return {
@@ -102,15 +103,16 @@ export default {
   // watch: {
   // },
   methods: {
-    showConsumers() {
-      this.consumerScelto = null;
-    },
+    // showConsumers() {
+    //   this.consumerScelto = null;
+    // },
     showFiles(consUsername) {
       this.filesConsumer = null;
       this.filesConsumer = this.filesUploader.filter(
         (file) => file.usernameCons === consUsername
       );
       this.consumerScelto = consUsername;
+      this.sezione = "files";
     },
     deleteAct(id) {
       let tipo;
@@ -118,9 +120,17 @@ export default {
       else tipo = "files";
 
       axios
-        .delete(`${process.env.VUE_APP_APIROOT}/${tipo}/delete`, { id })
+        .delete(`${process.env.VUE_APP_APIROOT}/${tipo}/delete/${id}`)
         .then((res) => {
           this.showMsg(res.data);
+          if (tipo == "attori")
+            this.consumers = this.consumers.filter(
+              (cons) => cons.username !== id
+            );
+          else
+            this.filesUploader = this.filesUploader.filter(
+              (file) => file.id !== id
+            );
         })
         .catch((err) => {
           this.showMsg(err);
@@ -132,30 +142,8 @@ export default {
     modInfo_home(frase) {
       this.showMsg(frase);
     },
-    upload_home(newFile) {
-      const {
-        file,
-        nameFile,
-        hashtag,
-        usernameCons,
-        nameCons,
-        emailCons,
-      } = newFile;
-      axios
-        .post(`${process.env.VUE_APP_APIROOT}/files/upload`, {
-          file,
-          nameFile,
-          hashtag,
-          usernameCons,
-          nameCons,
-          emailCons,
-        })
-        .then((res) => {
-          this.showMsg(res.data);
-        })
-        .catch((err) => {
-          this.showMsg(err);
-        });
+    upload_home(frase) {
+      this.showMsg(frase);
     },
     deleteActor_home(frase) {
       this.showMsg(frase);
