@@ -27,8 +27,8 @@
 
 <script>
 export default {
-  name: "UsernamePassword",
-  // props: ["required"],
+  name: "Credenziali",
+  props: ["required"],
   data() {
     return {
       username: "",
@@ -41,16 +41,12 @@ export default {
       this.$emit("change-info", valore);
     },
   },
-  // created() {
-  //   if (this.required) {
-  //     document
-  //       .getElementsByTagName("INPUT")[0]
-  //       .setAttribute("required", "false");
-  //     document
-  //       .getElementsByTagName("INPUT")[1]
-  //       .setAttribute("required", "true");
-  //   }
-  // },
+  mounted() {
+    if (this.required) {
+      document.getElementById("username").setAttribute("required", "true");
+      document.getElementById("password").setAttribute("required", "true");
+    }
+  },
 };
 </script>
 
