@@ -101,22 +101,18 @@ export default {
     },
   },
   methods: {
-    showFiles(uplUsername) {
+    showFiles(usernameUploader) {
       this.sezione="files";
-      this.filesUploader = null;
       this.filesUploader = this.filesConsumer.filter(
-        (file) => file.usernameUpl === uplUsername
+        (file) => file.usernameUpl === usernameUploader
       );
       this.uploaders.every((element) => {
-        if (element.username === uplUsername) {
+        if (element.username === usernameUploader) {
           this.uploaderScelto = element;
           return false;
         }
         return true;
       });
-    },
-    modInfo_home(frase) {
-      this.showMsg(frase);
     },
     download(id) {
       axios
@@ -141,6 +137,10 @@ export default {
           file.hashtag.includes(this.hashtag) &&
           file.usernameUpl === this.uploaderScelto.username
       );
+    },
+    
+    modInfo_home(frase) {
+      this.showMsg(frase);
     },
   },
   created() {

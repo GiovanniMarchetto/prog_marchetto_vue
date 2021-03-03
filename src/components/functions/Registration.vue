@@ -3,13 +3,13 @@
     <h2>Registration</h2>
 
     <b-form @submit.prevent="registration">
-      <UsernamePassword @change-info="change_home" />
+      <Credenziali :required="true" @change-info="change_home" />
 
-      <UserInfo @change-info="change_home" />
+      <UserInfo :required="true" @change-info="change_home" />
 
       <!-- <Ruolo v-if="potere === 'administrator'" @change-info="change_home" /> -->
 
-      <Logo v-if="role === 'uploader'" @change-info="change_home" />
+      <Logo v-if="role === 'uploader'" :required="true" @change-info="change_home" />
 
       <b-button type="submit" variant="success">Registrazione</b-button>
     </b-form>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import UsernamePassword from "@/components/input/UsernamePassword";
+import Credenziali from "@/components/input/Credenziali";
 import UserInfo from "@/components/input/UserInfo";
 import Logo from "@/components/input/Logo";
 
@@ -29,9 +29,9 @@ if (localStorage.getItem("jwtToken") != null)
 
 export default {
   name: "Registration",
-  props: ["potere","role"],
+  props: ["potere", "role"],
   components: {
-    UsernamePassword,
+    Credenziali,
     UserInfo,
     Logo,
   },
@@ -41,7 +41,7 @@ export default {
       password: "",
       name: "",
       email: "",
-      logo: ""
+      logo: "",
     };
   },
   methods: {
@@ -75,7 +75,8 @@ export default {
     registration() {
       const RegExConsumer = /^[A-Z0-9]+$/;
       const RegExUploader = /^[a-zA-Z0-9]+$/;
-      if (//todo: non dovrebbe servire più
+      if (
+        //todo: non dovrebbe servire più, tranne per il controllo che siano i campi vuoti
         this.username === "" ||
         this.password === "" ||
         this.name === "" ||
@@ -89,15 +90,27 @@ export default {
         this.username.length != 16 &&
         RegExConsumer.test(this.username)
       ) {
-        this.$emit("registrazione", "ERR - I consumer devono mettere il codice fiscale come username");
+        this.$emit(
+          "registrazione",
+          "ERR - I consumer devono mettere il codice fiscale come username"
+        );
       } else if (
         this.role === "uploader" &&
         this.username.length != 4 &&
         RegExUploader.test(this.username)
       ) {
-        this.$emit("registrazione", "ERR - Gli uploader devono avere un username di 4 caratteri alfanumerici");
-      } else if (this.role === "administrator" && this.username !== this.email) {
-        this.$emit("registrazione", "ERR - Gli amministratori devono avere la mail uguale all'username");
+        this.$emit(
+          "registrazione",
+          "ERR - Gli uploader devono avere un username di 4 caratteri alfanumerici"
+        );
+      } else if (
+        this.role === "administrator" &&
+        this.username !== this.email
+      ) {
+        this.$emit(
+          "registrazione",
+          "ERR - Gli amministratori devono avere la mail uguale all'username"
+        );
       } else {
         axios
           .post(`${process.env.VUE_APP_APIROOT}/attori/registration`, {
@@ -115,6 +128,11 @@ export default {
                 "registrazione",
                 "registrazione di " + this.username + " eseguita con successo"
               );
+              this.username = "";
+              this.password = "";
+              this.name = "";
+              this.email = "";
+              this.logo = "";
             } else {
               this.$emit("registrazione", "ERR - " + res.data);
             }

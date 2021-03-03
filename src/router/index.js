@@ -61,8 +61,10 @@ router.beforeEach((to, from, next) => {
         this.$router.push("/uploader-page");
       } else if (localStorage.getItem("nomeUtente").includes("@")) {
         this.$router.push("/administrator-page");
-      } else {
+      } else if (localStorage.getItem("nomeUtente").length == 16) {
         this.$router.push("/consumer-page");
+      } else {
+        this.showMsg("ERR- Username non riscontrato...");
       }
     } else {
       next();

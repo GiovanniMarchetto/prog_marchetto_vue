@@ -3,7 +3,7 @@
     <h2>Modifica informazioni</h2>
 
     <form @submit.prevent="modInfo">
-      <UsernamePassword v-if="role != 'consumer'" @change-info="change_home" />
+      <Credenziali v-if="potere != 'consumer'" @change-info="change_home" />
 
       <UserInfo @change-info="change_home" />
 
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import UsernamePassword from "@/components/input/UsernamePassword";
+import Credenziali from "@/components/input/Credenziali";
 import UserInfo from "@/components/input/UserInfo";
 import Logo from "@/components/input/Logo";
 
@@ -37,7 +37,7 @@ export default {
   name: "ModInfo",
   props: ["potere", "role"],
   components: {
-    UsernamePassword,
+    Credenziali,
     UserInfo,
     Logo,
   },

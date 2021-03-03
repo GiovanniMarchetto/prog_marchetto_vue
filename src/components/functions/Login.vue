@@ -2,7 +2,7 @@
   <div>
     <h2>Login Page</h2>
     <b-form @submit.prevent="login">
-      <UsernamePassword @change-info="change_home" />
+      <Credenziali :required="true" @change-info="change_home" />
 
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import UsernamePassword from "@/components/input/UsernamePassword";
+import Credenziali from "@/components/input/Credenziali";
 import axios from "axios";
 export default {
   name: "Login",
   components: {
-    UsernamePassword,
+    Credenziali,
   },
   data() {
     return {

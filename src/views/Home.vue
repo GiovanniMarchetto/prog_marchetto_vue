@@ -46,7 +46,7 @@ export default {
         } else {
           this.showMsg("ERR- Username non riscontrato...");
         }
-        }, 2000);
+        }, 1000);
       }
     },
 
