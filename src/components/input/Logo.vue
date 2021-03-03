@@ -1,7 +1,7 @@
 <template>
   <b-form-group>
     <label for="logo">Logo:</label>
-    <b-form-file @change.native="trasf64" name="logo" placeholder="Choose a file or drop it here..." accept="image/*" />
+    <b-form-file @change.native="trasf64" id="logo" name="logo" placeholder="Choose a file or drop it here..." accept="image/*" />
 
     <figure v-show="logo != ''">
       <b-img rounded :src="`${logo}`" alt="Anteprima Logo" style="width:300px;height:300px;"/>
@@ -13,6 +13,7 @@
 <script>
 export default {
   name: "Logo",
+  props: ["required"],
   data() {
     return {
       logo: "",
@@ -33,7 +34,11 @@ export default {
       reader.readAsDataURL(imgObj.target.files[0]);
     },
   },
-  
+  mounted() {
+    if (this.required) 
+      document.getElementById("logo").setAttribute("required", "true");
+    
+  },
 };
 </script>
 

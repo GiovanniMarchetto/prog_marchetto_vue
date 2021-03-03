@@ -29,6 +29,7 @@
 <script>
 export default {
   name: "UserInfo",
+  props: ["required"],
   data() {
     return {
       name: "",
@@ -40,6 +41,12 @@ export default {
       const valore = { nameProp: e.target.name, valueProp: e.target.value };
       this.$emit("change-info", valore);
     },
+  },
+  mounted() {
+    if (this.required) {
+      document.getElementById("name").setAttribute("required", "true");
+      document.getElementById("email").setAttribute("required", "true");
+    }
   },
 };
 </script>
