@@ -36,9 +36,7 @@ export default {
   methods: {
     deleteActor() {
       axios
-        .delete(`${process.env.VUE_APP_APIROOT}/attori/delete`, {
-          username: this.username
-        })
+        .delete(`${process.env.VUE_APP_APIROOT}/attori/delete/${this.username}`)
         .then((res) => {
           console.log(res);
           if (!res.data.startsWith("ERR")) {
