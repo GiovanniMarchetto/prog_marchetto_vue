@@ -1,24 +1,29 @@
 <template>
   <div>
-    <b-button @click="nonStacked">Tipologia tabella</b-button>
+    <b-button variant="outline-info" @click="nonStacked"
+      >Tipologia tabella</b-button
+    >
 
     <div v-if="files.length == 0"><p>Nessun documento</p></div>
 
     <!-- SE CELLULARE stacked hover-->
-    <b-table
-      striped
-      responsive
-      sticky-header="600px"
-      :items="files"
-      :fields="fieldsU"
-      v-else-if="ruolo == 'uploader'"
-    >
-      <template #cell(actions)="row">
-        <b-button @click="$emit('del-file', row.item.id)" class="del">
-          Elimina
-        </b-button>
-      </template>
-    </b-table>
+    <b-container fluid v-else-if="ruolo == 'uploader'">
+      <b-table
+        id="tableT"
+        striped
+        responsive
+        sticky-header="600px"
+        :items="files"
+        :fields="fieldsU"
+        :tbody-tr-class="highlightNew"
+      >
+        <template #cell(actions)="row">
+          <b-button @click="$emit('del-file', row.item.id)" class="del">
+            Elimina
+          </b-button>
+        </template>
+      </b-table>
+    </b-container>
 
     <b-container fluid v-else>
       <!--fluid="sm" style="max-width:100%;"-->
@@ -93,11 +98,10 @@ export default {
     nonStacked() {
       //todo: lasciare?
       let x = document.getElementById("tableT");
-      let classeTotale = "table b-table table-striped ";
-      let classeVoluta = "b-table-stacked";
-      if (x.className == classeTotale + classeVoluta)
-        x.className = classeTotale;
-      else x.className = classeTotale + classeVoluta;
+      let classeVoluta = " b-table-stacked";
+      if (x.className.includes(classeVoluta))
+        x.className = x.className.replace(classeVoluta,"");
+      else x.className = x.className.concat(classeVoluta);
     },
   },
 };
