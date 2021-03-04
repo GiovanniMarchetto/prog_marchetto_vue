@@ -1,10 +1,9 @@
 <template>
-  <b-form-group>
-    <legend>Informazioni utente</legend>
+  <b-container>
+    <!-- <legend>Informazioni utente</legend> -->
 
-    <label for="name">Name:</label>
-
-    <b-form-input
+<b-form-group id="name-group" label="Name:" label-for="name">
+      <b-form-input
       @change.native="change"
       id="name"
       type="text"
@@ -12,10 +11,10 @@
       v-model="name"
       placeholder="name"
     />
+    </b-form-group>
 
-    <label for="email">Email:</label>
-
-    <b-form-input
+    <b-form-group id="email-group" label="Email:" label-for="email">
+      <b-form-input
       @change.native="change"
       id="email"
       type="email"
@@ -23,7 +22,9 @@
       v-model="email"
       placeholder="email"
     />
-  </b-form-group>
+    </b-form-group>
+    
+  </b-container>
 </template>
 
 <script>

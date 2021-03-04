@@ -2,16 +2,21 @@
   <div class="registration">
     <h2>Registration</h2>
 
-    <b-form @submit.prevent="registration">
+    <b-form @submit.prevent="registration" @reset="reset">
       <Credenziali :required="true" @change-info="change_home" />
 
       <UserInfo :required="true" @change-info="change_home" />
 
       <!-- <Ruolo v-if="potere === 'administrator'" @change-info="change_home" /> -->
 
-      <Logo v-if="role === 'uploader'" :required="true" @change-info="change_home" />
+      <Logo
+        v-if="role === 'uploader'"
+        :required="true"
+        @change-info="change_home"
+      />
 
       <b-button type="submit" variant="success">Registrazione</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
   </div>
 </template>
@@ -72,11 +77,58 @@ export default {
       }
     },
 
+    reset() {
+      this.username = "";
+      this.password = "";
+      this.name = "";
+      this.email = "";
+      this.logo = "";
+    },
+
     registration() {
-      const RegExConsumer = /^[A-Z0-9]+$/;
+      //TODO: non voglio avere troppa duplicazione di controllo
+      //        però faccio comunque un controllo minimo?
+      if (this.role === "administrator" && this.username !== this.email) {
+        this.$emit(
+          "registrazione",
+          "ERR - Gli amministratori devono avere l'email uguale all'username"
+        );
+      } else {
+        axios
+          .post(`${process.env.VUE_APP_APIROOT}/attori/registration`, {
+            username: this.username,
+            password: this.password,
+            name: this.name,
+            email: this.email,
+            role: this.role,
+            logo: this.logo,
+          })
+          .then((res) => {
+            console.log(res);
+            if (!res.data.startsWith("ERR")) {
+              this.$emit(
+                "registrazione",
+                "registrazione di " + this.username + " eseguita con successo"
+              );
+              this.reset();
+            } else {
+              this.$emit("registrazione", "ERR - " + res.data);
+            }
+          })
+          .catch((err) => {
+            this.$emit("registrazione", "ERR(esterno) - " + err);
+          });
+      }
+    },
+  },
+};
+</script>
+
+<!--
+const RegExConsumer = /^[A-Z0-9]+$/;
       const RegExUploader = /^[a-zA-Z0-9]+$/;
-      if (
-        //todo: non dovrebbe servire più, tranne per il controllo che siano i campi vuoti
+
+if (
         this.username === "" ||
         this.password === "" ||
         this.name === "" ||
@@ -103,45 +155,5 @@ export default {
           "registrazione",
           "ERR - Gli uploader devono avere un username di 4 caratteri alfanumerici"
         );
-      } else if (
-        this.role === "administrator" &&
-        this.username !== this.email
-      ) {
-        this.$emit(
-          "registrazione",
-          "ERR - Gli amministratori devono avere la mail uguale all'username"
-        );
-      } else {
-        axios
-          .post(`${process.env.VUE_APP_APIROOT}/attori/registration`, {
-            username: this.username,
-            password: this.password,
-            name: this.name,
-            email: this.email,
-            role: this.role,
-            logo: this.logo,
-          })
-          .then((res) => {
-            console.log(res);
-            if (!res.data.startsWith("ERR")) {
-              this.$emit(
-                "registrazione",
-                "registrazione di " + this.username + " eseguita con successo"
-              );
-              this.username = "";
-              this.password = "";
-              this.name = "";
-              this.email = "";
-              this.logo = "";
-            } else {
-              this.$emit("registrazione", "ERR - " + res.data);
-            }
-          })
-          .catch((err) => {
-            this.$emit("registrazione", "ERR(esterno) - " + err);
-          });
-      }
-    },
-  },
-};
-</script>
+      } else
+-->

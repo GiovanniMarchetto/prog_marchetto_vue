@@ -1,11 +1,12 @@
 <template>
   <div>
     <h2>Login Page</h2>
+
     <b-form @submit.prevent="login">
       <Credenziali :required="true" @change-info="change_home" />
-
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
+
   </div>
 </template>
 

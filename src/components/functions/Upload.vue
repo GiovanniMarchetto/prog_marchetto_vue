@@ -1,8 +1,13 @@
 <template>
   <div>
     <h2>Caricamento file</h2>
-    <b-form @submit.prevent="upload">
-      <FileInput @change-info="change_home" />
+    <b-form @submit.prevent="upload" @reset.prevent="reset">
+      <FileInput
+        :file="file"
+        :nameFile="nameFile"
+        :hashtag="hashtag"
+        @change-info="change_home"
+      />
 
       <b-form-group>
         <legend>Dati Consumer</legend>
@@ -19,6 +24,7 @@
       </b-form-group>
 
       <b-button type="submit" variant="success">Upload</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
   </div>
 </template>
@@ -44,6 +50,7 @@ export default {
       file: "",
       nameFile: "",
       hashtag: "",
+      extension: "",
       usernameCons: "",
       nameCons: "",
       emailCons: "",
@@ -62,6 +69,9 @@ export default {
         case "hashtag":
           this.hashtag = valueProp;
           break;
+        case "extension":
+          this.extension = valueProp;
+          break;
         // case "usernameCons":
         //   this.usernameCons = valueProp;
         //   break;
@@ -76,11 +86,20 @@ export default {
           break;
       }
     },
+    reset() {
+      this.file = "";
+      this.extension = "";
+      this.nameFile = "";
+      this.hashtag = "";
+      this.usernameCons = "";
+      this.nameCons = "";
+      this.emailCons = "";
+    },
     upload() {
       axios
         .post(`${process.env.VUE_APP_APIROOT}/files/upload`, {
           file: this.file,
-          nameFile: this.nameFile,
+          nameFile: this.nameFile + this.extension,
           hashtag: this.hashtag,
           usernameCons: this.usernameCons,
           nameCons: this.nameCons,
@@ -89,12 +108,7 @@ export default {
         .then((res) => {
           if (!res.data.startsWith("ERR")) {
             this.$emit("upload", res.data);
-            this.file = "";
-            this.nameFile = "";
-            this.hashtag = "";
-            this.usernameCons = "";
-            this.nameCons = "";
-            this.emailCons = "";
+            this.reset();
           } else {
             this.$emit("upload", "ERR - " + res.data);
           }
