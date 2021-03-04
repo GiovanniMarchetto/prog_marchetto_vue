@@ -15,30 +15,6 @@ Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false;
 
-Vue.mixin({
-  data() {
-    return {
-      msg_success: "",
-      msg_error: "",
-      sezione: "",
-    };
-  },
-  methods: {
-    showSezione(sezione) {
-      this.sezione = sezione;
-    },
-    showMsg(frase) {
-      if (frase.startsWith("ERR")) this.msg_error = frase;
-      else this.msg_success = frase;
-
-      setTimeout(() => {
-        this.msg_error = "";
-        this.msg_success = "";
-      }, 5000);
-    },
-  },
-});
-
 new Vue({
   router,
   render: (h) => h(App),

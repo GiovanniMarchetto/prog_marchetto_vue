@@ -20,9 +20,9 @@
         >
       </b-nav-item-dropdown>
       <b-nav-item @click="showSezione('upload')">Carica nuovo file</b-nav-item>
-      <b-nav-item @click="showSezione('deleteActor')"
+      <!-- <b-nav-item @click="showSezione('deleteActor')"
         >Eliminazione Consumer</b-nav-item
-      >
+      > -->
     </b-nav>
 
     <div v-show="sezione == ''">
@@ -36,9 +36,6 @@
     <div v-show="sezione == 'files'">
       <h2>Lista Files di {{ consumerScelto }}</h2>
       <Files :files="filesConsumer" :ruolo="ruolo" @del-file="deleteAct" />
-      <!-- <b-button @click="showConsumers()">
-          Vedi tutti i consumers
-        </b-button> -->
     </div>
 
     <div v-show="sezione == 'registration'">
@@ -58,9 +55,9 @@
     <div v-show="sezione == 'upload'">
       <Upload @upload="upload_home" />
     </div>
-    <div v-show="sezione == 'deleteActor'">
+    <!-- <div v-show="sezione == 'deleteActor'">
       <DeleteActor :potere="ruolo" @deleteActor="deleteActor_home" />
-    </div>
+    </div> -->
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
   </div>
@@ -72,8 +69,11 @@ import Files from "../components/lists/Files";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
-import DeleteActor from "../components/functions/DeleteActor";
+// import DeleteActor from "../components/functions/DeleteActor";
 import Messages from "../components/layout/Messages";
+
+import {messagesMixin,sectionsMixin} from "../utils/utils";
+
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
   "jwtToken"
@@ -87,9 +87,10 @@ export default {
     Upload,
     Registration,
     ModInfo,
-    DeleteActor,
+    // DeleteActor,
     Messages,
   },
+  mixins:[messagesMixin,sectionsMixin],
   data() {
     return {
       ruolo: "uploader",
@@ -103,9 +104,6 @@ export default {
   // watch: {
   // },
   methods: {
-    // showConsumers() {
-    //   this.consumerScelto = null;
-    // },
     showFiles(consUsername) {
       this.filesConsumer = null;
       this.filesConsumer = this.filesUploader.filter(
@@ -127,10 +125,14 @@ export default {
             this.consumers = this.consumers.filter(
               (cons) => cons.username !== id
             );
-          else
+          else {
             this.filesUploader = this.filesUploader.filter(
               (file) => file.id !== id
             );
+            this.filesConsumer = this.filesUploader.filter(
+              (file) => file.usernameCons === this.consumerScelto
+            );
+          }
         })
         .catch((err) => {
           this.showMsg(err);
@@ -143,11 +145,11 @@ export default {
       this.showMsg(frase);
     },
     upload_home(frase) {
-      this.showMsg(frase);
+      this.showMsg(frase); //TODO se è ok devo mandare un messaggio che bisogna riaggiornare la pagina per vedere i file appena caricato
     },
-    deleteActor_home(frase) {
-      this.showMsg(frase);
-    },
+    // deleteActor_home(frase) {
+    //   this.showMsg(frase);
+    // },
   },
   created() {
     axios

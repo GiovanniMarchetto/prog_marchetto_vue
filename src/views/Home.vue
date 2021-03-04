@@ -1,19 +1,19 @@
 <template>
   <div>
     <h1>Home page</h1>
-    <div v-show="sezione==''">
+    <b-container v-show="sezione == ''">
       <Login @login="login_home" />
-      <br />
-      <b-button @click="sezione='registration'">Non hai ancora un account</b-button>
-    </div>
-    <div v-show="sezione=='registration'">
+      <b-button @click="sezione = 'registration'"
+        >Non hai ancora un account</b-button
+      >
+    </b-container>
+    <div v-show="sezione == 'registration'">
       <Registration
         :potere="'consumer'"
         :role="'consumer'"
         @registrazione="registration_home"
       />
-      <br />
-      <b-button @click="sezione=''">Ho già un account!</b-button>
+      <b-button @click="sezione = ''">Ho già un account!</b-button>
     </div>
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
@@ -25,6 +25,8 @@ import Login from "../components/functions/Login";
 import Registration from "../components/functions/Registration";
 import Messages from "../components/layout/Messages";
 
+import { messagesMixin, sectionsMixin } from "../utils/utils";
+
 export default {
   name: "Home",
   components: {
@@ -32,20 +34,21 @@ export default {
     Registration,
     Messages,
   },
+  mixins: [messagesMixin, sectionsMixin],
   methods: {
     login_home(frase) {
       this.showMsg(frase);
       if (!frase.startsWith("ERR")) {
         setTimeout(() => {
           if (localStorage.getItem("nomeUtente").length == 4) {
-          this.$router.push("/uploader-page");
-        } else if (localStorage.getItem("nomeUtente").includes("@")) {
-          this.$router.push("/administrator-page");
-        } else if (localStorage.getItem("nomeUtente").length == 16){
-          this.$router.push("/consumer-page");
-        } else {
-          this.showMsg("ERR- Username non riscontrato...");
-        }
+            this.$router.push("/uploader-page");
+          } else if (localStorage.getItem("nomeUtente").includes("@")) {
+            this.$router.push("/administrator-page");
+          } else if (localStorage.getItem("nomeUtente").length == 16) {
+            this.$router.push("/consumer-page");
+          } else {
+            this.showMsg("ERR- Username non riscontrato...");
+          }
         }, 1000);
       }
     },

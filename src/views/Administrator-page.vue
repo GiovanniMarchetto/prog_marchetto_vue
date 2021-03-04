@@ -107,6 +107,9 @@ import ModInfo from "../components/functions/ModInfo";
 import DeleteActor from "../components/functions/DeleteActor";
 import Resume from "../components/lists/Resume";
 import Messages from "../components/layout/Messages";
+
+import {messagesMixin,sectionsMixin} from "../utils/utils";
+
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
   "jwtToken"
@@ -121,6 +124,7 @@ export default {
     Resume,
     Messages
   },
+  mixins:[messagesMixin,sectionsMixin],
   data() {
     return {
       ruolo: "administrator",

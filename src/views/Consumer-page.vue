@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container fluid v-show="sezione=='files'"
+    <b-container fluid v-show="sezione == 'files'"
       ><b-img
         v-bind="imgProps"
         :src="`${uploaderScelto.logo}`"
@@ -13,7 +13,9 @@
     <b-nav pills justified class="nav2">
       <b-nav-item @click="showSezione('')">Lista uploaders</b-nav-item>
       <b-nav-item @click="showSezione('files')">File di un uploader</b-nav-item>
-      <b-nav-item @click="showSezione('modificaInfo')">Modifica informazioni</b-nav-item>
+      <b-nav-item @click="showSezione('modificaInfo')"
+        >Modifica informazioni</b-nav-item
+      >
     </b-nav>
 
     <div v-show="sezione == ''">
@@ -21,7 +23,7 @@
       <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
     </div>
 
-    <div v-show="sezione=='files'">
+    <div v-show="sezione == 'files'">
       <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
 
       <b-form inline @submit.prevent="hashtagFilter">
@@ -45,15 +47,10 @@
       </b-form>
 
       <Files :files="filesUploader" :ruolo="ruolo" @download-file="download" />
-
     </div>
 
-    <div v-show="sezione=='modificaInfo'">
-      <ModInfo
-        :potere="ruolo"
-        :role="'consumer'"
-        @modInfo="modInfo_home"
-      />
+    <div v-show="sezione == 'modificaInfo'">
+      <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="modInfo_home" />
     </div>
 
     <Messages :msg_success="msg_success" :msg_error="msg_error" />
@@ -65,6 +62,9 @@ import Uploaders from "../components/lists/Uploaders";
 import Files from "../components/lists/Files";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
+
+import {messagesMixin,sectionsMixin} from "../utils/utils";
+
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
   "jwtToken"
@@ -78,6 +78,7 @@ export default {
     ModInfo,
     Messages,
   },
+  mixins:[messagesMixin,sectionsMixin],
   data() {
     return {
       ruolo: "consumer",
@@ -102,7 +103,7 @@ export default {
   },
   methods: {
     showFiles(usernameUploader) {
-      this.sezione="files";
+      this.sezione = "files";
       this.filesUploader = this.filesConsumer.filter(
         (file) => file.usernameUpl === usernameUploader
       );
@@ -114,22 +115,43 @@ export default {
         return true;
       });
     },
+    ordinamentoFile() {
+      this.filesConsumer.sort(function(a, b) {
+        if ((a.dataVisualizzazione === "") ^ (b.dataVisualizzazione === "")) {
+          if (a.dataVisualizzazione < b.dataVisualizzazione) return -1;
+          if (a.dataVisualizzazione > b.dataVisualizzazione) return 1;
+        }
+        if (a.dataCaricamento < b.dataCaricamento) return -1;
+        if (a.dataCaricamento > b.dataCaricamento) return 1;
+        return 0;
+      });
+      this.filesUploader = this.filesConsumer.filter(
+        (file) => file.usernameUpl === this.uploaderScelto.username
+      );
+    },
     download(id) {
       axios
         .get(`${process.env.VUE_APP_APIROOT}/files/download/${id}`)
         .then((res) => {
-          console.log(res);
-          let indexCurrent = this.filesConsumer.findIndex(
-            (file) => file.id === id
-          );
-          if (this.filesConsumer[indexCurrent].dataVisualizzazione === "")
-            this.filesConsumer[indexCurrent].dataVisualizzazione = res.data;
-          this.showMsg("Download effettuato");
+          if (!res.data.startsWith("ERR")) {
+            let indexCurrent = this.filesConsumer.findIndex(
+              (file) => file.id === id
+            );
+            if (this.filesConsumer[indexCurrent].dataVisualizzazione === "") {
+              this.filesConsumer[indexCurrent].dataVisualizzazione = res.data;
+              this.ordinamentoFile();
+            }
+            this.showMsg("Download effettuato");
+          } else {
+            this.$emit("upload", "ERR - " + res.data);
+            this.showMsg("ERR - " + res.data);
+          }
         })
         .catch((err) => {
           this.showMsg(err);
         });
     },
+
     hashtagFilter() {
       this.filesUploader = null;
       this.filesUploader = this.filesConsumer.filter(
@@ -138,7 +160,7 @@ export default {
           file.usernameUpl === this.uploaderScelto.username
       );
     },
-    
+
     modInfo_home(frase) {
       this.showMsg(frase);
     },
