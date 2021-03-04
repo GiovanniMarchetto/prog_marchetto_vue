@@ -44,13 +44,16 @@ h3{
 }
 
 form {
+  text-align: left;
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  max-width: 600px;
   margin: 0 auto;
 } 
 
-
+.btn{
+  margin-top:10px;
+}
 
 /*
 input {
