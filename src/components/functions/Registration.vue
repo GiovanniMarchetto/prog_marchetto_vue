@@ -7,8 +7,6 @@
 
       <UserInfo :required="true" @change-info="change_home" />
 
-      <!-- <Ruolo v-if="potere === 'administrator'" @change-info="change_home" /> -->
-
       <Logo
         v-if="role === 'uploader'"
         :required="true"
@@ -26,6 +24,8 @@ import Credenziali from "@/components/input/Credenziali";
 import UserInfo from "@/components/input/UserInfo";
 import Logo from "@/components/input/Logo";
 
+import { formUtente } from "@/utils/utils";
+
 import axios from "axios";
 if (localStorage.getItem("jwtToken") != null)
   axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
@@ -34,6 +34,7 @@ if (localStorage.getItem("jwtToken") != null)
 
 export default {
   name: "Registration",
+  mixins: [formUtente],
   props: ["potere", "role"],
   components: {
     Credenziali,
@@ -41,50 +42,9 @@ export default {
     Logo,
   },
   data() {
-    return {
-      username: "",
-      password: "",
-      name: "",
-      email: "",
-      logo: "",
-    };
+    return {};
   },
   methods: {
-    change_home(infos) {
-      const { nameProp, valueProp } = infos;
-      switch (nameProp) {
-        case "username":
-          this.username = valueProp;
-          break;
-        case "password":
-          this.password = valueProp;
-          break;
-        case "name":
-          this.name = valueProp;
-          break;
-        case "email":
-          this.email = valueProp;
-          break;
-        case "role":
-          this.role = valueProp;
-          break;
-        case "logo":
-          this.logo = valueProp;
-          break;
-        default:
-          console.log("switch concluso a vuoto");
-          break;
-      }
-    },
-
-    reset() {
-      this.username = "";
-      this.password = "";
-      this.name = "";
-      this.email = "";
-      this.logo = "";
-    },
-
     registration() {
       //TODO: non voglio avere troppa duplicazione di controllo
       //        però faccio comunque un controllo minimo?
@@ -104,16 +64,9 @@ export default {
             logo: this.logo,
           })
           .then((res) => {
-            console.log(res);
-            if (!res.data.startsWith("ERR")) {
-              this.$emit(
-                "registrazione",
-                "registrazione di " + this.username + " eseguita con successo"
-              );
-              this.reset();
-            } else {
-              this.$emit("registrazione", "ERR - " + res.data);
-            }
+            if (!res.data.startsWith("ERR")) this.reset();
+
+            this.$emit("registrazione", res.data);
           })
           .catch((err) => {
             this.$emit("registrazione", "ERR(esterno) - " + err);

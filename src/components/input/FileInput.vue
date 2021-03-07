@@ -18,7 +18,7 @@
       label-for="nameFile"
     >
       <b-form-input
-        @change.native="change"
+        @change.native="change_info"
         id="nameFile"
         type="text"
         name="nameFile"
@@ -29,7 +29,7 @@
 
     <b-form-group id="hashtag-group" label="Hashtag:" label-for="hashtag">
       <b-form-input
-        @change.native="change"
+        @change.native="change_info"
         id="hashtag"
         type="text"
         name="hashtag"
@@ -41,16 +41,12 @@
 </template>
 
 <script>
+import { changeInfoMixin } from "@/utils/utils";
+
 export default {
   name: "FileInput",
   props: ["file", "nameFile", "hashtag"],
-  // data() {
-  //   return {
-  //     : "",
-  //     : "",
-  //     : "",
-  //   };
-  // },
+  mixins: [changeInfoMixin],
   watch: {
     file: function() {
       const valoreFile = { nameProp: "file", valueProp: this.file };
@@ -76,10 +72,6 @@ export default {
       };
       this.$emit("change-info", valoreExt);
       //https://stackoverflow.com/questions/43708127/javascript-get-the-filename-and-extension-from-input-type-file
-    },
-    change(e) {
-      const valore = { nameProp: e.target.name, valueProp: e.target.value };
-      this.$emit("change-info", valore);
     },
   },
 };

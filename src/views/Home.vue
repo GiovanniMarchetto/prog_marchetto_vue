@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>Home page</h1>
-    <b-container v-show="sezione == ''">
+    <!-- <h1>Home page</h1> -->
+    <div v-show="sezione == ''">
       <Login @login="login_home" />
       <b-button @click="sezione = 'registration'"
         >Non hai ancora un account</b-button
       >
-    </b-container>
+    </div>
     <div v-show="sezione == 'registration'">
       <Registration
         :potere="'consumer'"
@@ -16,7 +16,7 @@
       <b-button @click="sezione = ''">Ho già un account!</b-button>
     </div>
 
-    <Messages :msg_success="msg_success" :msg_error="msg_error" />
+    <Messages :msg_success="msg_success" :msg_error="msg_error" :msg_warning="msg_warning"/>
   </div>
 </template>
 
@@ -56,9 +56,6 @@ export default {
     registration_home(frase) {
       this.showMsg(frase);
     },
-  },
-  created() {
-    console.log(process.env.VUE_APP_APIROOT);
   },
 };
 </script>

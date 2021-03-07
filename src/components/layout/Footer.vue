@@ -26,7 +26,7 @@ methods:{
 };
 </script>
 
-<style>
+<style scoped>
 footer {
   margin-top: 20px;
   padding: 10px;

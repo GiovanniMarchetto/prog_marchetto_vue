@@ -8,15 +8,21 @@
       ></b-img
     ></b-container>
 
-    <h1>Consumer page</h1>
-
-    <b-nav pills justified class="nav2">
-      <b-nav-item @click="showSezione('')">Lista uploaders</b-nav-item>
-      <b-nav-item @click="showSezione('files')">File di un uploader</b-nav-item>
-      <b-nav-item @click="showSezione('modificaInfo')"
-        >Modifica informazioni</b-nav-item
-      >
-    </b-nav>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand href="#">Consumer page</b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item @click="showSezione('')">Lista uploaders</b-nav-item>
+          <b-nav-item @click="showSezione('files')"
+            >File di un uploader</b-nav-item
+          >
+          <b-nav-item @click="showSezione('modificaInfo')"
+            >Modifica informazioni</b-nav-item
+          >
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
     <div v-show="sezione == ''">
       <h2>Lista Uploader con documenti</h2>
@@ -53,7 +59,11 @@
       <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="modInfo_home" />
     </div>
 
-    <Messages :msg_success="msg_success" :msg_error="msg_error" />
+    <Messages
+      :msg_success="msg_success"
+      :msg_error="msg_error"
+      :msg_warning="msg_warning"
+    />
   </div>
 </template>
 
@@ -63,7 +73,7 @@ import Files from "../components/lists/Files";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
 
-import {messagesMixin,sectionsMixin} from "../utils/utils";
+import { messagesMixin, sectionsMixin } from "../utils/utils";
 
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
@@ -78,7 +88,7 @@ export default {
     ModInfo,
     Messages,
   },
-  mixins:[messagesMixin,sectionsMixin],
+  mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
       ruolo: "consumer",
@@ -90,8 +100,8 @@ export default {
       imgProps: {
         left: true,
         rounded: "circle",
-        width: 400,
-        height: 400,
+        width: 150,
+        height: 150,
       },
     };
   },
@@ -143,8 +153,7 @@ export default {
             }
             this.showMsg("Download effettuato");
           } else {
-            this.$emit("upload", "ERR - " + res.data);
-            this.showMsg("ERR - " + res.data);
+            this.showMsg(res.data);
           }
         })
         .catch((err) => {
@@ -184,8 +193,6 @@ export default {
           this.showFiles(this.uploaderScelto.username);
       })
       .catch((err) => this.showMsg(err));
-
-    console.log(process.env.VUE_APP_APIROOT);
   },
 };
 </script>

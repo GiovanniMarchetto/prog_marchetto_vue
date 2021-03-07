@@ -1,4 +1,5 @@
 <template>
+<b-container>
   <b-form-group
   id="logo-group" label="Logo:" label-for="logo">
     <b-form-file
@@ -9,16 +10,17 @@
       accept="image/*"
     />
 
-    <figure v-show="logo != ''">
+    <figure v-show="logo">
       <b-img
+      id="anteprima-logo"
+      center
         rounded
         :src="`${logo}`"
         alt="Anteprima Logo"
-        style="width:300px;height:300px;"
       />
-      <figcaption>Anteprima logo</figcaption>
     </figure>
   </b-form-group>
+  </b-container>
 </template>
 
 <script>
@@ -56,12 +58,12 @@ export default {
 </script>
 
 <style>
-figure {
-  max-width: 100%;
-}
-img {
+#anteprima-logo {
+  margin: 10px;
   background-color: black;
-  width: 10em;
-  height: 10em;
+  max-height: 300px;
+  max-width: 300px;
+  /* width: 10em;
+  height: 10em; */
 }
 </style>

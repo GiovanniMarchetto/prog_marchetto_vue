@@ -1,82 +1,79 @@
 <template>
   <div>
-    <h1>Ciao amministratore!</h1>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand href="#">Administrator page</b-navbar-brand>
 
-    <!-- <div v-if="msg_error" class="alert">{{ msg_error }}</div> -->
-    <!-- <br /> -->
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-    <h2 id="pan">Pannello di controllo</h2>
-    <!-- <div class="nav2">
-        <b-button @click="showSezione('registration')" variant="outline-dark"
-          >Crea Attore</b-button
-        >
-        <button @click="showSezione('modInfo')">
-          Modifica Attore
-        </button>
-        <button @click="showSezione('')">Nascondi opzioni</button>
-      </div> -->
-    <b-nav pills justified class="nav2">
-      <b-nav-item @click="showSezione('')">Resoconto</b-nav-item>
-      <b-nav-item-dropdown text="Crea Attore">
-        <b-dropdown-item
-          @click="
-            showSezione('registration'), (roleRegistrazione = 'administrator')
-          "
-          >Administrator</b-dropdown-item
-        >
-        <b-dropdown-item
-          @click="showSezione('registration'), (roleRegistrazione = 'uploader')"
-          >Uploader</b-dropdown-item
-        >
-      </b-nav-item-dropdown>
-      <b-nav-item-dropdown text="Modifica Attore">
-        <b-dropdown-item
-          @click="showSezione('modInfo'), (roleRegistrazione = 'administrator')"
-          >Administrator</b-dropdown-item
-        >
-        <b-dropdown-item
-          @click="showSezione('modInfo'), (roleRegistrazione = 'uploader')"
-          >Uploader</b-dropdown-item
-        >
-      </b-nav-item-dropdown>
-      <b-nav-item @click="showSezione('deleteActor')"
-        >Eliminazione Attore</b-nav-item
-      >
-    </b-nav>
+      <b-collapse id="nav-collapse" is-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item @click="showSezione('')">Resoconto</b-nav-item>
+          <b-nav-item-dropdown text="Crea Attore">
+            <b-dropdown-item
+              @click="
+                showSezione('registration'),
+                  (roleRegistrazione = 'administrator')
+              "
+              >Administrator</b-dropdown-item
+            >
+            <b-dropdown-item
+              @click="
+                showSezione('registration'), (roleRegistrazione = 'uploader')
+              "
+              >Uploader</b-dropdown-item
+            >
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown text="Modifica Attore">
+            <b-dropdown-item
+              @click="
+                showSezione('modInfo'), (roleRegistrazione = 'administrator')
+              "
+              >Administrator</b-dropdown-item
+            >
+            <b-dropdown-item
+              @click="showSezione('modInfo'), (roleRegistrazione = 'uploader')"
+              >Uploader</b-dropdown-item
+            >
+          </b-nav-item-dropdown>
+          <b-nav-item @click="showSezione('deleteActor')"
+            >Eliminazione Attore</b-nav-item
+          >
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
     <div v-show="sezione == ''">
       <h2>Resoconto uploader</h2>
-      <b-form inline @submit.prevent="dataFilter">
-        <b-form-input
-          name="dateFrom"
-          type="date"
-          v-model="dateFrom"
-          placeholder="From"
-          required
-        ></b-form-input>
-        <b-form-input
-          name="dateTo"
-          type="date"
-          v-model="dateTo"
-          placeholder="To"
-          required
-        ></b-form-input>
-        <b-button type="submit" variant="secondary">Resoconto</b-button>
-      </b-form>
 
       <h3>
-        Periodo selezionato(anno-mese-giorno): dal {{ dateFromSelected }} al
+        Periodo selezionato (anno-mese-giorno): dal {{ dateFromSelected }} al
         {{ dateToSelected }}
       </h3>
       <p>
         I file caricati il giorno d'inizio del periodo sono inclusi, quelli
         caricati il giorno di conclusione del periodo sono esclusi.
       </p>
+      <b-form
+        inline
+        @submit.prevent="dataFilter"
+        @reset.prevent="datesForLastMonth"
+        style="margin-bottom:10px"
+      >
+        <DatesResume
+          :dateFrom="dateFrom"
+          :dateTo="dateTo"
+          @change-info="change_home"
+        />
+        <b-button class="btn-inline" type="submit" variant="outline-primary">Resoconto</b-button>
+        <b-button class="btn-inline" type="reset" variant="outline-danger">Reset</b-button>
+      </b-form>
+      
       <Resume :resume="resume" />
-      <!-- <Resume :resume="resume" @del-upl="deleteUploader" /> -->
     </div>
 
-    <div v-if="sezione == 'registration'">
+    <div v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
         :role="roleRegistrazione"
@@ -84,7 +81,7 @@
       />
     </div>
 
-    <div v-else-if="sezione == 'modInfo'">
+    <div v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
         :role="roleRegistrazione"
@@ -92,12 +89,11 @@
       />
     </div>
 
-    <div v-else-if="sezione == 'deleteActor'">
+    <div v-show="sezione == 'deleteActor'">
       <DeleteActor :potere="ruolo" @deleteActor="deleteActor_home" />
     </div>
 
-    <br />
-    <Messages :msg_success="msg_success" :msg_error="msg_error" />
+    <Messages :msg_success="msg_success" :msg_error="msg_error" :msg_warning="msg_warning" />
   </div>
 </template>
 
@@ -107,8 +103,9 @@ import ModInfo from "../components/functions/ModInfo";
 import DeleteActor from "../components/functions/DeleteActor";
 import Resume from "../components/lists/Resume";
 import Messages from "../components/layout/Messages";
+import DatesResume from "../components/input/DatesResume";
 
-import {messagesMixin,sectionsMixin} from "../utils/utils";
+import { messagesMixin, sectionsMixin } from "../utils/utils";
 
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
@@ -122,9 +119,10 @@ export default {
     ModInfo,
     DeleteActor,
     Resume,
-    Messages
+    DatesResume,
+    Messages,
   },
-  mixins:[messagesMixin,sectionsMixin],
+  mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
       ruolo: "administrator",
@@ -137,6 +135,19 @@ export default {
     };
   },
   methods: {
+    change_home(infos) {
+      const { nameProp, valueProp } = infos;
+      switch (nameProp) {
+        case "dateFrom":
+          this.dateFrom = valueProp;
+          break;
+        case "dateTo":
+          this.dateTo = valueProp;
+          break;
+        default:
+          break;
+      }
+    },
     registration_home(frase) {
       this.showMsg(frase);
     },
@@ -159,64 +170,35 @@ export default {
           this.resume = res.data;
           this.dateFromSelected = this.dateFrom;
           this.dateToSelected = this.dateTo;
+          this.showMsg("Resoconto fornito");
         })
         .catch((err) => (this.msg_error = err));
     },
+    datesForLastMonth() {
+      const today = new Date();
+
+      if (today.getMonth() == 0) {
+        this.dateFrom = today.getFullYear() - 1 + "-12-01";
+      } else if (today.getMonth() > 9) {
+        this.dateFrom =
+          today.getFullYear() + "-" + today.getMonth() + "-" + "01";
+      } else {
+        this.dateFrom =
+          today.getFullYear() + "-0" + today.getMonth() + "-" + "01";
+      }
+
+      if (today.getMonth() < 9) {
+        this.dateTo =
+          today.getFullYear() + "-0" + (today.getMonth() + 1) + "-" + "01";
+      } else {
+        this.dateTo =
+          today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + "01";
+      }
+    },
   },
   created() {
-    console.log(process.env.VUE_APP_APIROOT);
-
-    const today = new Date();
-
-    if (today.getMonth() == 0) {
-      this.dateFrom = today.getFullYear() - 1 + "-12-01";
-    } else if (today.getMonth() > 9) {
-      this.dateFrom = today.getFullYear() + "-" + today.getMonth() + "-" + "01";
-    } else {
-      this.dateFrom =
-        today.getFullYear() + "-0" + today.getMonth() + "-" + "01";
-    }
-
-    if (today.getMonth() < 9) {
-      this.dateTo =
-        today.getFullYear() + "-0" + (today.getMonth() + 1) + "-" + "01";
-    } else {
-      this.dateTo =
-        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + "01";
-    }
-
-    axios
-      .post(`${process.env.VUE_APP_APIROOT}/list/resumeForAdmin`, {
-        from: this.dateFrom,
-        to: this.dateTo,
-      })
-      .then((res) => {
-        this.resume = res.data;
-        this.dateFromSelected = this.dateFrom;
-        this.dateToSelected = this.dateTo;
-      })
-      .catch((err) => (this.msg_error = err));
+    this.datesForLastMonth();
+    this.dataFilter();
   },
 };
 </script>
-
-<style scoped>
-#pan {
-  padding: 10px;
-  color: aliceblue;
-  background: #2c3e50;
-}
-/*
-.buu {
-  padding: 20px;
-  border: transparent;
-  font-weight: bold;
-  color: aliceblue;
-  background-color: #2c3e50;
-}
-
-.buu:hover {
-  background-color: aquamarine;
-  color: #2c3e50;
-} */
-</style>

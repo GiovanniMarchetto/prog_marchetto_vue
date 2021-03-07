@@ -9,19 +9,21 @@
         @change-info="change_home"
       />
 
-      <b-form-group>
-        <legend>Dati Consumer</legend>
-        <label for="usernameCons">Username:</label>
-        <b-form-input
-          id="usernameCons"
-          type="text"
-          name="usernameCons"
-          v-model="usernameCons"
-          required
-          placeholder="username consumer"
-        />
-        <UserInfo @change-info="change_home" />
-      </b-form-group>
+      <legend>Dati Consumer</legend>
+      <b-container>
+        <b-form-group
+          id="usernameCons-group"
+          label="Username consumer:"
+          label-for="usernameCons"
+        >
+          <b-form-input
+            id="usernameCons"
+            type="text"
+            name="usernameCons"
+            v-model="usernameCons"
+            placeholder="username consume"/></b-form-group
+      ></b-container>
+      <UserInfo @change-info="change_home" />
 
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
@@ -106,12 +108,9 @@ export default {
           emailCons: this.emailCons,
         })
         .then((res) => {
-          if (!res.data.startsWith("ERR")) {
-            this.$emit("upload", res.data);
-            this.reset();
-          } else {
-            this.$emit("upload", "ERR - " + res.data);
-          }
+          if (!res.data.startsWith("ERR")) this.reset();
+
+          this.$emit("upload", res.data);
         })
         .catch((err) => {
           this.$emit("upload", "ERR(esterno) - " + err);

@@ -3,6 +3,7 @@
     <b-table
       striped
       head-variant="dark"
+      table-variant="secondary"
       sticky-header="600px"
       responsive
       :items="consumers"

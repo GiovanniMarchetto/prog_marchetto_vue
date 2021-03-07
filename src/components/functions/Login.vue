@@ -6,7 +6,6 @@
       <Credenziali :required="true" @change-info="change_home" />
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
-
   </div>
 </template>
 
@@ -20,8 +19,9 @@ export default {
   },
   data() {
     return {
+      // TODO POSSO METTERE IL MIXIN ANCHE SE HA COSE IN PIÙ
       username: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
@@ -36,13 +36,8 @@ export default {
           if (!res.data.startsWith("ERR")) {
             localStorage.setItem("jwtToken", res.data);
             localStorage.setItem("nomeUtente", this.username);
-            this.$emit(
-              "login",
-              "login di " + this.username + " eseguita con successo"
-            );
-          } else {
-            this.$emit("login", "ERR - " + res.data);
           }
+          this.$emit("login", res.data);
         })
         .catch((err) => {
           this.$emit("login", "ERR(esterno) - " + err);

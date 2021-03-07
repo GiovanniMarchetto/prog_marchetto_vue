@@ -5,7 +5,7 @@
     <b-form-group id="username-group" label="Username:" label-for="username">
       <!-- description="We'll never share your email with anyone else." -->
       <b-form-input
-        @change.native="change"
+        @change.native="change_info"
         id="username"
         type="text"
         name="username"
@@ -16,7 +16,7 @@
 
     <b-form-group id="password-group" label="Password:" label-for="password">
       <b-form-input
-        @change.native="change"
+        @change.native="change_info"
         id="password"
         type="password"
         name="password"
@@ -44,9 +44,12 @@
 </template>
 
 <script>
+import { changeInfoMixin } from "@/utils/utils";
+
 export default {
   name: "Credenziali",
   props: ["required"],
+  mixins: [changeInfoMixin],
   // computed: {
   //   // dovrei aggiungere l'attributo :state="nameState" e alle props:"ruolo"
   //   nameState() {
@@ -66,12 +69,6 @@ export default {
       username: "",
       password: "",
     };
-  },
-  methods: {
-    change(e) {
-      const valore = { nameProp: e.target.name, valueProp: e.target.value };
-      this.$emit("change-info", valore);
-    },
   },
   mounted() {
     if (this.required) {

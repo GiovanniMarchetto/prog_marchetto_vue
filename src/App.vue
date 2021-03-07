@@ -1,20 +1,35 @@
 <template>
   <div id="app">
-    <Header />
+    <header>
+      <!-- <img
+        id="logo-home"
+        src="@/assets/logo.png"
+        style="float: left; margin: 15px;"
+        alt="Home"
+      /> -->
+      
+      <Logout v-show="!this.$route.path.endsWith('/')" />
+      <h1>Progetto Marchetto</h1>
+      
+    </header>
+
+    <!-- <Header /> -->
     <router-view />
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 
 <script>
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
+// import Header from "./components/layout/Header";
+// import Footer from "./components/layout/Footer";
+import Logout from "@/components/functions/Logout";
 
 export default {
   name: "App",
   components: {
-    Header,
-    Footer,
+    Logout,
+    // Header,
+    // Footer,
   },
 };
 </script>
@@ -25,34 +40,52 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+
+  /* color: #2c3e50; */
   /*margin-top: 60px;*/
 }
 
+/* .mine-colors {
+    color: aliceblue;
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+} */
+
 h1 {
+  text-align: center;
+
   padding: 10px;
-  color: aliceblue;
-  background: #2c3e50;
+  color: #fff;
+  background: #343a40;
+  /* color: aliceblue;
+  background: #2c3e50; */
 }
-h2{
+h2 {
   padding: 10px;
-  color: aliceblue;
-  background: #E66648;
+  color: #fff;
+  background: #e66648;
 }
-h3{
+h3 {
   padding: 10px;
 }
 
 form {
+  padding: 10px;
+  border: 1px solid #2c3e50;
   text-align: left;
+  background-color: aliceblue;
+
   display: flex;
   flex-direction: column;
   max-width: 600px;
   margin: 0 auto;
-} 
+}
 
-.btn{
-  margin-top:10px;
+.btn {
+  margin-top: 10px;
+}
+.btn-inline {
+  margin-top: 0px;
 }
 
 /*
@@ -76,19 +109,6 @@ input[type="submit"]:hover {
   border-radius: 20px;
   color: aliceblue;
 } */
-/*
-.nav2{
-   background-color: rgb(154, 212, 214);
-}  */
-.nav2 :only-of-type {
-  color: aliceblue;
-  background-color: #2c3e50;
-  /* border: 1px solid aliceblue; */
-}
-
-/* .nav2 :hover {
-  background-color: aquamarine;
-} */
 
 /* @media screen and (max-width: 400px) {
   .table-stacked {
@@ -96,12 +116,7 @@ input[type="submit"]:hover {
   }
 } */
 
-
-
-
-
-
-/*CONSUMER PAGE*/ 
+/*CONSUMER PAGE*/
 /* .nav2 {
   background-color: cadetblue;
 }

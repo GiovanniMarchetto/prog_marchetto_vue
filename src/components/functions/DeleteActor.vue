@@ -3,7 +3,6 @@
     <h2>Eliminazione attore</h2>
     <form @submit.prevent="deleteActor">
       <b-form-input
-        @change="change"
         id="username"
         type="text"
         name="username"
@@ -30,7 +29,7 @@ export default {
   props: ["potere"],
   data() {
     return {
-      username: ""
+      username: "",
     };
   },
   methods: {
@@ -38,17 +37,8 @@ export default {
       axios
         .delete(`${process.env.VUE_APP_APIROOT}/attori/delete/${this.username}`)
         .then((res) => {
-          console.log(res);
-          if (!res.data.startsWith("ERR")) {
-            this.$emit(
-              "deleteActor",
-              "eliminazione attore " +
-                this.username +
-                " eseguita con successo"
-            );
-          } else {
-            this.$emit("deleteActor", "ERR - " + res.data);
-          }
+          if (!res.data.startsWith("ERR")) this.username = "";
+          this.$emit("deleteActor", res.data);
         })
         .catch((err) => {
           this.$emit("deleteActor", "ERR(esterno) - " + err);
