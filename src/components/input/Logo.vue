@@ -26,12 +26,7 @@
 <script>
 export default {
   name: "Logo",
-  props: ["required"],
-  data() {
-    return {
-      logo: "",
-    };
-  },
+  props: ["required","logo"],
   watch: {
     logo: function(val) {
       const valore = { nameProp: "logo", valueProp: val };

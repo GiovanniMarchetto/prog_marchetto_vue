@@ -23,7 +23,12 @@
             v-model="usernameCons"
             placeholder="username consume"/></b-form-group
       ></b-container>
-      <UserInfo @change-info="change_home" />
+      <UserInfo
+        :required="false"
+        :name="nameCons"
+        :email="emailCons"
+        @change-info="change_home"
+      />
       <!-- devo passare i valori all'input -->
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>

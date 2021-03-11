@@ -3,9 +3,22 @@
     <h2>Login Page</h2>
 
     <b-form @submit.prevent="login">
-      <Credenziali :required="true" @change-info="change_home" />
+      <Credenziali
+        :required="true"
+        :username="username"
+        :password="password"
+        @change-info="change_home"
+      />
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
+
+<div v-show="attesa==true">
+  <b-button block variant="light" disabled>
+    <b-spinner small ></b-spinner>
+    Loading...
+  </b-button>
+</div>
+      
   </div>
 </template>
 
@@ -22,10 +35,12 @@ export default {
       // TODO POSSO METTERE IL MIXIN ANCHE SE HA COSE IN PIÙ
       username: "",
       password: "",
+      attesa: false
     };
   },
   methods: {
     login() {
+      this.attesa=true;
       axios
         .post(`${process.env.VUE_APP_APIROOT}/login`, {
           username: this.username,
@@ -37,10 +52,10 @@ export default {
             localStorage.setItem("jwtToken", res.data);
             localStorage.setItem("nomeUtente", this.username);
           }
-          this.$emit("login", res.data);
+          this.$emit("login", res.data);this.attesa=false;
         })
         .catch((err) => {
-          this.$emit("login", "ERR(esterno) - " + err);
+          this.$emit("login", "ERR(esterno) - " + err);this.attesa=false;
         });
     },
     change_home(infos) {

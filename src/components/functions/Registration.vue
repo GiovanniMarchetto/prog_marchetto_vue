@@ -3,13 +3,19 @@
     <h2>Registration</h2>
 
     <b-form @submit.prevent="registration" @reset="reset">
-      <Credenziali :required="true" @change-info="change_home" />
+      <Credenziali
+        :required="true"
+        :username="username"
+        :password="password"
+        @change-info="change_home"
+      />
 
-      <UserInfo :required="true" @change-info="change_home" />
+      <UserInfo :required="true" :name="name" :email="email"  @change-info="change_home" />
 
       <Logo
         v-if="role === 'uploader'"
         :required="true"
+        :logo="logo"
         @change-info="change_home"
       />
 

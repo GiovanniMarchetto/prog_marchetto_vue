@@ -48,28 +48,8 @@ import { changeInfoMixin } from "@/utils/utils";
 
 export default {
   name: "Credenziali",
-  props: ["required"],
+  props: ["required","username","password"],
   mixins: [changeInfoMixin],
-  // computed: {
-  //   // dovrei aggiungere l'attributo :state="nameState" e alle props:"ruolo"
-  //   nameState() {
-  //     if (this.ruolo == "consumer")
-  //       return this.username.length === 16 ? true : false;
-  //     else if (this.ruolo == "uploader")
-  //       return this.username.length === 4 ? true : false;
-  //     else return this.username.length > 3 ? true : false;
-  //     // {
-  //     //   const RegExAdministrator = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
-  //     //   return RegExAdministrator.test(this.username) ? true : false;
-  //     // }
-  //   },
-  // },
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
   mounted() {
     if (this.required) {
       document.getElementById("username").setAttribute("required", "true");

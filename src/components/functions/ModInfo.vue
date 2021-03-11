@@ -3,11 +3,22 @@
     <h2>Modifica informazioni</h2>
 
     <form @submit.prevent="modInfo" @reset="reset">
-      <Credenziali v-show="potere != 'consumer'" @change-info="change_home" />
+      <Credenziali
+        v-show="potere != 'consumer'"
+        :required="false"
+        :username="username"
+        :password="password"
+        @change-info="change_home"
+      />
 
-      <UserInfo @change-info="change_home" />
+      <UserInfo :required="false" :name="name" :email="email" @change-info="change_home" />
 
-      <Logo v-if="role === 'uploader'" @change-info="change_home" />
+      <Logo
+        v-if="role === 'uploader'"
+        :required="false"
+        :logo="logo"
+        @change-info="change_home"
+      />
 
       <b-button type="submit" variant="success">Modifica informazioni</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>

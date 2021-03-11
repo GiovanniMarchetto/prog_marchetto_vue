@@ -31,14 +31,8 @@ import { changeInfoMixin } from "@/utils/utils";
 
 export default {
   name: "UserInfo",
-  props: ["required"],
+  props: ["required","name","email"],
   mixins: [changeInfoMixin],
-  data() {
-    return {
-      name: "",
-      email: "",
-    };
-  },
   mounted() {
     if (this.required) {
       document.getElementById("name").setAttribute("required", "true");
