@@ -24,7 +24,7 @@
             placeholder="username consume"/></b-form-group
       ></b-container>
       <UserInfo @change-info="change_home" />
-
+      <!-- devo passare i valori all'input -->
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -108,12 +108,35 @@ export default {
           emailCons: this.emailCons,
         })
         .then((res) => {
-          if (!res.data.startsWith("ERR")) this.reset();
+          if (!res.data.startsWith("ERR")) {
+            //TODO: modificare se uso risposte
+            const consumer = {
+              username: this.usernameCons,
+              name: this.nameCons,
+              email: this.emailCons,
+              logo: "",
+            };
+            this.$emit("upload_consumer", consumer);
 
+            const dataCorrente = new Date();
+            const fileCaricato = {
+              id: "TODO", //TODO: mi devo far tornare l'id del file!!!!
+              usernameUpl: localStorage.getItem("nomeUtente"),
+              usernameCons: this.usernameCons,
+              name: this.nameFile,
+              dataCaricamento: dataCorrente.toISOString().substring(0, 10),
+              dataVisualizzazione: "",
+              indirizzoIP: "",
+              hashtag: this.hashtag,
+            };
+            this.$emit("upload_file", fileCaricato);
+
+            this.reset();
+          }
           this.$emit("upload", res.data);
         })
         .catch((err) => {
-          this.$emit("upload", "ERR(esterno) - " + err);
+          this.$emit("upload", "ERR - " + err);
         });
     },
   },

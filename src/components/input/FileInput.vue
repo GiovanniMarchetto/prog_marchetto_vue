@@ -24,6 +24,7 @@
         name="nameFile"
         v-model="nameFile"
         placeholder="name of file"
+        required
       />
     </b-form-group>
 

@@ -143,18 +143,27 @@ export default {
       axios
         .get(`${process.env.VUE_APP_APIROOT}/files/download/${id}`)
         .then((res) => {
-          if (!res.data.startsWith("ERR")) {
-            let indexCurrent = this.filesConsumer.findIndex(
-              (file) => file.id === id
-            );
-            if (this.filesConsumer[indexCurrent].dataVisualizzazione === "") {
-              this.filesConsumer[indexCurrent].dataVisualizzazione = res.data;
-              this.ordinamentoFile();
-            }
-            this.showMsg("Download effettuato");
-          } else {
-            this.showMsg(res.data);
+          let indexCurrent = this.filesConsumer.findIndex(
+            (file) => file.id === id
+          );
+
+          const link = document.createElement("a");
+          link.style.display = "none";
+          link.download = this.filesConsumer[indexCurrent].name;
+          var blob = new Blob([res.data], { type: "octet/stream" });
+          link.href = window.URL.createObjectURL(blob);
+          link.click();
+
+          if (this.filesConsumer[indexCurrent].dataVisualizzazione === "") {
+            let dataCorrente = new Date();
+            let dataScritta =
+              dataCorrente.toISOString().substring(0, 10) +
+              " " +
+              dataCorrente.toLocaleTimeString();
+            this.filesConsumer[indexCurrent].dataVisualizzazione = dataScritta;
+            this.ordinamentoFile();
           }
+          this.showMsg("Download effettuato");
         })
         .catch((err) => {
           this.showMsg(err);

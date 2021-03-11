@@ -41,6 +41,8 @@
     </div>
     <div v-show="sezione == 'files'">
       <h2>Lista Files di {{ consumerScelto }}</h2>
+      <!-- TODO bottone provvisorio -->
+      <b-button @click="showSezione('')">Lista file</b-button>
       <Files :files="filesConsumer" :ruolo="ruolo" @del-file="deleteAct" />
     </div>
 
@@ -59,11 +61,12 @@
       />
     </div>
     <div v-show="sezione == 'upload'">
-      <Upload @upload="upload_home" />
+      <Upload
+        @upload_consumer="upload_consumer_home"
+        @upload_file="upload_file_home"
+        @upload="upload_home"
+      />
     </div>
-    <!-- <div v-show="sezione == 'deleteActor'">
-      <DeleteActor :potere="ruolo" @deleteActor="deleteActor_home" />
-    </div> -->
 
     <Messages
       :msg_success="msg_success"
@@ -79,7 +82,6 @@ import Files from "../components/lists/Files";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
-// import DeleteActor from "../components/functions/DeleteActor";
 import Messages from "../components/layout/Messages";
 
 import { messagesMixin, sectionsMixin } from "../utils/utils";
@@ -97,7 +99,6 @@ export default {
     Upload,
     Registration,
     ModInfo,
-    // DeleteActor,
     Messages,
   },
   mixins: [messagesMixin, sectionsMixin],
@@ -115,6 +116,7 @@ export default {
   // },
   methods: {
     showFiles(consUsername) {
+      //TODO: considera il fatto di dividere il fatto di mostrare i file dal fatto di mandarlo nella sezione dei file
       this.filesConsumer = null;
       this.filesConsumer = this.filesUploader.filter(
         (file) => file.usernameCons === consUsername
@@ -154,8 +156,21 @@ export default {
     modInfo_home(frase) {
       this.showMsg(frase);
     },
+    upload_consumer_home(nuovoConsumer) {
+      //TODO: controlla se funziona
+      const { usernameCons } = nuovoConsumer;
+      if (this.consumers.findIndex((el) => el.username === usernameCons) === -1)
+        this.consumers.push(nuovoConsumer);
+    },
+    upload_file_home(fileCaricato) {
+      this.filesUploader.push(fileCaricato);
+      this.showFiles(this.consumerScelto);
+      this.sezione = "upload"; //TODO: controlla se funziona e quanto lag procura questa ricarica
+    },
     upload_home(frase) {
-      this.showMsg(frase); //TODO se è ok devo mandare un messaggio che bisogna riaggiornare la pagina per vedere i file appena caricato
+      this.showMsg(frase);
+      //TODO se è ok devo mandare un messaggio che bisogna riaggiornare la pagina per vedere i file appena caricato
+      //TODO fare il confronto tra i consumer in lista, se non presente lo si aggiunge
     },
     // deleteActor_home(frase) {
     //   this.showMsg(frase);
@@ -167,7 +182,6 @@ export default {
       .then((res) => (this.consumers = res.data))
       .catch((err) => this.showMsg(err));
 
-    //uso la sessione in corso per reperire subito TUTTI i files che sono stati elargiti dall'uploader che è loggato
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/filesUploader`)
       .then((res) => (this.filesUploader = res.data))

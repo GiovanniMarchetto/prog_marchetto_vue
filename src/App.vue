@@ -9,7 +9,7 @@
       /> -->
       
       <Logout v-show="!this.$route.path.endsWith('/')" />
-      <h1>Progetto Marchetto</h1>
+      <h1 style="margin-bottom:0">Progetto Marchetto</h1>
       
     </header>
 

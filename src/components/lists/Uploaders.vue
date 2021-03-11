@@ -21,7 +21,7 @@
         {{ row.detailsShowing ? "Hide" : "Show" }} Details
       </b-button>
       <b-button variant="info" @click="$emit('upl-files', row.item.username)"
-        >Mostra File caricati da questo uploader</b-button
+        >Mostra File</b-button
       >
     </template>
 

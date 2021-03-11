@@ -37,7 +37,10 @@ export default {
       axios
         .delete(`${process.env.VUE_APP_APIROOT}/attori/delete/${this.username}`)
         .then((res) => {
-          if (!res.data.startsWith("ERR")) this.username = "";
+          if (!res.data.startsWith("ERR")) {
+            this.$emit("deleteActor_uploader", this.username);
+            this.username = "";
+          }
           this.$emit("deleteActor", res.data);
         })
         .catch((err) => {

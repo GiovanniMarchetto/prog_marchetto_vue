@@ -6,7 +6,6 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item @click="showSezione('')">Resoconto</b-nav-item>
@@ -66,10 +65,14 @@
           :dateTo="dateTo"
           @change-info="change_home"
         />
-        <b-button class="btn-inline" type="submit" variant="outline-primary">Resoconto</b-button>
-        <b-button class="btn-inline" type="reset" variant="outline-danger">Reset</b-button>
+        <b-button class="btn-inline" type="submit" variant="outline-primary"
+          >Resoconto</b-button
+        >
+        <b-button class="btn-inline" type="reset" variant="outline-danger"
+          >Reset</b-button
+        >
       </b-form>
-      
+
       <Resume :resume="resume" />
     </div>
 
@@ -90,10 +93,18 @@
     </div>
 
     <div v-show="sezione == 'deleteActor'">
-      <DeleteActor :potere="ruolo" @deleteActor="deleteActor_home" />
+      <DeleteActor
+        :potere="ruolo"
+        @deleteActor_uploader="deleteActor_uploader_home"
+        @deleteActor="deleteActor_home"
+      />
     </div>
 
-    <Messages :msg_success="msg_success" :msg_error="msg_error" :msg_warning="msg_warning" />
+    <Messages
+      :msg_success="msg_success"
+      :msg_error="msg_error"
+      :msg_warning="msg_warning"
+    />
   </div>
 </template>
 
@@ -156,6 +167,10 @@ export default {
       this.showMsg(frase);
     },
 
+    deleteActor_uploader_home(usernameUpl) {
+      this.resume = this.resume.filter((el) => el.uploader !== usernameUpl);
+    },
+
     deleteActor_home(frase) {
       this.showMsg(frase);
     },
@@ -176,7 +191,12 @@ export default {
     },
     datesForLastMonth() {
       const today = new Date();
-
+      //TODO: così mi sembra più semplice
+      // let dataCorrente = new Date();
+      //             let dataScritta =
+      //               dataCorrente.toISOString().substring(0, 10) +
+      //               " " +
+      //               dataCorrente.toLocaleTimeString();
       if (today.getMonth() == 0) {
         this.dateFrom = today.getFullYear() - 1 + "-12-01";
       } else if (today.getMonth() > 9) {
