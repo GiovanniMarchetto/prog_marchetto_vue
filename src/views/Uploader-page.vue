@@ -26,24 +26,30 @@
           <b-nav-item @click="showSezione('upload')"
             >Carica nuovo file</b-nav-item
           >
-          <!-- <b-nav-item @click="showSezione('deleteActor')">Eliminazione Consumer</b-nav-item> -->
+          <b-nav-item @click="showSezione('deleteActor')"
+            >Eliminazione Consumer</b-nav-item
+          >
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
 
     <div v-show="sezione == ''">
       <h2>Lista Consumer</h2>
-      <Consumers
-        v-bind:consumers="consumers"
+      <Table
+        :items="consumers"
+        :fields="fieldsListConsumers"
+        :details="'listConsumers'"
         @cons-files="showFiles"
-        @del-cons="deleteAct"
       />
     </div>
     <div v-show="sezione == 'files'">
       <h2>Lista Files di {{ consumerScelto }}</h2>
-      <!-- TODO bottone provvisorio -->
-      <b-button @click="showSezione('')">Lista file</b-button>
-      <Files :files="filesConsumer" :ruolo="ruolo" @del-file="deleteAct" />
+      <Table
+        :items="filesConsumer"
+        :fields="fieldsListFileConsumer"
+        :details="'listFilesConsumer'"
+        @del-file="deleteAct"
+      />
     </div>
 
     <div v-show="sezione == 'registration'">
@@ -67,6 +73,13 @@
         @upload="upload_home"
       />
     </div>
+    <div v-show="sezione == 'deleteActor'">
+      <DeleteActor
+        :potere="ruolo"
+        @delete_username="delete_username_home"
+        @deleteActor="deleteActor_home"
+      />
+    </div>
 
     <Messages
       :msg_success="msg_success"
@@ -77,12 +90,13 @@
 </template>
 
 <script>
-import Consumers from "../components/lists/Consumers";
-import Files from "../components/lists/Files";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
+import DeleteActor from "../components/functions/DeleteActor";
 import Messages from "../components/layout/Messages";
+
+import Table from "@/components/layout/Table";
 
 import { messagesMixin, sectionsMixin } from "../utils/utils";
 
@@ -94,11 +108,11 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 export default {
   name: "Uploader-page",
   components: {
-    Consumers,
-    Files,
+    Table,
     Upload,
     Registration,
     ModInfo,
+    DeleteActor,
     Messages,
   },
   mixins: [messagesMixin, sectionsMixin],
@@ -110,6 +124,16 @@ export default {
       consumers: [],
       filesUploader: [],
       filesConsumer: [],
+      fieldsListConsumers: ["username", "actions"],
+      fieldsListFileConsumer: [
+        "id",
+        "name",
+        { key: "dataCaricamento", sortable: true },
+        { key: "dataVisualizzazione", sortable: true },
+        "indirizzoIP",
+        "hashtag",
+        "actions",
+      ],
     };
   },
   // watch: {
@@ -172,9 +196,15 @@ export default {
       //TODO se è ok devo mandare un messaggio che bisogna riaggiornare la pagina per vedere i file appena caricato
       //TODO fare il confronto tra i consumer in lista, se non presente lo si aggiunge
     },
-    // deleteActor_home(frase) {
-    //   this.showMsg(frase);
-    // },
+    delete_username_home(usernameDel) {
+      this.consumers = this.consumers.filter(
+        (cons) => cons.username !== usernameDel
+      );
+    },
+
+    deleteActor_home(frase) {
+      this.showMsg(frase);
+    },
   },
   created() {
     axios

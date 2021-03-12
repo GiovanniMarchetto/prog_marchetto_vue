@@ -20,10 +20,7 @@ export default {
 <style scoped>
 /* Alla fine ho optato per un logout di questo tipo invece che metterlo nel nav */
  .btn-logout {
-   
-  float: left;
- /* text-align: left;*/
-  margin: 10px; 
+  float: left; 
   background-color: brown;
   color: aliceblue;
 }

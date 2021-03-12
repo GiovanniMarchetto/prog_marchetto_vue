@@ -26,7 +26,12 @@
 
     <div v-show="sezione == ''">
       <h2>Lista Uploader con documenti</h2>
-      <Uploaders :uploaders="uploaders" @upl-files="showFiles" />
+      <Table
+        :items="uploaders"
+        :fields="fieldsListUploaders"
+        :details="'listUploaders'"
+        @upl-files="showFiles"
+      />
     </div>
 
     <div v-show="sezione == 'files'">
@@ -52,7 +57,12 @@
         >
       </b-form>
 
-      <Files :files="filesUploader" :ruolo="ruolo" @download-file="download" />
+      <Table
+        :items="filesUploader"
+        :fields="fieldsListFilesUploader"
+        :details="'listFilesUploader'"
+        @download-file="download"
+      />
     </div>
 
     <div v-show="sezione == 'modificaInfo'">
@@ -68,8 +78,7 @@
 </template>
 
 <script>
-import Uploaders from "../components/lists/Uploaders";
-import Files from "../components/lists/Files";
+import Table from "@/components/layout/Table";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
 
@@ -82,12 +91,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Consumer-page",
-  components: {
-    Uploaders,
-    Files,
-    ModInfo,
-    Messages,
-  },
+  components: { Table, ModInfo, Messages },
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -97,6 +101,15 @@ export default {
       uploaders: [],
       filesConsumer: [],
       filesUploader: [],
+      fieldsListUploaders: ["logo", "username", "actions"],
+      fieldsListFilesUploader: [
+        "id",
+        "name",
+        { key: "dataCaricamento", sortable: true },
+        { key: "dataVisualizzazione", sortable: true },
+        "hashtag",
+        "actions",
+      ],
       imgProps: {
         left: true,
         rounded: "circle",

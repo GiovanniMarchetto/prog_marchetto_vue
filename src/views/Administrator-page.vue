@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand @click="showSezione('')">Administrator page</b-navbar-brand>
+      <b-navbar-brand @click="showSezione('')"
+        >Administrator page</b-navbar-brand
+      >
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -73,7 +75,7 @@
         >
       </b-form>
 
-      <Resume :resume="resume" />
+      <Table :items="resume" :fields="fieldsResume" :details="'listResume'" />
     </div>
 
     <div v-show="sezione == 'registration'">
@@ -95,7 +97,7 @@
     <div v-show="sezione == 'deleteActor'">
       <DeleteActor
         :potere="ruolo"
-        @deleteActor_uploader="deleteActor_uploader_home"
+        @delete_username="delete_username_home"
         @deleteActor="deleteActor_home"
       />
     </div>
@@ -109,10 +111,10 @@
 </template>
 
 <script>
+import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
 import DeleteActor from "../components/functions/DeleteActor";
-import Resume from "../components/lists/Resume";
 import Messages from "../components/layout/Messages";
 import DatesResume from "../components/input/DatesResume";
 
@@ -126,10 +128,10 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 export default {
   name: "Administrator-page",
   components: {
+    Table,
     Registration,
     ModInfo,
     DeleteActor,
-    Resume,
     DatesResume,
     Messages,
   },
@@ -143,6 +145,16 @@ export default {
       dateFromSelected: "",
       dateToSelected: "",
       roleRegistrazione: "",
+      fieldsResume: [
+        "uploader",
+        { key: "numDocCaricati", label: "#doc", sortable: true },
+        {
+          key: "numConsDiversi",
+          label: "#cons",
+          sortable: true,
+        },
+        "actions",
+      ],
     };
   },
   methods: {
@@ -167,7 +179,7 @@ export default {
       this.showMsg(frase);
     },
 
-    deleteActor_uploader_home(usernameUpl) {
+    delete_username_home(usernameUpl) {
       this.resume = this.resume.filter((el) => el.uploader !== usernameUpl);
     },
 
