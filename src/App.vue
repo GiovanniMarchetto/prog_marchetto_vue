@@ -1,39 +1,20 @@
 <template>
   <div id="app">
-    <header>
-      <!-- <img
-        id="logo-home"
-        src="@/assets/logo.png"
-        style="float: left; margin: 15px;"
-        alt="Home"
-      /> -->
-      
-      <Logout v-show="!this.$route.path.endsWith('/')" />
-      <h1 style="margin-bottom:0">Progetto Marchetto</h1>
-      
-
-<!-- TODO AGGIUNGERE QUA IL NAV PRINCIPALE -->
-<!-- come titolo metto solo Home page, e poi metto qualcosa con il nome sotto al navbar -->
-
-    </header>
-
-    <!-- <Header /> -->
+    <Header />
     <router-view />
-    <!-- <Footer /> -->
+    <Footer />
   </div>
 </template>
 
 <script>
-// import Header from "./components/layout/Header";
-// import Footer from "./components/layout/Footer";
-import Logout from "@/components/functions/Logout";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 
 export default {
   name: "App",
   components: {
-    Logout,
-    // Header,
-    // Footer,
+    Header,
+    Footer,
   },
 };
 </script>
@@ -55,9 +36,8 @@ export default {
     border-color: #2c3e50;
 } */
 
-h1 {
+header {
   text-align: center;
-
   padding: 10px;
   color: #fff;
   background: #343a40;

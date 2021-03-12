@@ -1,5 +1,7 @@
 <template>
+
   <b-button @click="logout" class="btn-logout">Logout</b-button>
+
 </template>
 
 <script>
@@ -17,9 +19,11 @@ export default {
 
 <style scoped>
 /* Alla fine ho optato per un logout di questo tipo invece che metterlo nel nav */
-.btn-logout {
+ .btn-logout {
+   
   float: left;
-  margin: 15px;
+ /* text-align: left;*/
+  margin: 10px; 
   background-color: brown;
   color: aliceblue;
 }
