@@ -12,13 +12,12 @@
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
 
-<div v-show="attesa==true">
-  <b-button block variant="light" disabled>
-    <b-spinner small ></b-spinner>
-    Loading...
-  </b-button>
-</div>
-      
+    <div v-show="attesa == true">
+      <b-button block variant="light" disabled>
+        <b-spinner small></b-spinner>
+        Loading...
+      </b-button>
+    </div>
   </div>
 </template>
 
@@ -35,27 +34,26 @@ export default {
       // TODO POSSO METTERE IL MIXIN ANCHE SE HA COSE IN PIÙ
       username: "",
       password: "",
-      attesa: false
+      attesa: false,
     };
   },
   methods: {
     login() {
-      this.attesa=true;
+      this.attesa = true;
       axios
         .post(`${process.env.VUE_APP_APIROOT}/login`, {
           username: this.username,
           password: this.password,
         })
         .then((res) => {
-          console.log(res);
-          if (!res.data.startsWith("ERR")) {
-            localStorage.setItem("jwtToken", res.data);
-            localStorage.setItem("nomeUtente", this.username);
-          }
-          this.$emit("login", res.data);this.attesa=false;
+          localStorage.setItem("jwtToken", res.data);
+          localStorage.setItem("nomeUtente", this.username);
+          this.$emit("login", "Login eseguito - "+this.username);
+          this.attesa = false;
         })
         .catch((err) => {
-          this.$emit("login", "ERR(esterno) - " + err);this.attesa=false;
+          this.$emit("login", err.toString());
+          this.attesa = false;
         });
     },
     change_home(infos) {
