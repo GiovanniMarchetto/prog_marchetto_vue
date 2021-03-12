@@ -57,5 +57,8 @@ export default {
       this.showMsg(frase);
     },
   },
+  created(){
+    console.log(process.env.VUE_APP_APIROOT);
+  }
 };
 </script>

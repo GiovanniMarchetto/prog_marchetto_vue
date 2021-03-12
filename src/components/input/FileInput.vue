@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container fluid>
     <!-- <legend>File</legend> -->
     <b-form-group id="file-group" label="File:" label-for="file">
       <b-form-file

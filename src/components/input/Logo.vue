@@ -1,5 +1,5 @@
 <template>
-<b-container>
+<b-container fluid>
   <b-form-group
   id="logo-group" label="Logo:" label-for="logo">
     <b-form-file

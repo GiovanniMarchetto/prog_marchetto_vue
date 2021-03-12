@@ -10,7 +10,7 @@
       />
 
       <legend>Dati Consumer</legend>
-      <b-container>
+      <b-container fluid>
         <b-form-group
           id="usernameCons-group"
           label="Username consumer:"

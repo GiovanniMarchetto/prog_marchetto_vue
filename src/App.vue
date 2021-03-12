@@ -11,6 +11,10 @@
       <Logout v-show="!this.$route.path.endsWith('/')" />
       <h1 style="margin-bottom:0">Progetto Marchetto</h1>
       
+
+<!-- TODO AGGIUNGERE QUA IL NAV PRINCIPALE -->
+<!-- come titolo metto solo Home page, e poi metto qualcosa con il nome sotto al navbar -->
+
     </header>
 
     <!-- <Header /> -->

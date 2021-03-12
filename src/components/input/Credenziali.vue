@@ -1,6 +1,6 @@
 <template>
-  <b-container
-    ><!-- <legend>Credenziali</legend> -->
+  <b-container fluid>
+    <!-- <legend>Credenziali</legend> -->
 
     <b-form-group id="username-group" label="Username:" label-for="username">
       <!-- description="We'll never share your email with anyone else." -->
@@ -48,7 +48,7 @@ import { changeInfoMixin } from "@/utils/utils";
 
 export default {
   name: "Credenziali",
-  props: ["required","username","password"],
+  props: ["required", "username", "password"],
   mixins: [changeInfoMixin],
   mounted() {
     if (this.required) {

@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container fluid>
     <!-- <legend>Informazioni utente</legend> -->
 
     <b-form-group id="name-group" label="Name:" label-for="name">

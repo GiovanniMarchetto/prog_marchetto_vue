@@ -16,7 +16,7 @@ export var messagesMixin = {
       //   this.msg_success = "";
       // }, 5000);
 
-      if (frase.startsWith("ERR")) {
+      if (frase.startsWith("ERR")||frase.startsWith("Err")) {//alla fine solo il secondo dovrebbe rimanere
         this.msg_error = frase;
         this.$bvToast.show("msg_e");
       } else if (frase.startsWith("WARN")) {
