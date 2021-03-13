@@ -38,7 +38,7 @@
               >Uploader</b-dropdown-item
             >
           </b-nav-item-dropdown>
-          <b-nav-item @click="showSezione('deleteActor')"
+          <b-nav-item @click="showSezione('delete')"
             >Eliminazione Attore</b-nav-item
           >
         </b-navbar-nav>
@@ -94,11 +94,11 @@
       />
     </div>
 
-    <div v-show="sezione == 'deleteActor'">
-      <DeleteActor
+    <div v-show="sezione == 'delete'">
+      <Delete
         :potere="ruolo"
         @delete_username="delete_username_home"
-        @deleteActor="deleteActor_home"
+        @delete="delete_home"
       />
     </div>
 
@@ -114,7 +114,7 @@
 import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
-import DeleteActor from "../components/functions/DeleteActor";
+import Delete from "../components/functions/Delete";
 import Messages from "../components/layout/Messages";
 import DatesResume from "../components/input/DatesResume";
 
@@ -131,7 +131,7 @@ export default {
     Table,
     Registration,
     ModInfo,
-    DeleteActor,
+    Delete,
     DatesResume,
     Messages,
   },
@@ -183,7 +183,7 @@ export default {
       this.resume = this.resume.filter((el) => el.uploader !== usernameUpl);
     },
 
-    deleteActor_home(frase) {
+    delete_home(frase) {
       this.showMsg(frase);
     },
 
@@ -199,7 +199,7 @@ export default {
           this.dateToSelected = this.dateTo;
           this.showMsg("Resoconto fornito");
         })
-        .catch((err) => (this.msg_error = err));
+        .catch((err) => (this.showMsg(err.toString())));
     },
     datesForLastMonth() {
       const today = new Date();

@@ -5,7 +5,10 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav
         ><b-navbar-nav class="ml-auto">
-          <b-nav-item @click="showSezione('')">Lista consumer/file</b-nav-item>
+          <b-nav-item @click="showSezione('')">Lista consumer</b-nav-item>
+          <b-nav-item @click="showSezione('files')"
+            >File di un consumer</b-nav-item
+          >
           <b-nav-item
             @click="
               showSezione('registration'), (roleRegistrazione = 'consumer')
@@ -26,8 +29,8 @@
           <b-nav-item @click="showSezione('upload')"
             >Carica nuovo file</b-nav-item
           >
-          <b-nav-item @click="showSezione('deleteActor')"
-            >Eliminazione Consumer</b-nav-item
+          <b-nav-item @click="showSezione('delete')"
+            >Elimina</b-nav-item
           >
         </b-navbar-nav>
       </b-collapse>
@@ -73,11 +76,14 @@
         @upload="upload_home"
       />
     </div>
-    <div v-show="sezione == 'deleteActor'">
-      <DeleteActor
+    <div v-show="sezione == 'delete'">
+      <Delete
         :potere="ruolo"
+        :attoriOptions="attoriOptions"
+        :fileOptions="fileOptions"
+        @delete_file="delete_file_home"
         @delete_username="delete_username_home"
-        @deleteActor="deleteActor_home"
+        @delete="delete_home"
       />
     </div>
 
@@ -93,7 +99,7 @@
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
-import DeleteActor from "../components/functions/DeleteActor";
+import Delete from "../components/functions/Delete";
 import Messages from "../components/layout/Messages";
 
 import Table from "@/components/layout/Table";
@@ -112,7 +118,7 @@ export default {
     Upload,
     Registration,
     ModInfo,
-    DeleteActor,
+    Delete,
     Messages,
   },
   mixins: [messagesMixin, sectionsMixin],
@@ -134,10 +140,24 @@ export default {
         "hashtag",
         "actions",
       ],
+      attoriOptions:[],
+      fileOptions:[],
     };
   },
-  // watch: {
-  // },
+  watch: {
+    consumers:function(){
+      this.attoriOptions=[];
+      this.consumers.forEach(cons => {
+        this.attoriOptions.push(cons.username);
+      });
+    },
+    filesUploader:function(){
+      this.fileOptions = [];
+      this.filesUploader.forEach(file => {
+        this.fileOptions.push(file.id);
+      });
+    }
+  },
   methods: {
     showFiles(consUsername) {
       //TODO: considera il fatto di dividere il fatto di mostrare i file dal fatto di mandarlo nella sezione dei file
@@ -171,7 +191,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.showMsg(err);
+          this.showMsg(err.toString());
         });
     },
     registration_home(frase) {
@@ -196,13 +216,21 @@ export default {
       //TODO se è ok devo mandare un messaggio che bisogna riaggiornare la pagina per vedere i file appena caricato
       //TODO fare il confronto tra i consumer in lista, se non presente lo si aggiunge
     },
+
+    delete_file_home(fileIdDel) {
+      this.filesUploader = this.filesUploader.filter(
+        (file) => file.id !== fileIdDel
+      );
+      this.filesConsumer = this.filesUploader.filter(
+        (file) => file.usernameCons === this.consumerScelto
+      );
+    },
     delete_username_home(usernameDel) {
       this.consumers = this.consumers.filter(
         (cons) => cons.username !== usernameDel
       );
     },
-
-    deleteActor_home(frase) {
+    delete_home(frase) {
       this.showMsg(frase);
     },
   },
@@ -210,12 +238,12 @@ export default {
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/consumers`)
       .then((res) => (this.consumers = res.data))
-      .catch((err) => this.showMsg(err));
+      .catch((err) => this.showMsg(err.toString()));
 
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/filesUploader`)
       .then((res) => (this.filesUploader = res.data))
-      .catch((err) => this.showMsg(err));
+      .catch((err) => this.showMsg(err.toString()));
   },
 };
 </script>
