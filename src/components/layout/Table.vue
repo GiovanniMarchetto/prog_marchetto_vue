@@ -1,17 +1,31 @@
 <template>
   <b-container fluid>
     <b-row>
-      <b-col sm="8" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-pagination
           v-model="currentPage"
           :total-rows="totalRows"
           :per-page="perPage"
+          align="fill"
           first-number
           last-number
           prev-text="Prev"
           next-text="Next"
         ></b-pagination
       ></b-col>
+      <b-col sm="4" class="my-1">
+        <b-form-group
+        label="Per page:"
+          label-for="per-page-select"
+        label-cols-sm="3"
+        >
+          <b-form-select
+            id="per-page-select"
+            v-model="perPage"
+            :options="pageOptions"
+          ></b-form-select>
+        </b-form-group>
+      </b-col>
       <!-- <b-col sm="4">
         <b-button variant="info" @click="nonStacked" class="my-1"
           >Tipologia tabella</b-button
@@ -20,7 +34,6 @@
     </b-row>
 
     <b-table
-      id="tabellaT"
       striped
       head-variant="dark"
       table-variant="secondary"
@@ -118,6 +131,7 @@ export default {
     return {
       currentPage: 1,
       perPage: 5,
+      pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       logoProps: {
         rounded: "circle",
       },
@@ -147,6 +161,9 @@ export default {
 </script>
 
 <style scoped>
+.btn {
+  margin: 0px;
+}
 img {
   height: 5em;
   width: 5em;
