@@ -53,7 +53,7 @@ export default {
           this.attesa = false;
         })
         .catch((err) => {
-          this.$emit("login", err.toString());
+          this.$emit("login", err.response.data);
           this.attesa = false;
         });
     },

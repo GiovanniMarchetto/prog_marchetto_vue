@@ -59,12 +59,12 @@ export default {
     registration() {
       //TODO: non voglio avere troppa duplicazione di controllo
       //        però faccio comunque un controllo minimo?
-      if (this.role === "administrator" && this.username !== this.email) {
-        this.$emit(
-          "registrazione",
-          "ERR - Gli amministratori devono avere l'email uguale all'username"
-        );
-      } else {
+      // if (this.role === "administrator" && this.username !== this.email) {
+      //   this.$emit(
+      //     "registrazione",
+      //     "ERR - Gli amministratori devono avere l'email uguale all'username"
+      //   );
+      // } else {
         axios
           .post(`${process.env.VUE_APP_APIROOT}/attori/registration`, {
             username: this.username,
@@ -79,9 +79,9 @@ export default {
             this.$emit("registrazione", res.data);
           })
           .catch((err) => {
-            this.$emit("registrazione", err.toString());
+            this.$emit("registrazione", err.response.data);
           });
-      }
+      // }
     },
   },
 };

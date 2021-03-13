@@ -79,7 +79,7 @@ export default {
           this.$emit("modInfo", res.data);
         })
         .catch((err) => {
-          this.$emit("modInfo", err.toString());
+          this.$emit("modInfo", err.response.data);
         });
     },
   },

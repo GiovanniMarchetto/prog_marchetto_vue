@@ -137,7 +137,7 @@ export default {
           this.$emit("upload", res.data);
         })
         .catch((err) => {
-          this.$emit("upload", err.toString());
+          this.$emit("upload", err.response.data);
         });
     },
   },

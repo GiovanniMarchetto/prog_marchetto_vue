@@ -79,7 +79,7 @@ export default {
           this.$emit("delete", res.data);
         })
         .catch((err) => {
-          this.$emit("delete", err.toString());
+          this.$emit("delete", err.response.data);
         });
     },
     deleteFile() {
@@ -91,7 +91,7 @@ export default {
           this.$emit("delete", res.data);
         })
         .catch((err) => {
-          this.$emit("delete", err.toString());
+          this.$emit("delete", err.err.response.data);
         });
     },
   },

@@ -179,7 +179,7 @@ export default {
           this.showMsg("Download effettuato");
         })
         .catch((err) => {
-          this.showMsg(err.toString());
+          this.showMsg(err.response.data);
         });
     },
 
