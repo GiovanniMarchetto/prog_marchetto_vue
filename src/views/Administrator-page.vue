@@ -97,6 +97,7 @@
     <div v-show="sezione == 'delete'">
       <Delete
         :potere="ruolo"
+        :attoriOptions="attoriOptions"
         @delete_username="delete_username_home"
         @delete="delete_home"
       />
@@ -155,7 +156,16 @@ export default {
         },
         "actions",
       ],
+      attoriOptions: [],
     };
+  },
+  watch: {
+    resume: function() {
+      this.attoriOptions = [];
+      this.resume.forEach((el) => {
+        this.attoriOptions.push(el.uploader);
+      });
+    },
   },
   methods: {
     change_home(infos) {
@@ -199,7 +209,7 @@ export default {
           this.dateToSelected = this.dateTo;
           this.showMsg("Resoconto fornito");
         })
-        .catch((err) => (this.showMsg(err.toString())));
+        .catch((err) => this.showMsg(err.toString()));
     },
     datesForLastMonth() {
       const today = new Date();

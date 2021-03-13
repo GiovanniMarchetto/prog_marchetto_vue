@@ -51,7 +51,6 @@
         :items="filesConsumer"
         :fields="fieldsListFileConsumer"
         :details="'listFilesConsumer'"
-        @del-file="deleteAct"
       />
     </div>
 
@@ -138,7 +137,6 @@ export default {
         { key: "dataVisualizzazione", sortable: true },
         "indirizzoIP",
         "hashtag",
-        "actions",
       ],
       attoriOptions:[],
       fileOptions:[],
@@ -168,38 +166,14 @@ export default {
       this.consumerScelto = consUsername;
       this.sezione = "files";
     },
-    deleteAct(id) {
-      let tipo;
-      if (this.consumerScelto === null) tipo = "attori";
-      else tipo = "files";
 
-      axios
-        .delete(`${process.env.VUE_APP_APIROOT}/${tipo}/delete/${id}`)
-        .then((res) => {
-          this.showMsg(res.data);
-          if (tipo == "attori")
-            this.consumers = this.consumers.filter(
-              (cons) => cons.username !== id
-            );
-          else {
-            this.filesUploader = this.filesUploader.filter(
-              (file) => file.id !== id
-            );
-            this.filesConsumer = this.filesUploader.filter(
-              (file) => file.usernameCons === this.consumerScelto
-            );
-          }
-        })
-        .catch((err) => {
-          this.showMsg(err.toString());
-        });
-    },
     registration_home(frase) {
-      this.showMsg(frase);
+      this.showMsg(frase);//TODO: da rifare il resume?
     },
     modInfo_home(frase) {
-      this.showMsg(frase);
+      this.showMsg(frase);//TODO: da rifare il resume?
     },
+
     upload_consumer_home(nuovoConsumer) {
       //TODO: controlla se funziona
       const { usernameCons } = nuovoConsumer;

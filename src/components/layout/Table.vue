@@ -45,7 +45,7 @@
       :fields="fields"
       :tbody-tr-class="highlightNew"
     >
-      <template v-if="details === 'listUploaders'" #cell(logo)="row">
+      <template #cell(logo)="row">
         <b-img
           v-bind="logoProps"
           :src="`${row.item.logo}`"
@@ -67,16 +67,6 @@
           @click="$emit('cons-files', row.item.username)"
           >Mostra File</b-button
         >
-        <!-- <b-button @click="$emit('del-cons', row.item.username)" variant="danger"
-            >Elimina consumer</b-button          > -->
-
-        <b-button
-          v-if="details === 'listFilesConsumer'"
-          @click="$emit('del-file', row.item.id)"
-          variant="danger"
-        >
-          Elimina
-        </b-button>
 
         <b-button
           v-if="details === 'listUploaders'"
@@ -131,7 +121,7 @@ export default {
     return {
       currentPage: 1,
       perPage: 5,
-      pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+      pageOptions: [5, 10, 15, { value: 100, text: "Troppi" }],
       logoProps: {
         rounded: "circle",
       },
