@@ -1,49 +1,12 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand @click="showSezione('')"
-        >Administrator page</b-navbar-brand
-      >
-
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-      <b-collapse id="nav-collapse" is-nav>
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item @click="showSezione('')">Resoconto</b-nav-item>
-          <b-nav-item-dropdown text="Crea Attore">
-            <b-dropdown-item
-              @click="
-                showSezione('registration'),
-                  (roleRegistrazione = 'administrator')
-              "
-              >Administrator</b-dropdown-item
-            >
-            <b-dropdown-item
-              @click="
-                showSezione('registration'), (roleRegistrazione = 'uploader')
-              "
-              >Uploader</b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Modifica Attore">
-            <b-dropdown-item
-              @click="
-                showSezione('modInfo'), (roleRegistrazione = 'administrator')
-              "
-              >Administrator</b-dropdown-item
-            >
-            <b-dropdown-item
-              @click="showSezione('modInfo'), (roleRegistrazione = 'uploader')"
-              >Uploader</b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-          <b-nav-item @click="showSezione('delete')"
-            >Eliminazione Attore</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
+    <Navbar
+      :potere="ruolo"
+      :nomePrimaLista="'Resoconto'"
+      :nomeSecondaLista="'Amministratori'"
+      @mostraSezione="showSezione"
+      @ruoloForm="modificaRuoloForm"
+    />
 
     <div v-show="sezione == ''">
       <h2>Resoconto uploader</h2>
@@ -81,7 +44,7 @@
     <div v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
-        :role="roleRegistrazione"
+        :role="ruoloForm"
         @registrazione="registration_home"
       />
     </div>
@@ -89,7 +52,7 @@
     <div v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
-        :role="roleRegistrazione"
+        :role="ruoloForm"
         @modInfo="modInfo_home"
       />
     </div>
@@ -112,6 +75,7 @@
 </template>
 
 <script>
+import Navbar from "@/components/layout/Navbar";
 import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
@@ -127,8 +91,9 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 )}`;
 
 export default {
-  name: "Administrator-page",
+  name: "Administrator_page",
   components: {
+    Navbar,
     Table,
     Registration,
     ModInfo,
@@ -145,7 +110,7 @@ export default {
       dateTo: "",
       dateFromSelected: "",
       dateToSelected: "",
-      roleRegistrazione: "",
+      ruoloForm: "",
       fieldsResume: [
         "uploader",
         { key: "numDocCaricati", label: "#doc", sortable: true },
@@ -180,6 +145,9 @@ export default {
         default:
           break;
       }
+    },
+    modificaRuoloForm(ruoloInput) {
+      this.ruoloForm = ruoloInput;
     },
     registration_home(frase) {
       this.showMsg(frase);

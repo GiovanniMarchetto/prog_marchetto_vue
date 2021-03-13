@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container fluid v-show="sezione == 'files'"
+    <b-container fluid v-show="sezione == 'secondaLista'"
       ><b-img
         v-bind="imgProps"
         :src="`${uploaderScelto.logo}`"
@@ -8,21 +8,12 @@
       ></b-img
     ></b-container>
 
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand @click="showSezione('')">Consumer page</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item @click="showSezione('')">Lista uploaders</b-nav-item>
-          <b-nav-item @click="showSezione('files')"
-            >File di un uploader</b-nav-item
-          >
-          <b-nav-item @click="showSezione('modificaInfo')"
-            >Modifica informazioni</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
+    <Navbar
+      :potere="ruolo"
+      :nomePrimaLista="'Lista uploader'"
+      :nomeSecondaLista="'File di un uploader'"
+      @mostraSezione="showSezione"
+    />
 
     <div v-show="sezione == ''">
       <h2>Lista Uploader con documenti</h2>
@@ -34,7 +25,7 @@
       />
     </div>
 
-    <div v-show="sezione == 'files'">
+    <div v-show="sezione == 'secondaLista'">
       <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
 
       <b-form inline @submit.prevent="hashtagFilter">
@@ -65,7 +56,7 @@
       />
     </div>
 
-    <div v-show="sezione == 'modificaInfo'">
+    <div v-show="sezione == 'modInfo'">
       <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="modInfo_home" />
     </div>
 
@@ -78,6 +69,7 @@
 </template>
 
 <script>
+import Navbar from "@/components/layout/Navbar";
 import Table from "@/components/layout/Table";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
@@ -90,8 +82,8 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 )}`;
 
 export default {
-  name: "Consumer-page",
-  components: { Table, ModInfo, Messages },
+  name: "Consumer_page",
+  components: { Navbar, Table, ModInfo, Messages },
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -103,7 +95,6 @@ export default {
       filesUploader: [],
       fieldsListUploaders: ["logo", "username", "actions"],
       fieldsListFilesUploader: [
-        "id",
         "name",
         { key: "dataCaricamento", sortable: true },
         { key: "dataVisualizzazione", sortable: true },
@@ -126,7 +117,7 @@ export default {
   },
   methods: {
     showFiles(usernameUploader) {
-      this.sezione = "files";
+      this.sezione = "secondaLista";
       this.filesUploader = this.filesConsumer.filter(
         (file) => file.usernameUpl === usernameUploader
       );
@@ -204,7 +195,7 @@ export default {
         if (this.uploaders.length === 1)
           this.uploaderScelto = this.uploaders[0];
       })
-      .catch((err) => (this.showMsg(err.toString())));
+      .catch((err) => this.showMsg(err.toString()));
 
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/filesConsumer`)
@@ -214,7 +205,7 @@ export default {
         if (this.uploaderScelto != "")
           this.showFiles(this.uploaderScelto.username);
       })
-      .catch((err) => (this.showMsg(err.toString())));
+      .catch((err) => this.showMsg(err.toString()));
   },
 };
 </script>

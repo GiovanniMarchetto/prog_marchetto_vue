@@ -1,40 +1,12 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand @click="showSezione('')">Uploader page</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav
-        ><b-navbar-nav class="ml-auto">
-          <b-nav-item @click="showSezione('')">Lista consumer</b-nav-item>
-          <b-nav-item @click="showSezione('files')"
-            >File di un consumer</b-nav-item
-          >
-          <b-nav-item
-            @click="
-              showSezione('registration'), (roleRegistrazione = 'consumer')
-            "
-            >Creare Consumer</b-nav-item
-          >
-
-          <b-nav-item-dropdown text="Modifica Attore">
-            <b-dropdown-item
-              @click="showSezione('modInfo'), (roleRegistrazione = 'consumer')"
-              >Consumer</b-dropdown-item
-            >
-            <b-dropdown-item
-              @click="showSezione('modInfo'), (roleRegistrazione = 'uploader')"
-              >Uploader</b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-          <b-nav-item @click="showSezione('upload')"
-            >Carica nuovo file</b-nav-item
-          >
-          <b-nav-item @click="showSezione('delete')"
-            >Elimina</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
+    <Navbar
+      :potere="ruolo"
+      :nomePrimaLista="'Lista consumer'"
+      :nomeSecondaLista="'File di un consumer'"
+      @mostraSezione="showSezione"
+      @ruoloForm="modificaRuoloForm"
+    />
 
     <div v-show="sezione == ''">
       <h2>Lista Consumer</h2>
@@ -45,7 +17,7 @@
         @cons-files="showFiles"
       />
     </div>
-    <div v-show="sezione == 'files'">
+    <div v-show="sezione == 'secondaLista'">
       <h2>Lista Files di {{ consumerScelto }}</h2>
       <Table
         :items="filesConsumer"
@@ -57,14 +29,14 @@
     <div v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
-        :role="roleRegistrazione"
+        :role="'consumer'"
         @registrazione="registration_home"
       />
     </div>
     <div v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
-        :role="roleRegistrazione"
+        :role="ruoloForm"
         @modInfo="modInfo_home"
       />
     </div>
@@ -95,13 +67,13 @@
 </template>
 
 <script>
+import Navbar from "@/components/layout/Navbar";
+import Table from "@/components/layout/Table";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
 import Delete from "../components/functions/Delete";
 import Messages from "../components/layout/Messages";
-
-import Table from "@/components/layout/Table";
 
 import { messagesMixin, sectionsMixin } from "../utils/utils";
 
@@ -111,8 +83,9 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 )}`;
 
 export default {
-  name: "Uploader-page",
+  name: "Uploader_page",
   components: {
+    Navbar,
     Table,
     Upload,
     Registration,
@@ -124,7 +97,7 @@ export default {
   data() {
     return {
       ruolo: "uploader",
-      roleRegistrazione: "",
+      ruoloForm: "",
       consumerScelto: null,
       consumers: [],
       filesUploader: [],
@@ -138,25 +111,28 @@ export default {
         "indirizzoIP",
         "hashtag",
       ],
-      attoriOptions:[],
-      fileOptions:[],
+      attoriOptions: [],
+      fileOptions: [],
     };
   },
   watch: {
-    consumers:function(){
-      this.attoriOptions=[];
-      this.consumers.forEach(cons => {
+    consumers: function() {
+      this.attoriOptions = [];
+      this.consumers.forEach((cons) => {
         this.attoriOptions.push(cons.username);
       });
     },
-    filesUploader:function(){
+    filesUploader: function() {
       this.fileOptions = [];
-      this.filesUploader.forEach(file => {
+      this.filesUploader.forEach((file) => {
         this.fileOptions.push(file.id);
       });
-    }
+    },
   },
   methods: {
+    modificaRuoloForm(ruoloInput) {
+      this.ruoloForm = ruoloInput;
+    },
     showFiles(consUsername) {
       //TODO: considera il fatto di dividere il fatto di mostrare i file dal fatto di mandarlo nella sezione dei file
       this.filesConsumer = null;
@@ -164,14 +140,14 @@ export default {
         (file) => file.usernameCons === consUsername
       );
       this.consumerScelto = consUsername;
-      this.sezione = "files";
+      this.sezione = "secondaLista";
     },
 
     registration_home(frase) {
-      this.showMsg(frase);//TODO: da rifare il resume?
+      this.showMsg(frase); //TODO: da rifare il resume?
     },
     modInfo_home(frase) {
-      this.showMsg(frase);//TODO: da rifare il resume?
+      this.showMsg(frase); //TODO: da rifare il resume?
     },
 
     upload_consumer_home(nuovoConsumer) {

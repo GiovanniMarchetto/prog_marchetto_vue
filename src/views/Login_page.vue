@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <h1>Home page</h1> -->
     <div v-show="sezione == ''">
       <Login @login="login_home" @login_username="login_username_home" />
       <b-button @click="sezione = 'registration'"
@@ -32,12 +31,8 @@ import Messages from "../components/layout/Messages";
 import { messagesMixin, sectionsMixin } from "../utils/utils";
 
 export default {
-  name: "Home",
-  components: {
-    Login,
-    Registration,
-    Messages,
-  },
+  name: "Login_page",
+  components: { Login, Registration, Messages },
   mixins: [messagesMixin, sectionsMixin],
   methods: {
     login_home(frase) {
@@ -46,11 +41,11 @@ export default {
     login_username_home(username) {
       setTimeout(() => {
         if (username.length == 4) {
-          this.$router.push("/uploader-page");
+          this.$router.push("/uploader_page");
         } else if (username.includes("@")) {
-          this.$router.push("/administrator-page");
+          this.$router.push("/administrator_page");
         } else if (username.length == 16) {
-          this.$router.push("/consumer-page");
+          this.$router.push("/consumer_page");
         } else {
           this.showMsg("Error: Username non riscontrato...");
         }

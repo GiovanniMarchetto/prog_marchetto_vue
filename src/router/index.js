@@ -1,40 +1,40 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Login_page from "../views/Login_page.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    name: "Login_page",
+    component: Login_page,
   },
   {
-    path: "/consumer-page",
-    name: "Consumer-page",
+    path: "/consumer_page",
+    name: "Consumer_page",
     meta: { requiresAuth: true },
     component: () =>
       import(
-        /* webpackChunkName: "Consumer-page" */ "../views/Consumer-page.vue"
+        /* webpackChunkName: "Consumer_page" */ "../views/Consumer_page.vue"
       ),
   },
   {
-    path: "/uploader-page",
-    name: "Uploader-page",
+    path: "/uploader_page",
+    name: "Uploader_page",
     meta: { requiresAuth: true },
     component: () =>
       import(
-        /* webpackChunkName: "Uploader-page" */ "../views/Uploader-page.vue"
+        /* webpackChunkName: "Uploader_page" */ "../views/Uploader_page.vue"
       ),
   },
   {
-    path: "/administrator-page",
-    name: "Administrator-page",
+    path: "/administrator_page",
+    name: "Administrator_page",
     meta: { requiresAuth: true },
     component: () =>
       import(
-        /* webpackChunkName: "Administrator-page" */ "../views/Administrator-page.vue"
+        /* webpackChunkName: "Administrator_page" */ "../views/Administrator_page.vue"
       ),
   },
   {
@@ -58,11 +58,11 @@ router.beforeEach((to, from, next) => {
       });
     } else if (from.matched.some((record) => record.meta.requiresAuth)) {
       if (localStorage.getItem("nomeUtente").length == 4) {
-        this.$router.push("/uploader-page");
+        this.$router.push("/uploader_page");
       } else if (localStorage.getItem("nomeUtente").includes("@")) {
-        this.$router.push("/administrator-page");
+        this.$router.push("/administrator_page");
       } else if (localStorage.getItem("nomeUtente").length == 16) {
-        this.$router.push("/consumer-page");
+        this.$router.push("/consumer_page");
       } else {
         this.showMsg("ERR- Username non riscontrato...");
       }

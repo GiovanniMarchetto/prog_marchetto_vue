@@ -48,7 +48,7 @@
       <template #cell(logo)="row">
         <b-img
           v-bind="logoProps"
-          :src="`${row.item.logo}`"
+          :src="`url(${row.item.logo})`"
           alt="Logo uploader"
           style=""
         ></b-img
