@@ -2,7 +2,7 @@
   <div>
     <!-- <h1>Home page</h1> -->
     <div v-show="sezione == ''">
-      <Login @login="login_home" />
+      <Login @login="login_home" @login_username="login_username_home" />
       <b-button @click="sezione = 'registration'"
         >Non hai ancora un account</b-button
       >
@@ -16,7 +16,11 @@
       <b-button @click="sezione = ''">Ho già un account!</b-button>
     </div>
 
-    <Messages :msg_success="msg_success" :msg_error="msg_error" :msg_warning="msg_warning"/>
+    <Messages
+      :msg_success="msg_success"
+      :msg_error="msg_error"
+      :msg_warning="msg_warning"
+    />
   </div>
 </template>
 
@@ -38,27 +42,27 @@ export default {
   methods: {
     login_home(frase) {
       this.showMsg(frase);
-      if (!frase.startsWith("ERR")) {
-        setTimeout(() => {
-          if (localStorage.getItem("nomeUtente").length == 4) {
-            this.$router.push("/uploader-page");
-          } else if (localStorage.getItem("nomeUtente").includes("@")) {
-            this.$router.push("/administrator-page");
-          } else if (localStorage.getItem("nomeUtente").length == 16) {
-            this.$router.push("/consumer-page");
-          } else {
-            this.showMsg("ERR- Username non riscontrato...");
-          }
-        }, 1000);
-      }
+    },
+    login_username_home(username) {
+      setTimeout(() => {
+        if (username.length == 4) {
+          this.$router.push("/uploader-page");
+        } else if (username.includes("@")) {
+          this.$router.push("/administrator-page");
+        } else if (username.length == 16) {
+          this.$router.push("/consumer-page");
+        } else {
+          this.showMsg("Error: Username non riscontrato...");
+        }
+      }, 1000);
     },
 
     registration_home(frase) {
       this.showMsg(frase);
     },
   },
-  created(){
+  created() {
     console.log(process.env.VUE_APP_APIROOT);
-  }
+  },
 };
 </script>

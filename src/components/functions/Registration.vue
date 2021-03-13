@@ -1,5 +1,5 @@
 <template>
-  <div class="registration">
+  <div>
     <h2>Registration</h2>
 
     <b-form @submit.prevent="registration" @reset="reset">
@@ -10,7 +10,12 @@
         @change-info="change_home"
       />
 
-      <UserInfo :required="true" :name="name" :email="email"  @change-info="change_home" />
+      <UserInfo
+        :required="true"
+        :name="name"
+        :email="email"
+        @change-info="change_home"
+      />
 
       <Logo
         v-if="role === 'uploader'"
@@ -70,12 +75,11 @@ export default {
             logo: this.logo,
           })
           .then((res) => {
-            if (!res.data.startsWith("ERR")) this.reset();
-
+            this.reset();
             this.$emit("registrazione", res.data);
           })
           .catch((err) => {
-            this.$emit("registrazione", "ERR(esterno) - " + err);
+            this.$emit("registrazione", err.toString());
           });
       }
     },

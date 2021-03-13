@@ -2,7 +2,7 @@
   <div>
     <h2>Modifica informazioni</h2>
 
-    <form @submit.prevent="modInfo" @reset="reset">
+    <b-form @submit.prevent="modInfo" @reset="reset">
       <Credenziali
         v-show="potere != 'consumer'"
         :required="false"
@@ -11,7 +11,12 @@
         @change-info="change_home"
       />
 
-      <UserInfo :required="false" :name="name" :email="email" @change-info="change_home" />
+      <UserInfo
+        :required="false"
+        :name="name"
+        :email="email"
+        @change-info="change_home"
+      />
 
       <Logo
         v-if="role === 'uploader'"
@@ -22,7 +27,7 @@
 
       <b-button type="submit" variant="success">Modifica informazioni</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
-    </form>
+    </b-form>
     <section>
       <h3>Istruzioni per la modifica</h3>
       <p>Inserire i dati da modificare (non si può modificare l'username).</p>
@@ -70,11 +75,11 @@ export default {
           logo: this.logo,
         })
         .then((res) => {
-          if (!res.data.startsWith("ERR")) this.reset();
+          this.reset();
           this.$emit("modInfo", res.data);
         })
         .catch((err) => {
-          this.$emit("modInfo", "ERR(esterno) - " + err);
+          this.$emit("modInfo", err.toString());
         });
     },
   },

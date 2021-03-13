@@ -49,6 +49,7 @@ export default {
           localStorage.setItem("jwtToken", res.data);
           localStorage.setItem("nomeUtente", this.username);
           this.$emit("login", "Login eseguito - "+this.username);
+          this.$emit("login_username",this.username);
           this.attesa = false;
         })
         .catch((err) => {

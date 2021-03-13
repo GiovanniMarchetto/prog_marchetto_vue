@@ -113,35 +113,31 @@ export default {
           emailCons: this.emailCons,
         })
         .then((res) => {
-          if (!res.data.startsWith("ERR")) {
-            //TODO: modificare se uso risposte
-            const consumer = {
-              username: this.usernameCons,
-              name: this.nameCons,
-              email: this.emailCons,
-              logo: "",
-            };
-            this.$emit("upload_consumer", consumer);
+          const consumer = {
+            username: this.usernameCons,
+            name: this.nameCons,
+            email: this.emailCons,
+            logo: "",
+          };
+          this.$emit("upload_consumer", consumer);
 
-            const dataCorrente = new Date();
-            const fileCaricato = {
-              id: "TODO", //TODO: mi devo far tornare l'id del file!!!!
-              usernameUpl: localStorage.getItem("nomeUtente"),
-              usernameCons: this.usernameCons,
-              name: this.nameFile,
-              dataCaricamento: dataCorrente.toISOString().substring(0, 10),
-              dataVisualizzazione: "",
-              indirizzoIP: "",
-              hashtag: this.hashtag,
-            };
-            this.$emit("upload_file", fileCaricato);
-
-            this.reset();
-          }
+          const dataCorrente = new Date();
+          const fileCaricato = {
+            id: "TODO", //TODO: mi devo far tornare l'id del file!!!!
+            usernameUpl: localStorage.getItem("nomeUtente"),
+            usernameCons: this.usernameCons,
+            name: this.nameFile,
+            dataCaricamento: dataCorrente.toISOString().substring(0, 10),
+            dataVisualizzazione: "",
+            indirizzoIP: "",
+            hashtag: this.hashtag,
+          };
+          this.$emit("upload_file", fileCaricato);
+          this.reset();
           this.$emit("upload", res.data);
         })
         .catch((err) => {
-          this.$emit("upload", "ERR - " + err);
+          this.$emit("upload", err.toString());
         });
     },
   },

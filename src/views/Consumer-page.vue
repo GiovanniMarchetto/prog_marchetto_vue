@@ -179,7 +179,7 @@ export default {
           this.showMsg("Download effettuato");
         })
         .catch((err) => {
-          this.showMsg(err);
+          this.showMsg(err.toString());
         });
     },
 
@@ -204,7 +204,7 @@ export default {
         if (this.uploaders.length === 1)
           this.uploaderScelto = this.uploaders[0];
       })
-      .catch((err) => this.showMsg(err));
+      .catch((err) => (this.showMsg(err.toString())));
 
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/filesConsumer`)
@@ -214,7 +214,7 @@ export default {
         if (this.uploaderScelto != "")
           this.showFiles(this.uploaderScelto.username);
       })
-      .catch((err) => this.showMsg(err));
+      .catch((err) => (this.showMsg(err.toString())));
   },
 };
 </script>
