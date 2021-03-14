@@ -15,9 +15,9 @@
       ></b-col>
       <b-col sm="4" class="my-1">
         <b-form-group
-        label="Per page:"
+          label="Per page:"
           label-for="per-page-select"
-        label-cols-sm="3"
+          label-cols-sm="3"
         >
           <b-form-select
             id="per-page-select"
@@ -56,24 +56,24 @@
 
       <template #cell(actions)="row">
         <b-button
-          v-if="details === 'listConsumers' || details === 'listUploaders' || details === 'listResume'"
+          v-if="
+            details === 'listConsumers' ||
+              details === 'listUploaders' ||
+              details === 'listAdministrators' ||
+              details === 'listResume'
+          "
           @click="row.toggleDetails"
         >
           {{ row.detailsShowing ? "Hide" : "Show" }} Details
         </b-button>
+
         <b-button
+          v-if="details === 'listConsumers' || details === 'listUploaders'"
+          @click="$emit('mostraFiles', row.item.username)"
           variant="info"
-          v-if="details === 'listConsumers'"
-          @click="$emit('cons-files', row.item.username)"
           >Mostra File</b-button
         >
 
-        <b-button
-          v-if="details === 'listUploaders'"
-          variant="info"
-          @click="$emit('upl-files', row.item.username)"
-          >Mostra File</b-button
-        >
         <b-button
           v-if="details === 'listFilesUploader'"
           @click="$emit('download-file', row.item.id)"
@@ -90,7 +90,11 @@
               row.item.nameUploader
             }}</b-col>
             <b-col
-              v-if="details === 'listConsumers' || details === 'listUploaders'"
+              v-if="
+                details === 'listConsumers' ||
+                  details === 'listUploaders' ||
+                  details === 'listAdministrators'
+              "
               >{{ row.item.name }}</b-col
             >
           </b-row>
@@ -101,7 +105,11 @@
               row.item.emailUploader
             }}</b-col>
             <b-col
-              v-if="details === 'listConsumers' || details === 'listUploaders'"
+              v-if="
+                details === 'listConsumers' ||
+                  details === 'listUploaders' ||
+                  details === 'listAdministrators'
+              "
               >{{ row.item.email }}</b-col
             >
           </b-row>
@@ -142,7 +150,9 @@ export default {
     //   else x.className = x.className.concat(classeVoluta);
     // },
   },
+
   computed: {
+    //TODO: più efficiente ma quando si aggiorna il numero degli item non si aggiorna e quindi potrebbe essere che non si veda il nuovo elemento dell'array
     totalRows() {
       return this.items.length;
     },

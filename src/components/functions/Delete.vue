@@ -6,7 +6,7 @@
       <b-form @submit.prevent="deleteActor">
         <label for="username">Username attore da eliminare</label>
         <b-form-input
-        list="attori-list"
+          list="attori-list"
           id="username"
           type="text"
           name="username"
@@ -18,7 +18,7 @@
           id="attori-list"
           :options="attoriOptions"
         ></b-form-datalist>
-        
+
         <b-button type="submit" variant="danger">Elimina utente</b-button>
       </b-form>
       <p>
@@ -62,7 +62,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Delete",
-  props: ["potere","attoriOptions","fileOptions"],
+  props: ["potere", "attoriOptions", "fileOptions"],
   data() {
     return {
       username: "",

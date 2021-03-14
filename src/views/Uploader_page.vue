@@ -14,9 +14,10 @@
         :items="consumers"
         :fields="fieldsListConsumers"
         :details="'listConsumers'"
-        @cons-files="showFiles"
+        @mostraFiles="showFiles"
       />
     </div>
+
     <div v-show="sezione == 'secondaLista'">
       <h2>Lista Files di {{ consumerScelto }}</h2>
       <Table
@@ -30,21 +31,23 @@
       <Registration
         :potere="ruolo"
         :role="'consumer'"
-        @registrazione="registration_home"
+        @registrazione_utente="registrazione_utente_home"
+        @registrazione="showMsg"
       />
     </div>
     <div v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
         :role="ruoloForm"
-        @modInfo="modInfo_home"
+        @modInfo_utente="modInfo_utente_home"
+        @modInfo="showMsg"
       />
     </div>
     <div v-show="sezione == 'upload'">
       <Upload
         @upload_consumer="upload_consumer_home"
         @upload_file="upload_file_home"
-        @upload="upload_home"
+        @upload="showMsg"
       />
     </div>
     <div v-show="sezione == 'delete'">
@@ -54,7 +57,7 @@
         :fileOptions="fileOptions"
         @delete_file="delete_file_home"
         @delete_username="delete_username_home"
-        @delete="delete_home"
+        @delete="showMsg"
       />
     </div>
 
@@ -111,22 +114,22 @@ export default {
         "indirizzoIP",
         "hashtag",
       ],
-      attoriOptions: [],
-      fileOptions: [],
     };
   },
-  watch: {
-    consumers: function() {
-      this.attoriOptions = [];
+  computed: {
+    attoriOptions: function() {
+      let listAttori = [];
       this.consumers.forEach((cons) => {
-        this.attoriOptions.push(cons.username);
+        listAttori.push(cons.username);
       });
+      return listAttori;
     },
-    filesUploader: function() {
-      this.fileOptions = [];
+    fileOptions: function() {
+      let listFiles = [];
       this.filesUploader.forEach((file) => {
-        this.fileOptions.push(file.id);
+        listFiles.push(file.id);
       });
+      return listFiles;
     },
   },
   methods: {
@@ -134,54 +137,71 @@ export default {
       this.ruoloForm = ruoloInput;
     },
     showFiles(consUsername) {
-      //TODO: considera il fatto di dividere il fatto di mostrare i file dal fatto di mandarlo nella sezione dei file
+      this.consumerScelto = consUsername;
       this.filesConsumer = null;
       this.filesConsumer = this.filesUploader.filter(
         (file) => file.usernameCons === consUsername
       );
-      this.consumerScelto = consUsername;
       this.sezione = "secondaLista";
     },
 
-    registration_home(frase) {
-      this.showMsg(frase); //TODO: da rifare il resume?
+    registrazione_utente_home(nuovoConsumer) {
+      const { username, name, email, logo } = nuovoConsumer;
+      const infoConsumer = {
+        username: username,
+        name: name,
+        email: email,
+        logo: logo,
+      };
+      this.consumers.push(infoConsumer);
+      this.attoriOptions.push(username);
     },
-    modInfo_home(frase) {
-      this.showMsg(frase); //TODO: da rifare il resume?
+
+    modInfo_utente_home(modConsumer) {
+      const { utente, role } = modConsumer;
+      if (role === "consumer") {
+        this.consumers = this.consumers.filter(
+          (cons) => cons.username !== utente.username
+        );
+        this.consumers.push(utente);
+      }
     },
 
     upload_consumer_home(nuovoConsumer) {
       //TODO: controlla se funziona
       const { usernameCons } = nuovoConsumer;
-      if (this.consumers.findIndex((el) => el.username === usernameCons) === -1)
+      if (
+        this.consumers.findIndex((el) => el.username === usernameCons) === -1
+      ) {
         this.consumers.push(nuovoConsumer);
+        this.attoriOptions.push(usernameCons);
+      }
     },
     upload_file_home(fileCaricato) {
       this.filesUploader.push(fileCaricato);
-      this.showFiles(this.consumerScelto);
-      this.sezione = "upload"; //TODO: controlla se funziona e quanto lag procura questa ricarica
-    },
-    upload_home(frase) {
-      this.showMsg(frase);
-      //TODO se è ok devo mandare un messaggio che bisogna riaggiornare la pagina per vedere i file appena caricato
-      //TODO fare il confronto tra i consumer in lista, se non presente lo si aggiunge
+      if (fileCaricato.usernameCons === this.consumerScelto)
+        this.filesConsumer.push(fileCaricato);
+      this.fileOptions.push(fileCaricato.id);
     },
 
     delete_file_home(fileIdDel) {
       this.filesUploader = this.filesUploader.filter(
         (file) => file.id !== fileIdDel
       );
-      this.filesConsumer = this.filesUploader.filter(
-        (file) => file.usernameCons === this.consumerScelto
+      this.filesConsumer = this.filesConsumer.filter(
+        (file) => file.id !== fileIdDel
+      );
+      this.fileOptions = this.fileOptions.filter(
+        (fileId) => fileId !== fileIdDel
       );
     },
     delete_username_home(usernameDel) {
       this.consumers = this.consumers.filter(
         (cons) => cons.username !== usernameDel
       );
-    },
-    delete_home(frase) {
-      this.showMsg(frase);
+      this.attoriOptions = this.attoriOptions.filter(
+        (cons) => cons !== usernameDel
+      );
     },
   },
   created() {

@@ -75,8 +75,13 @@ export default {
           logo: this.logo,
         })
         .then((res) => {
+          const modUtente = {
+            utente: res.data,
+            role: this.role,
+          };
+          this.$emit("modInfo_utente", modUtente);
+          this.$emit("modInfo", "Modifica attore eseguita - " + this.username);
           this.reset();
-          this.$emit("modInfo", res.data);
         })
         .catch((err) => {
           this.$emit("modInfo", err.response.data);

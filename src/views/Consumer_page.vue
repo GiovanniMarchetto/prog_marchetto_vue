@@ -21,7 +21,7 @@
         :items="uploaders"
         :fields="fieldsListUploaders"
         :details="'listUploaders'"
-        @upl-files="showFiles"
+        @mostraFiles="showFiles"
       />
     </div>
 
@@ -57,7 +57,7 @@
     </div>
 
     <div v-show="sezione == 'modInfo'">
-      <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="modInfo_home" />
+      <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="showMsg" />
     </div>
 
     <Messages
@@ -181,10 +181,6 @@ export default {
           file.hashtag.includes(this.hashtag) &&
           file.usernameUpl === this.uploaderScelto.username
       );
-    },
-
-    modInfo_home(frase) {
-      this.showMsg(frase);
     },
   },
   created() {

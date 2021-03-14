@@ -123,7 +123,7 @@ export default {
 
           const dataCorrente = new Date();
           const fileCaricato = {
-            id: "TODO", //TODO: mi devo far tornare l'id del file!!!!
+            id: res.data,
             usernameUpl: localStorage.getItem("nomeUtente"),
             usernameCons: this.usernameCons,
             name: this.nameFile,
@@ -134,7 +134,7 @@ export default {
           };
           this.$emit("upload_file", fileCaricato);
           this.reset();
-          this.$emit("upload", res.data);
+          this.$emit("upload", "Upload file completato ("+res.data+")");
         })
         .catch((err) => {
           this.$emit("upload", err.response.data);

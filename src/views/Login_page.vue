@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-show="sezione == ''">
-      <Login @login="login_home" @login_username="login_username_home" />
+      <Login @login="showMsg" @login_username="login_username_home" />
       <b-button @click="sezione = 'registration'"
         >Non hai ancora un account</b-button
       >
@@ -10,7 +10,7 @@
       <Registration
         :potere="'consumer'"
         :role="'consumer'"
-        @registrazione="registration_home"
+        @registrazione="registrazione_home"
       />
       <b-button @click="sezione = ''">Ho già un account!</b-button>
     </div>
@@ -35,9 +35,6 @@ export default {
   components: { Login, Registration, Messages },
   mixins: [messagesMixin, sectionsMixin],
   methods: {
-    login_home(frase) {
-      this.showMsg(frase);
-    },
     login_username_home(username) {
       setTimeout(() => {
         if (username.length == 4) {
@@ -51,9 +48,9 @@ export default {
         }
       }, 1000);
     },
-
-    registration_home(frase) {
+    registrazione_home(frase) {
       this.showMsg(frase);
+      this.sezione = "";
     },
   },
   created() {

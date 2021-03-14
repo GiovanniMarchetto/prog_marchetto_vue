@@ -41,11 +41,21 @@
       <Table :items="resume" :fields="fieldsResume" :details="'listResume'" />
     </div>
 
+    <div v-show="sezione == 'secondaLista'">
+      <h2>Lista degli Amministratori</h2>
+      <Table
+        :items="administrators"
+        :fields="fieldsListAdministrators"
+        :details="'listAdministrators'"
+      />
+    </div>
+
     <div v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
         :role="ruoloForm"
-        @registrazione="registration_home"
+        @registrazione_utente="registrazione_utente_home"
+        @registrazione="showMsg"
       />
     </div>
 
@@ -53,7 +63,8 @@
       <ModInfo
         :potere="ruolo"
         :role="ruoloForm"
-        @modInfo="modInfo_home"
+        @modInfo_utente="modInfo_utente_home"
+        @modInfo="showMsg"
       />
     </div>
 
@@ -62,7 +73,7 @@
         :potere="ruolo"
         :attoriOptions="attoriOptions"
         @delete_username="delete_username_home"
-        @delete="delete_home"
+        @delete="showMsg"
       />
     </div>
 
@@ -106,6 +117,7 @@ export default {
     return {
       ruolo: "administrator",
       resume: [],
+      administrators: [],
       dateFrom: "",
       dateTo: "",
       dateFromSelected: "",
@@ -121,15 +133,19 @@ export default {
         },
         "actions",
       ],
-      attoriOptions: [],
+      fieldsListAdministrators: ["username", "actions"],
     };
   },
-  watch: {
-    resume: function() {
-      this.attoriOptions = [];
+  computed: {
+   attoriOptions: function() {
+     let listAttori = [];
       this.resume.forEach((el) => {
-        this.attoriOptions.push(el.uploader);
+        listAttori.push(el.uploader);
       });
+      this.administrators.forEach((el) => {
+        listAttori.push(el.username);
+      });
+      return listAttori;
     },
   },
   methods: {
@@ -149,20 +165,54 @@ export default {
     modificaRuoloForm(ruoloInput) {
       this.ruoloForm = ruoloInput;
     },
-    registration_home(frase) {
-      this.showMsg(frase);
+
+    registrazione_utente_home(nuovoUtente) {
+      const { username, name, email, role, logo } = nuovoUtente;
+      if (role === "administrator") {
+        const infoAdmin = {
+          username: username,
+          name: name,
+          email: email,
+          logo: logo,
+        };
+        this.administrators.push(infoAdmin);
+      } else {
+        const resumeElem = {
+          uploader: username,
+          nameUploader: name,
+          emailUploader: email,
+          numDocCaricati: 0,
+          numConsDiversi: 0,
+        };
+        this.resume.push(resumeElem);
+      }
+      this.attoriOptions.push(username);
     },
 
-    modInfo_home(frase) {
-      this.showMsg(frase);
+    modInfo_utente_home(modUtente) {
+      const { utente, role } = modUtente;
+      if (role === "administrator") {
+        let index = this.resume.findIndex(
+          (el) => el.uploader === utente.username
+        );
+        if (index !== -1) {
+          this.administrators[index].name = utente.name;
+          this.administrators[index].email = utente.email;
+        }
+      } else {
+        let index = this.resume.findIndex(
+          (el) => el.uploader === utente.username
+        );
+        this.resume[index].nameUploader = utente.name;
+        this.resume[index].emailUploader = utente.email;
+      }
     },
 
     delete_username_home(usernameUpl) {
       this.resume = this.resume.filter((el) => el.uploader !== usernameUpl);
-    },
-
-    delete_home(frase) {
-      this.showMsg(frase);
+      this.attoriOptions = this.attoriOptions.filter(
+        (el) => el !== usernameUpl
+      );
     },
 
     dataFilter() {
@@ -181,12 +231,6 @@ export default {
     },
     datesForLastMonth() {
       const today = new Date();
-      //TODO: così mi sembra più semplice
-      // let dataCorrente = new Date();
-      //             let dataScritta =
-      //               dataCorrente.toISOString().substring(0, 10) +
-      //               " " +
-      //               dataCorrente.toLocaleTimeString();
       if (today.getMonth() == 0) {
         this.dateFrom = today.getFullYear() - 1 + "-12-01";
       } else if (today.getMonth() > 9) {
@@ -197,18 +241,17 @@ export default {
           today.getFullYear() + "-0" + today.getMonth() + "-" + "01";
       }
 
-      if (today.getMonth() < 9) {
-        this.dateTo =
-          today.getFullYear() + "-0" + (today.getMonth() + 1) + "-" + "01";
-      } else {
-        this.dateTo =
-          today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + "01";
-      }
+      this.dateTo = today.toISOString().substring(0, 8) + "01";
     },
   },
   created() {
     this.datesForLastMonth();
     this.dataFilter();
+
+    axios
+      .get(`${process.env.VUE_APP_APIROOT}/list/administrators`)
+      .then((res) => (this.administrators = res.data))
+      .catch((err) => this.showMsg(err.toString()));
   },
 };
 </script>
