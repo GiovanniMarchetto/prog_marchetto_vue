@@ -8,15 +8,7 @@ export var messagesMixin = {
   },
   methods: {
     showMsg(frase) {
-      // if (frase.startsWith("ERR")) this.msg_error = frase;
-      // else this.msg_success = frase;
-
-      // setTimeout(() => {
-      //   this.msg_error = "";
-      //   this.msg_success = "";
-      // }, 5000);
-
-      if (frase.startsWith("ERR")||frase.startsWith("Err")) {//alla fine solo il secondo dovrebbe rimanere
+      if (frase.startsWith("ERR")||frase.startsWith("Err")) {
         this.msg_error = frase;
         this.$bvToast.show("msg_e");
       } else if (frase.startsWith("WARN")) {
@@ -27,6 +19,27 @@ export var messagesMixin = {
         this.$bvToast.show("msg_s");
       }
     },
+    // creaToast(frase) {
+    //   // eslint-disable-next-line no-unused-vars
+    //   let titolo = "";
+    //   let variante = "primary";
+    //   if (frase.startsWith("ERR") || frase.startsWith("Err")) {
+    //     titolo="ERROR";
+    //     variante="danger";
+    //   } else if (frase.startsWith("WARN")) {
+    //     titolo="Warning!";
+    //     variante="warning";
+    //   } else {
+    //     titolo="Success!";
+    //     variante="success";
+    //   }
+    //   this.$bvToast.toast(frase, {
+    //     title: "ciccio",
+    //     autoHideDelay: 5000,
+    //     appendToast: true,
+    //     variant: variante
+    //   });
+    // },
   },
 };
 
