@@ -66,7 +66,7 @@ export default {
   methods: {
     modInfo() {
       axios
-        .post(`${process.env.VUE_APP_APIROOT}/attori/modInfo`, {
+        .patch(`${process.env.VUE_APP_APIROOT}/attori/modInfo`, {
           username: this.username,
           password: this.password,
           name: this.name,
@@ -80,7 +80,16 @@ export default {
             role: this.role,
           };
           this.$emit("modInfo_utente", modUtente);
-          this.$emit("modInfo", "Modifica attore eseguita - " + this.username);
+          if (this.username !== "")
+            this.$emit(
+              "modInfo",
+              "Modifica attore eseguita - " + this.username
+            );
+          else
+            this.$emit(
+              "modInfo",
+              "Modifica delle proprie informazioni eseguita"
+            );
           this.reset();
         })
         .catch((err) => {
