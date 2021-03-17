@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Eliminazione</h2>
+
     <b-container fluid>
       <h3>Elimina attore</h3>
       <b-form @submit.prevent="deleteActor">
@@ -51,10 +52,12 @@
         NB: puoi cancellare solo i file da te caricati
       </p>
     </b-container>
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
+import Spinner from "@/components/layout/Spinner";
 import axios from "axios";
 axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
   "jwtToken"
@@ -62,15 +65,18 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Delete",
+  components: { Spinner },
   props: ["potere", "attoriOptions", "fileOptions"],
   data() {
     return {
       username: "",
       fileId: "",
+      attesa: false,
     };
   },
   methods: {
     deleteActor() {
+      this.attesa = true;
       axios
         .delete(`${process.env.VUE_APP_APIROOT}/attori/delete/${this.username}`)
         .then((res) => {
@@ -80,9 +86,13 @@ export default {
         })
         .catch((err) => {
           this.$emit("delete", err.response.data);
+        })
+        .finally(() => {
+          this.attesa = false;
         });
     },
     deleteFile() {
+      this.attesa = true;
       axios
         .delete(`${process.env.VUE_APP_APIROOT}/files/delete/${this.fileId}`)
         .then((res) => {
@@ -92,6 +102,9 @@ export default {
         })
         .catch((err) => {
           this.$emit("delete", err.err.response.data);
+        })
+        .finally(() => {
+          this.attesa = false;
         });
     },
   },

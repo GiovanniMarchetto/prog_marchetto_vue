@@ -33,10 +33,12 @@
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
+import Spinner from "@/components/layout/Spinner";
 import FileInput from "../input/FileInput";
 import UserInfo from "../input/UserInfo";
 
@@ -51,6 +53,7 @@ export default {
   components: {
     FileInput,
     UserInfo,
+    Spinner,
   },
   data() {
     return {
@@ -61,6 +64,7 @@ export default {
       usernameCons: "",
       nameCons: "",
       emailCons: "",
+      attesa: false,
     };
   },
   methods: {
@@ -103,6 +107,7 @@ export default {
       this.emailCons = "";
     },
     upload() {
+      this.attesa = true;
       axios
         .post(`${process.env.VUE_APP_APIROOT}/files/upload`, {
           file: this.file,
@@ -134,10 +139,13 @@ export default {
           };
           this.$emit("upload_file", fileCaricato);
           this.reset();
-          this.$emit("upload", "Upload file completato ("+res.data+")");
+          this.$emit("upload", "Upload file completato (" + res.data + ")");
         })
         .catch((err) => {
           this.$emit("upload", err.response.data);
+        })
+        .finally(() => {
+          this.attesa = false;
         });
     },
   },

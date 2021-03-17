@@ -27,10 +27,12 @@
       <b-button type="submit" variant="success">Registrazione</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
+import Spinner from "@/components/layout/Spinner";
 import Credenziali from "@/components/input/Credenziali";
 import UserInfo from "@/components/input/UserInfo";
 import Logo from "@/components/input/Logo";
@@ -51,12 +53,14 @@ export default {
     Credenziali,
     UserInfo,
     Logo,
+    Spinner,
   },
   data() {
-    return {};
+    return { attesa: false };
   },
   methods: {
     registration() {
+      this.attesa = true;
       axios
         .post(`${process.env.VUE_APP_APIROOT}/attori/registration`, {
           username: this.username,
@@ -64,7 +68,7 @@ export default {
           name: this.name,
           email: this.email,
           role: this.role,
-          logo: this.logo
+          logo: this.logo,
         })
         .then((res) => {
           const nuovoUtente = {
@@ -81,8 +85,10 @@ export default {
         })
         .catch((err) => {
           this.$emit("registrazione", err.response.data);
+        })
+        .finally(() => {
+          this.attesa = false;
         });
-      // }
     },
   },
 };

@@ -48,9 +48,8 @@
       <template #cell(logo)="row">
         <b-img
           v-bind="logoProps"
-          :src="`url(${row.item.logo})`"
+          :src="`${row.item.logo}`"
           alt="Logo uploader"
-          style=""
         ></b-img
       ></template>
 
@@ -140,19 +139,9 @@ export default {
       if (!item || type !== "row") return;
       if (item.dataVisualizzazione === "") return "table-warning";
     },
-    // nonStacked() {
-    //   //todo: lasciare?
-    //   console.log("Sono qua");
-    //   let x = document.getElementById("tabellaT");
-    //   let classeVoluta = " b-table-stacked";
-    //   if (x.className.includes(classeVoluta))
-    //     x.className = x.className.replace(classeVoluta, "");
-    //   else x.className = x.className.concat(classeVoluta);
-    // },
   },
 
   computed: {
-    //TODO: più efficiente ma quando si aggiorna il numero degli item non si aggiorna e quindi potrebbe essere che non si veda il nuovo elemento dell'array
     totalRows() {
       return this.items.length;
     },

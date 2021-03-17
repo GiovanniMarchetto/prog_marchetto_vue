@@ -12,26 +12,22 @@
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
 
-    <div v-show="attesa == true">
-      <b-button block variant="light" disabled>
-        <b-spinner small></b-spinner>
-        Loading...
-      </b-button>
-    </div>
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
 import Credenziali from "@/components/input/Credenziali";
+import Spinner from "@/components/layout/Spinner";
 import axios from "axios";
 export default {
   name: "Login",
   components: {
     Credenziali,
+    Spinner,
   },
   data() {
     return {
-      // TODO POSSO METTERE IL MIXIN ANCHE SE HA COSE IN PIÙ
       username: "",
       password: "",
       attesa: false,
@@ -48,12 +44,13 @@ export default {
         .then((res) => {
           localStorage.setItem("jwtToken", res.data);
           localStorage.setItem("nomeUtente", this.username);
-          this.$emit("login", "Login eseguito - "+this.username);
-          this.$emit("login_username",this.username);
-          this.attesa = false;
+          this.$emit("login", "Login eseguito - " + this.username);
+          this.$emit("login_username", this.username);
         })
         .catch((err) => {
           this.$emit("login", err.response.data);
+        })
+        .finally(() => {
           this.attesa = false;
         });
     },

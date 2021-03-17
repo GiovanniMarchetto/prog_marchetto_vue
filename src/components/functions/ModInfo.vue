@@ -30,16 +30,19 @@
     </b-form>
     <section>
       <h3>Istruzioni per la modifica</h3>
+      <!-- TODO: scriverer meglio le istruzioni -->
       <p>Inserire i dati da modificare (non si può modificare l'username).</p>
       <p v-show="potere != 'consumer'">
         Se si vuole modificare le informazioni di un altro utente immettere
         l'username.
       </p>
     </section>
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
+import Spinner from "@/components/layout/Spinner";
 import Credenziali from "@/components/input/Credenziali";
 import UserInfo from "@/components/input/UserInfo";
 import Logo from "@/components/input/Logo";
@@ -59,12 +62,14 @@ export default {
     Credenziali,
     UserInfo,
     Logo,
+    Spinner,
   },
   data() {
-    return {};
+    return { attesa: false };
   },
   methods: {
     modInfo() {
+      this.attesa = true;
       axios
         .patch(`${process.env.VUE_APP_APIROOT}/attori/modInfo`, {
           username: this.username,
@@ -94,6 +99,9 @@ export default {
         })
         .catch((err) => {
           this.$emit("modInfo", err.response.data);
+        })
+        .finally(() => {
+          this.attesa = false;
         });
     },
   },

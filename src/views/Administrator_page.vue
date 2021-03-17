@@ -82,11 +82,13 @@
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/layout/Navbar";
+import Spinner from "@/components/layout/Spinner";
 import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
@@ -111,6 +113,7 @@ export default {
     Delete,
     DatesResume,
     Messages,
+    Spinner,
   },
   mixins: [messagesMixin, sectionsMixin],
   data() {
@@ -134,11 +137,12 @@ export default {
         "actions",
       ],
       fieldsListAdministrators: ["username", "actions"],
+      attesa: false,
     };
   },
   computed: {
-   attoriOptions: function() {
-     let listAttori = [];
+    attoriOptions: function() {
+      let listAttori = [];
       this.resume.forEach((el) => {
         listAttori.push(el.uploader);
       });
@@ -216,6 +220,7 @@ export default {
     },
 
     dataFilter() {
+      this.attesa = true;
       axios
         .post(`${process.env.VUE_APP_APIROOT}/list/resumeForAdmin`, {
           from: this.dateFrom,
@@ -227,7 +232,10 @@ export default {
           this.dateToSelected = this.dateTo;
           this.showMsg("Resoconto fornito");
         })
-        .catch((err) => this.showMsg(err.toString()));
+        .catch((err) => this.showMsg(err.toString()))
+        .finally(() => {
+          this.attesa = false;
+        });
     },
     datesForLastMonth() {
       const today = new Date();
@@ -247,11 +255,14 @@ export default {
   created() {
     this.datesForLastMonth();
     this.dataFilter();
-
+    this.attesa = true;
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/administrators`)
       .then((res) => (this.administrators = res.data))
-      .catch((err) => this.showMsg(err.toString()));
+      .catch((err) => this.showMsg(err.toString()))
+      .finally(() => {
+        this.attesa = false;
+      });
   },
 };
 </script>
