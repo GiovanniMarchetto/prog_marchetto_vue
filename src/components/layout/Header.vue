@@ -1,7 +1,8 @@
 <template>
   <header>
     <Logout v-show="!this.$route.path.endsWith('/')" />
-    <h1 style="margin-bottom:0">ProgMarchetto</h1>
+    <h1>ProgMarchetto</h1>
+    <!-- <h1 style="margin-bottom:0">ProgMarchetto</h1> -->
     <!--<div id="nav">
       <router-link to="/">Login page</router-link> |
       <router-link to="/administrator_page">Administrator</router-link> |

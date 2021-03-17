@@ -1,13 +1,12 @@
 <template>
   <div>
-    <b-container fluid v-show="sezione == 'secondaLista'"
-      ><b-img
+    <b-container id="logoUploader" fluid v-show="sezione == 'secondaLista'">
+      <b-img
         v-bind="imgProps"
         :src="`${uploaderScelto.logo}`"
         alt="Logo uploader"
       ></b-img
     ></b-container>
-
     <Navbar
       :potere="ruolo"
       :nomePrimaLista="'Lista uploader'"
@@ -65,11 +64,13 @@
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
+    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/layout/Navbar";
+import Spinner from "@/components/layout/Spinner";
 import Table from "@/components/layout/Table";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
@@ -83,7 +84,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Consumer_page",
-  components: { Navbar, Table, ModInfo, Messages },
+  components: { Navbar, Table, ModInfo, Messages, Spinner },
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -102,11 +103,13 @@ export default {
         "actions",
       ],
       imgProps: {
-        left: true,
+        // left: true,
+        block: true,
         rounded: "circle",
         width: 150,
         height: 150,
       },
+      attesa: false,
     };
   },
   watch: {
@@ -135,8 +138,8 @@ export default {
           if (a.dataVisualizzazione < b.dataVisualizzazione) return -1;
           if (a.dataVisualizzazione > b.dataVisualizzazione) return 1;
         }
-        if (a.dataCaricamento < b.dataCaricamento) return -1;
-        if (a.dataCaricamento > b.dataCaricamento) return 1;
+        if (a.dataCaricamento < b.dataCaricamento) return 1;
+        if (a.dataCaricamento > b.dataCaricamento) return -1;
         return 0;
       });
       this.filesUploader = this.filesConsumer.filter(
@@ -144,6 +147,7 @@ export default {
       );
     },
     download(id) {
+      this.attesa = true;
       axios
         .get(`${process.env.VUE_APP_APIROOT}/files/download/${id}`)
         .then((res) => {
@@ -171,6 +175,9 @@ export default {
         })
         .catch((err) => {
           this.showMsg(err.response.data);
+        })
+        .finally(() => {
+          this.attesa = false;
         });
     },
 
@@ -184,6 +191,7 @@ export default {
     },
   },
   created() {
+    this.attesa = true;
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
       .then((res) => {
@@ -201,9 +209,16 @@ export default {
         if (this.uploaderScelto != "")
           this.showFiles(this.uploaderScelto.username);
       })
-      .catch((err) => this.showMsg(err.toString()));
+      .catch((err) => this.showMsg(err.toString()))
+      .finally(() => {
+        this.attesa = false;
+      });
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#logoUploader {
+  background: #343a40;
+}
+</style>
