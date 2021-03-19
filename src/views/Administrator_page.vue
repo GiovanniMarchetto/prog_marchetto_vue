@@ -26,9 +26,8 @@
         style="margin-bottom:10px"
       >
         <DatesResume
-          :dateFrom="dateFrom"
-          :dateTo="dateTo"
-          @change-info="change_home"
+          :dateFrom.sync="dateFrom"
+          :dateTo.sync="dateTo"
         />
         <b-button class="btn-inline" type="submit" variant="outline-primary"
           >Resoconto</b-button
@@ -153,19 +152,6 @@ export default {
     },
   },
   methods: {
-    change_home(infos) {
-      const { nameProp, valueProp } = infos;
-      switch (nameProp) {
-        case "dateFrom":
-          this.dateFrom = valueProp;
-          break;
-        case "dateTo":
-          this.dateTo = valueProp;
-          break;
-        default:
-          break;
-      }
-    },
     modificaRuoloForm(ruoloInput) {
       this.ruoloForm = ruoloInput;
     },

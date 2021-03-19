@@ -6,23 +6,20 @@
       <Credenziali
         v-show="potere != 'consumer'"
         :required="false"
-        :username="username"
-        :password="password"
-        @change-info="change_home"
+        :username.sync="username"
+        :password.sync="password"
       />
 
       <UserInfo
         :required="false"
-        :name="name"
-        :email="email"
-        @change-info="change_home"
+        :name.sync="name"
+        :email.sync="email"
       />
 
       <Logo
         v-if="role === 'uploader'"
         :required="false"
-        :logo="logo"
-        @change-info="change_home"
+        :logo.sync="logo"
       />
 
       <b-button type="submit" variant="success">Modifica informazioni</b-button>

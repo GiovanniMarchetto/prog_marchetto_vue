@@ -5,23 +5,20 @@
     <b-form @submit.prevent="registration" @reset="reset">
       <Credenziali
         :required="true"
-        :username="username"
-        :password="password"
-        @change-info="change_home"
+        :username.sync="username"
+        :password.sync="password"
       />
 
       <UserInfo
         :required="true"
-        :name="name"
-        :email="email"
-        @change-info="change_home"
+        :name.sync="name"
+        :email.sync="email"
       />
 
       <Logo
         v-if="role === 'uploader'"
         :required="true"
-        :logo="logo"
-        @change-info="change_home"
+        :logo.sync="logo"
       />
 
       <b-button type="submit" variant="success">Registrazione</b-button>

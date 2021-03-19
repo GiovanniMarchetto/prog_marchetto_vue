@@ -1,64 +1,89 @@
 <template>
   <b-container fluid>
     <!-- <legend>File</legend> -->
-    <b-form-group id="file-group" label="File:" label-for="file">
+    <b-form-group id="fileInput-group" label="File:" label-for="fileInput">
       <b-form-file
         @change.native="trasf64"
-        id="file"
+        id="fileInput"
         type="file"
-        name="file"
-        v-model="file"
+        name="fileInput"
+        v-model="fileInput"
         required
       />
     </b-form-group>
 
     <b-form-group
-      id="nameFile-group"
+      id="nameFileInput-group"
       label="Nome del file:"
-      label-for="nameFile"
+      label-for="nameFileInput"
     >
       <b-form-input
-        @change.native="change_info"
-        id="nameFile"
+        id="nameFileInput"
         type="text"
-        name="nameFile"
-        v-model="nameFile"
+        name="nameFileInput"
+        v-model="nameFileInput"
         placeholder="name of file"
         required
       />
     </b-form-group>
 
-    <b-form-group id="hashtag-group" label="Hashtag:" label-for="hashtag">
+    <b-form-group
+      id="hashtagInput-group"
+      label="Hashtag:"
+      label-for="hashtagInput"
+    >
       <b-form-input
-        @change.native="change_info"
-        id="hashtag"
+        id="hashtagInput"
         type="text"
-        name="hashtag"
-        v-model="hashtag"
-        placeholder="hashtag"
+        name="hashtagInput"
+        v-model="hashtagInput"
+        placeholder="some hashtag"
       />
     </b-form-group>
   </b-container>
 </template>
 
 <script>
-import { changeInfoMixin } from "@/utils/utils";
-
 export default {
   name: "FileInput",
   props: ["file", "nameFile", "hashtag"],
-  mixins: [changeInfoMixin],
-  watch: {
-    file: function() {
-      const valoreFile = { nameProp: "file", valueProp: this.file };
-      this.$emit("change-info", valoreFile);
+  data() {
+    return {
+      fileInput:null
+    };
+  },
+  computed: {
+    fileStringInput: {
+      get: function() {
+        return this.file;
+      },
+      set: function(newValue) {
+        this.$emit("update:file", newValue);
+      },
+    },
+    nameFileInput: {
+      get: function() {
+        return this.nameFile;
+      },
+      set: function(newValue) {
+        this.$emit("update:nameFile", newValue);
+      },
+    },
+    hashtagInput: {
+      get: function() {
+        return this.hashtag;
+      },
+      set: function(newValue) {
+        this.$emit("update:hashtag", newValue);
+      },
     },
   },
+
   methods: {
     trasf64(imgObj) {
       const reader = new FileReader();
       reader.onload = (elem) => {
-        this.file = elem.target.result.replace(/^data:.+;base64,/, "");
+        this.fileStringInput = elem.target.result.replace(/^data:.+;base64,/, "");
       };
       reader.onerror = function(error) {
         console.log("Error: ", error);
@@ -67,11 +92,7 @@ export default {
 
       let nameObject = imgObj.target.files[0].name;
       let lastDot = nameObject.lastIndexOf(".");
-      const valoreExt = {
-        nameProp: "extension",
-        valueProp: nameObject.substring(lastDot),
-      };
-      this.$emit("change-info", valoreExt);
+      this.$emit("update:extension", nameObject.substring(lastDot));
       //https://stackoverflow.com/questions/43708127/javascript-get-the-filename-and-extension-from-input-type-file
     },
   },

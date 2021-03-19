@@ -2,24 +2,22 @@
   <b-container fluid>
     <!-- <legend>Informazioni utente</legend> -->
 
-    <b-form-group id="name-group" label="Name:" label-for="name">
+    <b-form-group id="nameInput-group" label="Name:" label-for="nameInput">
       <b-form-input
-        @change.native="change_info"
-        id="name"
+        id="nameInput"
         type="text"
-        name="name"
-        v-model="name"
+        name="nameInput"
+        v-model="nameInput"
         placeholder="name"
       />
     </b-form-group>
 
-    <b-form-group id="email-group" label="Email:" label-for="email">
+    <b-form-group id="emailInput-group" label="Email:" label-for="emailInput">
       <b-form-input
-        @change.native="change_info"
-        id="email"
+        id="emailInput"
         type="email"
-        name="email"
-        v-model="email"
+        name="emailInput"
+        v-model="emailInput"
         placeholder="email"
       />
     </b-form-group>
@@ -27,16 +25,32 @@
 </template>
 
 <script>
-import { changeInfoMixin } from "@/utils/utils";
 
 export default {
   name: "UserInfo",
   props: ["required","name","email"],
-  mixins: [changeInfoMixin],
+  computed: {
+        nameInput: {
+            get: function(){
+                return this.name;
+            },
+            set: function(newValue){
+                this.$emit('update:name', newValue)
+            }   
+        },
+        emailInput: {
+            get: function(){
+                return this.email;
+            },
+            set: function(newValue){
+                this.$emit('update:email', newValue)
+            }   
+        },
+    },
   mounted() {
     if (this.required) {
-      document.getElementById("name").setAttribute("required", "true");
-      document.getElementById("email").setAttribute("required", "true");
+      document.getElementById("nameInput").setAttribute("required", "true");
+      document.getElementById("emailInput").setAttribute("required", "true");
     }
   },
 };

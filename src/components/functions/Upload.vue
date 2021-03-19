@@ -3,10 +3,9 @@
     <h2>Caricamento file</h2>
     <b-form @submit.prevent="upload" @reset.prevent="reset">
       <FileInput
-        :file="file"
-        :nameFile="nameFile"
-        :hashtag="hashtag"
-        @change-info="change_home"
+        :file.sync="file"
+        :nameFile.sync="nameFile"
+        :hashtag.sync="hashtag"
       />
 
       <legend>Dati Consumer</legend>
@@ -25,11 +24,10 @@
       ></b-container>
       <UserInfo
         :required="false"
-        :name="nameCons"
-        :email="emailCons"
-        @change-info="change_home"
+        :name.sync="nameCons"
+        :email.sync="emailCons"
       />
-      <!-- devo passare i valori all'input -->
+      
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -68,35 +66,6 @@ export default {
     };
   },
   methods: {
-    change_home(infos) {
-      const { nameProp, valueProp } = infos;
-      switch (nameProp) {
-        case "file":
-          this.file = valueProp;
-          break;
-        case "nameFile":
-          this.nameFile = valueProp;
-          break;
-        case "hashtag":
-          this.hashtag = valueProp;
-          break;
-        case "extension":
-          this.extension = valueProp;
-          break;
-        // case "usernameCons":
-        //   this.usernameCons = valueProp;
-        //   break;
-        case "name":
-          this.nameCons = valueProp;
-          break;
-        case "email":
-          this.emailCons = valueProp;
-          break;
-        default:
-          console.log("switch concluso a vuoto");
-          break;
-      }
-    },
     reset() {
       this.file = "";
       this.extension = "";

@@ -67,32 +67,6 @@ export var formUtente = {
     };
   },
   methods: {
-    change_home(infos) {
-      const { nameProp, valueProp } = infos;
-      switch (nameProp) {
-        case "username":
-          this.username = valueProp;
-          break;
-        case "password":
-          this.password = valueProp;
-          break;
-        case "name":
-          this.name = valueProp;
-          break;
-        case "email":
-          this.email = valueProp;
-          break;
-        case "role":
-          this.role = valueProp;
-          break;
-        case "logo":
-          this.logo = valueProp;
-          break;
-        default:
-          console.log("switch concluso a vuoto");
-          break;
-      }
-    },
     reset() {
       this.username = "";
       this.password = "";
@@ -102,12 +76,3 @@ export var formUtente = {
     },
   },
 };
-
-export var changeInfoMixin = {
-  methods: {
-    change_info(e) {
-      const valore = { nameProp: e.target.name, valueProp: e.target.value };
-      this.$emit("change-info", valore);
-    },
-  }
-}

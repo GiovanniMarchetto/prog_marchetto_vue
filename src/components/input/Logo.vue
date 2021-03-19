@@ -1,11 +1,13 @@
 <template>
 <b-container fluid>
   <b-form-group
-  id="logo-group" label="Logo:" label-for="logo">
+  id="logoInput-group" label="Logo:" label-for="logoInput">
     <b-form-file
       @change.native="trasf64"
-      id="logo"
-      name="logo"
+      id="logoInput"
+      type="file"
+      name="logoInput"
+      v-model="logoInput"
       placeholder="Choose a file or drop it here..."
       accept="image/*"
     />
@@ -15,7 +17,7 @@
       id="anteprima-logo"
       center
         rounded
-        :src="`${logo}`"
+        :src="`${logoStringInput}`"
         alt="Anteprima Logo"
       />
     </figure>
@@ -27,17 +29,16 @@
 export default {
   name: "Logo",
   props: ["required","logo"],
-  watch: {
-    logo: function(val) {
-      const valore = { nameProp: "logo", valueProp: val };
-      this.$emit("change-info", valore);
-    },
+  data() {
+    return {
+      logoInput:null
+    };
   },
   methods: {
     trasf64(imgObj) {
       const reader = new FileReader();
       reader.onload = (elem) => {
-        this.logo = elem.target.result;
+        this.logoStringInput = elem.target.result;
       };
       reader.onerror = function(error) {
         console.log("Error: ", error);
@@ -45,9 +46,19 @@ export default {
       reader.readAsDataURL(imgObj.target.files[0]);
     },
   },
+  computed: {
+        logoStringInput: {
+            get: function(){
+                return this.logo;
+            },
+            set: function(newValue){
+                this.$emit('update:logo', newValue)
+            }   
+        },
+    },
   mounted() {
     if (this.required)
-      document.getElementById("logo").setAttribute("required", "true");
+      document.getElementById("logoInput").setAttribute("required", "true");
   },
 };
 </script>

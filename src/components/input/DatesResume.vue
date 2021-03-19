@@ -3,22 +3,20 @@
   <!-- <b-container> -->
     <!-- <b-form-group id="dateFrom-group" label="Dal: " label-for="dateFrom"> -->
       <b-form-input
-        @change.native="change_info"
-        id="dateFrom"
-        name="dateFrom"
+        id="dateFromInput"
+        name="dateFromInput"
         type="date"
-        v-model="dateFrom"
+        v-model="dateFromInput"
         required
       ></b-form-input>
     <!-- </b-form-group> -->
 
     <!-- <b-form-group id="dateTo-group" label="Al: " label-for="dateTo"> -->
       <b-form-input
-        @change.native="change_info"
-        id="dateTo"
-        name="dateTo"
+        id="dateToInput"
+        name="dateToInput"
         type="date"
-        v-model="dateTo"
+        v-model="dateToInput"
         required
       ></b-form-input>
     </b-form-group>
@@ -26,12 +24,28 @@
 </template>
 
 <script>
-import { changeInfoMixin } from "@/utils/utils";
 
 export default {
   name: "DatesResume",
   props: ["dateFrom", "dateTo"],
-  mixins: [changeInfoMixin],
+  computed: {
+        dateFromInput: {
+            get: function(){
+                return this.dateFrom;
+            },
+            set: function(newValue){
+                this.$emit('update:dateFrom', newValue)
+            }   
+        },
+        dateToInput: {
+            get: function(){
+                return this.dateTo;
+            },
+            set: function(newValue){
+                this.$emit('update:dateTo', newValue)
+            }   
+        },
+    },
 };
 </script>
 
