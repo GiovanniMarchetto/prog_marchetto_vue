@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <b-form-group>
+    <b-form-group
+    description="I file caricati il giorno d'inizio del periodo sono inclusi,
+        quelli caricati il giorno di conclusione del periodo sono esclusi.">
       <legend>Filtro per periodo:</legend>
       
       <b-form-datepicker

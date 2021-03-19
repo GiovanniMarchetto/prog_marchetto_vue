@@ -26,11 +26,7 @@
         :caricamentoDati="caricamentoDati"
       />
 
-      <p>
-        Info: I file caricati il giorno d'inizio del periodo sono inclusi,
-        quelli caricati il giorno di conclusione del periodo sono esclusi.
-      </p>
-
+    
       <b-form
         @submit.prevent="dataFilter"
         @reset.prevent="datesForLastMonth"
