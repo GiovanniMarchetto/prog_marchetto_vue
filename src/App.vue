@@ -59,9 +59,6 @@ form {
 .btn {
   margin: 10px;
 }
-.btn-inline {
-  margin: 0px;
-}
 
 /*
 input {

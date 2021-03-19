@@ -8,6 +8,7 @@
         type="file"
         name="fileInput"
         v-model="fileInput"
+        placeholder="Scegli un file o trascinalo qui..."
         required
       />
     </b-form-group>

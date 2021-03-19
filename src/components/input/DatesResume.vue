@@ -1,51 +1,49 @@
 <template>
-<b-form-group>
-  <!-- <b-container> -->
-    <!-- <b-form-group id="dateFrom-group" label="Dal: " label-for="dateFrom"> -->
-      <b-form-input
+  <b-container fluid>
+    <b-form-group>
+      <legend>Filtro per periodo:</legend>
+      
+      <b-form-datepicker
         id="dateFromInput"
         name="dateFromInput"
         type="date"
         v-model="dateFromInput"
         required
-      ></b-form-input>
-    <!-- </b-form-group> -->
+      ></b-form-datepicker>
 
-    <!-- <b-form-group id="dateTo-group" label="Al: " label-for="dateTo"> -->
-      <b-form-input
+      <b-form-datepicker
         id="dateToInput"
         name="dateToInput"
         type="date"
         v-model="dateToInput"
         required
-      ></b-form-input>
+      ></b-form-datepicker>
     </b-form-group>
-  <!-- </b-container> -->
+  </b-container>
 </template>
 
 <script>
-
 export default {
   name: "DatesResume",
   props: ["dateFrom", "dateTo"],
   computed: {
-        dateFromInput: {
-            get: function(){
-                return this.dateFrom;
-            },
-            set: function(newValue){
-                this.$emit('update:dateFrom', newValue)
-            }   
-        },
-        dateToInput: {
-            get: function(){
-                return this.dateTo;
-            },
-            set: function(newValue){
-                this.$emit('update:dateTo', newValue)
-            }   
-        },
+    dateFromInput: {
+      get: function() {
+        return this.dateFrom;
+      },
+      set: function(newValue) {
+        this.$emit("update:dateFrom", newValue);
+      },
     },
+    dateToInput: {
+      get: function() {
+        return this.dateTo;
+      },
+      set: function(newValue) {
+        this.$emit("update:dateTo", newValue);
+      },
+    },
+  },
 };
 </script>
 

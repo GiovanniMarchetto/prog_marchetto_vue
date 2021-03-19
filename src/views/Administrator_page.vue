@@ -12,32 +12,30 @@
       <h2>Resoconto uploader</h2>
 
       <h3>
-        Periodo selezionato (anno-mese-giorno): dal {{ dateFromSelected }} al
-        {{ dateToSelected }}
+        Resoconto dal {{ dateFromSelected.substring(8, 10) }}-{{
+          dateFromSelected.substring(5, 7)
+        }}-{{ dateFromSelected.substring(0, 4) }} al
+        {{ dateToSelected.substring(8, 10) }}-{{
+          dateToSelected.substring(5, 7)
+        }}-{{ dateToSelected.substring(0, 4) }}
       </h3>
+
+      <Table :items="resume" :fields="fieldsResume" :details="'listResume'" />
+
       <p>
-        I file caricati il giorno d'inizio del periodo sono inclusi, quelli
+        Info: I file caricati il giorno d'inizio del periodo sono inclusi, quelli
         caricati il giorno di conclusione del periodo sono esclusi.
       </p>
+
       <b-form
-        inline
         @submit.prevent="dataFilter"
         @reset.prevent="datesForLastMonth"
         style="margin-bottom:10px"
       >
-        <DatesResume
-          :dateFrom.sync="dateFrom"
-          :dateTo.sync="dateTo"
-        />
-        <b-button class="btn-inline" type="submit" variant="outline-primary"
-          >Resoconto</b-button
-        >
-        <b-button class="btn-inline" type="reset" variant="outline-danger"
-          >Reset</b-button
-        >
+        <DatesResume :dateFrom.sync="dateFrom" :dateTo.sync="dateTo" />
+        <b-button type="submit" variant="primary">Resoconto</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
-
-      <Table :items="resume" :fields="fieldsResume" :details="'listResume'" />
     </div>
 
     <div v-show="sezione == 'secondaLista'">

@@ -8,7 +8,7 @@
       type="file"
       name="logoInput"
       v-model="logoInput"
-      placeholder="Choose a file or drop it here..."
+      placeholder="Scegli un imnagine o trascinala qui..."
       accept="image/*"
     />
 
