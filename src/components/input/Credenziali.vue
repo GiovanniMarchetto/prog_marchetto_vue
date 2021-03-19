@@ -2,58 +2,55 @@
   <b-container fluid>
     <!-- <legend>Credenziali</legend> -->
 
-    <b-form-group id="username-group" label="Username:" label-for="username">
-      <!-- description="We'll never share your email with anyone else." -->
+    <b-form-group id="usernameInput-group" label="Username:" label-for="usernameInput">
       <b-form-input
-        @change.native="change_info"
-        id="username"
+        id="usernameInput"
         type="text"
-        name="username"
-        v-model="username"
+        name="usernameInput"
+        v-model="usernameInput"
         placeholder="username"
       />
     </b-form-group>
 
-    <b-form-group id="password-group" label="Password:" label-for="password">
+    <b-form-group id="passwordInput-group" label="Password:" label-for="passwordInput">
       <b-form-input
-        @change.native="change_info"
-        id="password"
+        id="passwordInput"
         type="password"
-        name="password"
-        v-model="password"
+        name="passwordInput"
+        v-model="passwordInput"
         placeholder="password"
       />
     </b-form-group>
-    <!-- <b-form-group>
-      <b-col sm="3">
-        <label for="password">Password:</label>
-      </b-col>
-
-      <b-col sm="9">
-        <b-form-input
-          @change.native="change"
-          id="password"
-          type="password"
-          name="password"
-          v-model="password"
-          placeholder="password"
-        />
-      </b-col>
-    </b-form-group> -->
   </b-container>
 </template>
 
 <script>
-import { changeInfoMixin } from "@/utils/utils";
 
 export default {
   name: "Credenziali",
   props: ["required", "username", "password"],
-  mixins: [changeInfoMixin],
+  computed: {
+        usernameInput: {
+            get: function(){
+                return this.username;
+            },
+            set: function(newValue){
+                this.$emit('update:username', newValue)
+            }   
+        },
+        passwordInput: {
+            get: function(){
+                return this.password;
+            },
+            set: function(newValue){
+                this.$emit('update:password', newValue)
+            }   
+        },
+    },
   mounted() {
     if (this.required) {
-      document.getElementById("username").setAttribute("required", "true");
-      document.getElementById("password").setAttribute("required", "true");
+      document.getElementById("usernameInput").setAttribute("required", "true");
+      document.getElementById("passwordInput").setAttribute("required", "true");
     }
   },
 };

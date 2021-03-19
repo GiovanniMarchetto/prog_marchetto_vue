@@ -5,9 +5,8 @@
     <b-form @submit.prevent="login">
       <Credenziali
         :required="true"
-        :username="username"
-        :password="password"
-        @change-info="change_home"
+        :username.sync="username"
+        :password.sync="password"
       />
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
@@ -53,19 +52,6 @@ export default {
         .finally(() => {
           this.attesa = false;
         });
-    },
-    change_home(infos) {
-      const { nameProp, valueProp } = infos;
-      switch (nameProp) {
-        case "username":
-          this.username = valueProp;
-          break;
-        case "password":
-          this.password = valueProp;
-          break;
-        default:
-          break;
-      }
     },
   },
 };
