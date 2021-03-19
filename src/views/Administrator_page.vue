@@ -20,11 +20,15 @@
         }}-{{ dateToSelected.substring(0, 4) }}
       </h3>
 
-      <Table :items="resume" :fields="fieldsResume" :details="'listResume'" />
+      <Table
+        :items="resume"
+        :fields="fieldsResume"
+        :caricamentoDati="caricamentoDati"
+      />
 
       <p>
-        Info: I file caricati il giorno d'inizio del periodo sono inclusi, quelli
-        caricati il giorno di conclusione del periodo sono esclusi.
+        Info: I file caricati il giorno d'inizio del periodo sono inclusi,
+        quelli caricati il giorno di conclusione del periodo sono esclusi.
       </p>
 
       <b-form
@@ -43,7 +47,7 @@
       <Table
         :items="administrators"
         :fields="fieldsListAdministrators"
-        :details="'listAdministrators'"
+        :caricamentoDati="caricamentoDati"
       />
     </div>
 
@@ -79,13 +83,11 @@
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/layout/Navbar";
-import Spinner from "@/components/layout/Spinner";
 import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
@@ -110,7 +112,6 @@ export default {
     Delete,
     DatesResume,
     Messages,
-    Spinner,
   },
   mixins: [messagesMixin, sectionsMixin],
   data() {
@@ -124,24 +125,24 @@ export default {
       dateToSelected: "",
       ruoloForm: "",
       fieldsResume: [
-        "uploader",
+        "name",
         { key: "numDocCaricati", label: "#doc", sortable: true },
         {
           key: "numConsDiversi",
           label: "#cons",
           sortable: true,
         },
-        "actions",
+        "details",
       ],
-      fieldsListAdministrators: ["username", "actions"],
-      attesa: false,
+      fieldsListAdministrators: ["name", "details"],
+      caricamentoDati: false,
     };
   },
   computed: {
     attoriOptions: function() {
       let listAttori = [];
       this.resume.forEach((el) => {
-        listAttori.push(el.uploader);
+        listAttori.push(el.username);
       });
       this.administrators.forEach((el) => {
         listAttori.push(el.username);
@@ -166,9 +167,9 @@ export default {
         this.administrators.push(infoAdmin);
       } else {
         const resumeElem = {
-          uploader: username,
-          nameUploader: name,
-          emailUploader: email,
+          username: username,
+          name: name,
+          email: email,
           numDocCaricati: 0,
           numConsDiversi: 0,
         };
@@ -181,7 +182,7 @@ export default {
       const { utente, role } = modUtente;
       if (role === "administrator") {
         let index = this.resume.findIndex(
-          (el) => el.uploader === utente.username
+          (el) => el.username === utente.username
         );
         if (index !== -1) {
           this.administrators[index].name = utente.name;
@@ -189,22 +190,22 @@ export default {
         }
       } else {
         let index = this.resume.findIndex(
-          (el) => el.uploader === utente.username
+          (el) => el.username === utente.username
         );
-        this.resume[index].nameUploader = utente.name;
-        this.resume[index].emailUploader = utente.email;
+        this.resume[index].name = utente.name;
+        this.resume[index].email = utente.email;
       }
     },
 
     delete_username_home(usernameUpl) {
-      this.resume = this.resume.filter((el) => el.uploader !== usernameUpl);
+      this.resume = this.resume.filter((el) => el.username !== usernameUpl);
       this.attoriOptions = this.attoriOptions.filter(
         (el) => el !== usernameUpl
       );
     },
 
     dataFilter() {
-      this.attesa = true;
+      this.caricamentoDati = true;
       axios
         .post(`${process.env.VUE_APP_APIROOT}/list/resumeForAdmin`, {
           from: this.dateFrom,
@@ -218,7 +219,7 @@ export default {
         })
         .catch((err) => this.showMsg(err.toString()))
         .finally(() => {
-          this.attesa = false;
+          this.caricamentoDati = false;
         });
     },
     datesForLastMonth() {
@@ -239,13 +240,13 @@ export default {
   created() {
     this.datesForLastMonth();
     this.dataFilter();
-    this.attesa = true;
+    this.caricamentoDati = true;
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/administrators`)
       .then((res) => (this.administrators = res.data))
       .catch((err) => this.showMsg(err.toString()))
       .finally(() => {
-        this.attesa = false;
+        this.caricamentoDati = false;
       });
   },
 };

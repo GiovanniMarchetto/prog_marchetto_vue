@@ -19,7 +19,7 @@
       <Table
         :items="uploaders"
         :fields="fieldsListUploaders"
-        :details="'listUploaders'"
+        :caricamentoDati="caricamentoDati"
         @mostraFiles="showFiles"
       />
     </div>
@@ -50,7 +50,7 @@
       <Table
         :items="filesUploader"
         :fields="fieldsListFilesUploader"
-        :details="'listFilesUploader'"
+        :caricamentoDati="caricamentoDati"
         @download-file="download"
       />
     </div>
@@ -64,13 +64,11 @@
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/layout/Navbar";
-import Spinner from "@/components/layout/Spinner";
 import Table from "@/components/layout/Table";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
@@ -84,7 +82,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Consumer_page",
-  components: { Navbar, Table, ModInfo, Messages, Spinner },
+  components: { Navbar, Table, ModInfo, Messages},
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -94,13 +92,13 @@ export default {
       uploaders: [],
       filesConsumer: [],
       filesUploader: [],
-      fieldsListUploaders: ["logo", "username", "actions"],
+      fieldsListUploaders: ["logo", "name", "details","files"],
       fieldsListFilesUploader: [
         "name",
         { key: "dataCaricamento", sortable: true },
         { key: "dataVisualizzazione", sortable: true },
         "hashtag",
-        "actions",
+        "scarica",
       ],
       imgProps: {
         // left: true,
@@ -109,7 +107,7 @@ export default {
         width: 150,
         height: 150,
       },
-      attesa: false,
+      caricamentoDati: false,
     };
   },
   watch: {
@@ -147,7 +145,7 @@ export default {
       );
     },
     download(id) {
-      this.attesa = true;
+      this.caricamentoDati = true;
       axios
         .get(`${process.env.VUE_APP_APIROOT}/files/download/${id}`)
         .then((res) => {
@@ -177,7 +175,7 @@ export default {
           this.showMsg(err.response.data);
         })
         .finally(() => {
-          this.attesa = false;
+          this.caricamentoDati = false;
         });
     },
 
@@ -191,7 +189,7 @@ export default {
     },
   },
   created() {
-    this.attesa = true;
+    this.caricamentoDati = true;
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/uploaders`)
       .then((res) => {
@@ -211,7 +209,7 @@ export default {
       })
       .catch((err) => this.showMsg(err.toString()))
       .finally(() => {
-        this.attesa = false;
+        this.caricamentoDati = false;
       });
   },
 };

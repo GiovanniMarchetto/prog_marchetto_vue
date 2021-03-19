@@ -1,6 +1,5 @@
 <template>
   <b-container fluid>
-    <!-- <legend>File</legend> -->
     <b-form-group id="fileInput-group" label="File:" label-for="fileInput">
       <b-form-file
         @change.native="trasf64"

@@ -13,7 +13,7 @@
       <Table
         :items="consumers"
         :fields="fieldsListConsumers"
-        :details="'listConsumers'"
+        :caricamentoDati="caricamentoDati"
         @mostraFiles="showFiles"
       />
     </div>
@@ -23,7 +23,7 @@
       <Table
         :items="filesConsumer"
         :fields="fieldsListFileConsumer"
-        :details="'listFilesConsumer'"
+        :caricamentoDati="caricamentoDati"
       />
     </div>
 
@@ -66,13 +66,11 @@
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-    <Spinner :attesa="attesa" />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/layout/Navbar";
-import Spinner from "@/components/layout/Spinner";
 import Table from "@/components/layout/Table";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
@@ -91,7 +89,6 @@ export default {
   name: "Uploader_page",
   components: {
     Navbar,
-    Spinner,
     Table,
     Upload,
     Registration,
@@ -108,7 +105,7 @@ export default {
       consumers: [],
       filesUploader: [],
       filesConsumer: [],
-      fieldsListConsumers: ["username", "actions"],
+      fieldsListConsumers: ["name", "files", "details"],
       fieldsListFileConsumer: [
         "id",
         "name",
@@ -117,7 +114,7 @@ export default {
         "indirizzoIP",
         "hashtag",
       ],
-      attesa: false,
+      caricamentoDati: false,
     };
   },
   computed: {
@@ -208,7 +205,7 @@ export default {
     },
   },
   created() {
-    this.attesa = true;
+    this.caricamentoDati = true;
     axios
       .get(`${process.env.VUE_APP_APIROOT}/list/consumers`)
       .then((res) => (this.consumers = res.data))
@@ -219,7 +216,7 @@ export default {
       .then((res) => (this.filesUploader = res.data))
       .catch((err) => this.showMsg(err.toString()))
       .finally(() => {
-        this.attesa = false;
+        this.caricamentoDati = false;
       });
   },
 };

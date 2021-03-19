@@ -35,6 +35,7 @@
 
     <b-table
       striped
+      stacked="sm"
       head-variant="dark"
       table-variant="secondary"
       sticky-header="600px"
@@ -44,7 +45,15 @@
       :items="items"
       :fields="fields"
       :tbody-tr-class="highlightNew"
+      :busy="caricamentoDati"
     >
+      <template #table-busy>
+        <div class="text-center text-primary my-2">
+          <b-spinner class="align-middle"></b-spinner>
+          <strong>Caricamento...</strong>
+        </div>
+      </template>
+
       <template #cell(logo)="row">
         <b-img
           v-bind="logoProps"
@@ -53,64 +62,36 @@
         ></b-img
       ></template>
 
-      <template #cell(actions)="row">
-        <b-button
-          v-if="
-            details === 'listConsumers' ||
-              details === 'listUploaders' ||
-              details === 'listAdministrators' ||
-              details === 'listResume'
-          "
-          @click="row.toggleDetails"
-        >
+      <template #cell(details)="row">
+        <b-button @click="row.toggleDetails">
           {{ row.detailsShowing ? "Hide" : "Show" }} Details
         </b-button>
+      </template>
 
+      <template #cell(files)="row">
         <b-button
-          v-if="details === 'listConsumers' || details === 'listUploaders'"
           @click="$emit('mostraFiles', row.item.username)"
           variant="info"
           >Mostra File</b-button
         >
+      </template>
 
-        <b-button
-          v-if="details === 'listFilesUploader'"
-          @click="$emit('download-file', row.item.id)"
-        >
+      <template #cell(scarica)="row">
+        <b-button @click="$emit('download-file', row.item.id)">
           Download
         </b-button>
       </template>
 
       <template #row-details="row">
         <b-card>
-          <b-row class="mb-2">
-            <b-col sm="3" class="text-sm-right"><b>Name:</b></b-col>
-            <b-col v-if="details === 'listResume'">{{
-              row.item.nameUploader
-            }}</b-col>
-            <b-col
-              v-if="
-                details === 'listConsumers' ||
-                  details === 'listUploaders' ||
-                  details === 'listAdministrators'
-              "
-              >{{ row.item.name }}</b-col
-            >
+          <b-row>
+            <b-col sm="3"><b>Username:</b></b-col>
+            <b-col>{{ row.item.username }}</b-col>
           </b-row>
 
-          <b-row class="mb-2">
-            <b-col sm="3" class="text-sm-right"><b>Email:</b></b-col>
-            <b-col v-if="details === 'listResume'">{{
-              row.item.emailUploader
-            }}</b-col>
-            <b-col
-              v-if="
-                details === 'listConsumers' ||
-                  details === 'listUploaders' ||
-                  details === 'listAdministrators'
-              "
-              >{{ row.item.email }}</b-col
-            >
+          <b-row>
+            <b-col sm="3"><b>Email:</b></b-col>
+            <b-col>{{ row.item.email }}</b-col>
           </b-row>
         </b-card>
       </template>
@@ -123,7 +104,7 @@
 <script>
 export default {
   name: "Table",
-  props: ["items", "fields", "details"],
+  props: ["items", "fields", "caricamentoDati"],
   data() {
     return {
       currentPage: 1,

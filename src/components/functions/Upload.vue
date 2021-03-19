@@ -2,13 +2,14 @@
   <div>
     <h2>Caricamento file</h2>
     <b-form @submit.prevent="upload" @reset.prevent="reset">
+      <legend>File</legend>
       <FileInput
         :file.sync="file"
         :nameFile.sync="nameFile"
         :hashtag.sync="hashtag"
       />
 
-      <legend>Dati Consumer</legend>
+      <legend>Dati Consumer destinatario</legend>
       <b-container fluid>
         <b-form-group
           id="usernameCons-group"
@@ -20,14 +21,14 @@
             type="text"
             name="usernameCons"
             v-model="usernameCons"
-            placeholder="username consume"/></b-form-group
+            placeholder="username consumer"/></b-form-group
       ></b-container>
       <UserInfo
         :required="false"
         :name.sync="nameCons"
         :email.sync="emailCons"
       />
-      
+
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
