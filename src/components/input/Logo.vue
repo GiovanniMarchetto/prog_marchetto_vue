@@ -1,37 +1,36 @@
 <template>
-<b-container fluid>
-  <b-form-group
-  id="logoInput-group" label="Logo:" label-for="logoInput">
-    <b-form-file
-      @change.native="trasf64"
-      id="logoInput"
-      type="file"
-      name="logoInput"
-      v-model="logoInput"
-      placeholder="Scegli un imnagine o trascinala qui..."
-      accept="image/*"
-    />
-
-    <figure v-show="logo">
-      <b-img
-      id="anteprima-logo"
-      center
-        rounded
-        :src="`${logoStringInput}`"
-        alt="Anteprima Logo"
+  <b-container fluid>
+    <b-form-group id="logoInput-group" label="Logo:" label-for="logoInput">
+      <b-form-file
+        @change.native="trasf64"
+        id="logoInput"
+        type="file"
+        name="logoInput"
+        v-model="logoInput"
+        placeholder="Scegli un immagine o trascinala qui..."
+        accept="image/*"
       />
-    </figure>
-  </b-form-group>
+
+      <figure v-show="logo">
+        <b-img
+          id="anteprima-logo"
+          center
+          rounded
+          :src="`${logoStringInput}`"
+          alt="Anteprima Logo"
+        />
+      </figure>
+    </b-form-group>
   </b-container>
 </template>
 
 <script>
 export default {
   name: "Logo",
-  props: ["required","logo"],
+  props: ["required", "logo"],
   data() {
     return {
-      logoInput:null
+      logoInput: null,
     };
   },
   methods: {
@@ -47,15 +46,15 @@ export default {
     },
   },
   computed: {
-        logoStringInput: {
-            get: function(){
-                return this.logo;
-            },
-            set: function(newValue){
-                this.$emit('update:logo', newValue)
-            }   
-        },
+    logoStringInput: {
+      get: function() {
+        return this.logo;
+      },
+      set: function(newValue) {
+        this.$emit("update:logo", newValue);
+      },
     },
+  },
   mounted() {
     if (this.required)
       document.getElementById("logoInput").setAttribute("required", "true");

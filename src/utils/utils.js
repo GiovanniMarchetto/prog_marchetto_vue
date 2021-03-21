@@ -8,7 +8,7 @@ export var messagesMixin = {
   },
   methods: {
     showMsg(frase) {
-      if (frase.startsWith("ERR")||frase.startsWith("Err")) {
+      if (frase.startsWith("ERR") || frase.startsWith("Err")) {
         this.msg_error = frase;
         this.$bvToast.show("msg_e");
       } else if (frase.startsWith("WARN")) {

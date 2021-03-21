@@ -2,7 +2,7 @@
   <div v-show="attesa === true">
     <b-button block variant="light" disabled>
       <b-spinner small></b-spinner>
-      Loading...
+      Caricamento...
     </b-button>
   </div>
 </template>

@@ -26,7 +26,6 @@
         :caricamentoDati="caricamentoDati"
       />
 
-    
       <b-form
         @submit.prevent="dataFilter"
         @reset.prevent="datesForLastMonth"

@@ -82,7 +82,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Consumer_page",
-  components: { Navbar, Table, ModInfo, Messages},
+  components: { Navbar, Table, ModInfo, Messages },
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -92,7 +92,7 @@ export default {
       uploaders: [],
       filesConsumer: [],
       filesUploader: [],
-      fieldsListUploaders: ["logo", "name", "details","files"],
+      fieldsListUploaders: ["logo", "name", "details", "files"],
       fieldsListFilesUploader: [
         "name",
         { key: "dataCaricamento", sortable: true },
@@ -101,7 +101,6 @@ export default {
         "scarica",
       ],
       imgProps: {
-        // left: true,
         block: true,
         rounded: "circle",
         width: 150,

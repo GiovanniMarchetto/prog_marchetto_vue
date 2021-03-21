@@ -1,7 +1,5 @@
 <template>
   <b-container fluid>
-    <!-- <legend>Informazioni utente</legend> -->
-
     <b-form-group id="nameInput-group" label="Name:" label-for="nameInput">
       <b-form-input
         id="nameInput"
@@ -25,28 +23,27 @@
 </template>
 
 <script>
-
 export default {
   name: "UserInfo",
-  props: ["required","name","email"],
+  props: ["required", "name", "email"],
   computed: {
-        nameInput: {
-            get: function(){
-                return this.name;
-            },
-            set: function(newValue){
-                this.$emit('update:name', newValue)
-            }   
-        },
-        emailInput: {
-            get: function(){
-                return this.email;
-            },
-            set: function(newValue){
-                this.$emit('update:email', newValue)
-            }   
-        },
+    nameInput: {
+      get: function() {
+        return this.name;
+      },
+      set: function(newValue) {
+        this.$emit("update:name", newValue);
+      },
     },
+    emailInput: {
+      get: function() {
+        return this.email;
+      },
+      set: function(newValue) {
+        this.$emit("update:email", newValue);
+      },
+    },
+  },
   mounted() {
     if (this.required) {
       document.getElementById("nameInput").setAttribute("required", "true");

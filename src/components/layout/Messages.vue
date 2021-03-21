@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <b-alert v-show="msg_error" show variant="danger" class="msg">{{ msg_error }}</b-alert>
-    <b-alert v-show="msg_success" show variant="success" class="msg">{{
-      msg_success
-    }}</b-alert> -->
     <b-toast id="msg_e" title="ERROR" autoHideDelay="5000" variant="danger">{{
       msg_error
     }}</b-toast>
@@ -30,9 +26,3 @@ export default {
   props: ["msg_error", "msg_success", "msg_warning"],
 };
 </script>
-
-<style scoped>
-/* .msg{
-    margin-top: 100px; 
- } */
-</style>

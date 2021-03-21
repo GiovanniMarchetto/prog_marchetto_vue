@@ -26,11 +26,6 @@
           ></b-form-select>
         </b-form-group>
       </b-col>
-      <!-- <b-col sm="4">
-        <b-button variant="info" @click="nonStacked" class="my-1"
-          >Tipologia tabella</b-button
-        ></b-col
-      > -->
     </b-row>
 
     <b-table

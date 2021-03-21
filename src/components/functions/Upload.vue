@@ -2,7 +2,6 @@
   <div>
     <h2>Caricamento file</h2>
     <b-form @submit.prevent="upload" @reset.prevent="reset">
-      <legend>File</legend>
       <FileInput
         :file.sync="file"
         :nameFile.sync="nameFile"
@@ -10,7 +9,6 @@
         :extension.sync="extension"
       />
 
-      <legend>Dati Consumer destinatario</legend>
       <b-container fluid>
         <b-form-group
           id="usernameCons-group"
@@ -33,7 +31,27 @@
       <b-button type="submit" variant="success">Upload</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
+
     <Spinner :attesa="attesa" />
+
+    <b-container fluid>
+      <section>
+        <h3>Istruzioni per l'upload</h3>
+        <p>
+          Immettere il file, il nome con cui verrà caricato e, se si vuole, gli
+          hashtag che lo contraddistinguono.
+        </p>
+        <p>
+          L'estensione del file sarà quella del file inserito, quindi
+          <strong>non</strong> bisogna specificarla nel nome da conferire al
+          file.
+        </p>
+        <p>
+          Se si vuole creare un consumer è obbligatorio immettere un codice
+          fiscale come username, il nome del consumer ed una mail valida.
+        </p>
+      </section>
+    </b-container>
   </div>
 </template>
 

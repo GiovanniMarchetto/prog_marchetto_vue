@@ -1,12 +1,13 @@
 <template>
   <footer>
     <p>
-      Questa piattaforma si basa su 
-      <a
-        href="https://cloud.google.com/appengine?hl=it"
-        target="_blank"
-        rel="noopener"
-        >Google App Engine</a
+      Per vedere il progetto si possono visitare rispettivamente la parte
+      <a href="https://github.com/GiovanniMarchetto/ProgettoMarchetto"
+        >backend</a
+      >
+      e quella del
+      <a href="https://github.com/GiovanniMarchetto/prog_marchetto_vue"
+        >frontend</a
       >.
     </p>
   </footer>
@@ -14,7 +15,7 @@
 
 <script>
 export default {
-  name: "Footer"
+  name: "Footer",
 };
 </script>
 

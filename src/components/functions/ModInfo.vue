@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Modifica informazioni</h2>
+    <h2>Modifica informazioni {{ role }}</h2>
 
     <b-form @submit.prevent="modInfo" @reset="reset">
       <Credenziali
@@ -10,31 +10,33 @@
         :password.sync="password"
       />
 
-      <UserInfo
-        :required="false"
-        :name.sync="name"
-        :email.sync="email"
-      />
+      <UserInfo :required="false" :name.sync="name" :email.sync="email" />
 
-      <Logo
-        v-if="role === 'uploader'"
-        :required="false"
-        :logo.sync="logo"
-      />
+      <Logo v-if="role === 'uploader'" :required="false" :logo.sync="logo" />
 
       <b-button type="submit" variant="success">Modifica informazioni</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
-    <section>
-      <h3>Istruzioni per la modifica</h3>
-      <!-- TODO: scriverer meglio le istruzioni -->
-      <p>Inserire i dati da modificare (non si può modificare l'username).</p>
-      <p v-show="potere != 'consumer'">
-        Se si vuole modificare le informazioni di un altro utente immettere
-        l'username.
-      </p>
-    </section>
+
     <Spinner :attesa="attesa" />
+
+    <b-container fluid v-show="potere != 'consumer'">
+      <section>
+        <h3>Istruzioni per l'inserimento</h3>
+        <p>
+          Immettere l'username dell'utente da modificare (quindi non si può
+          modificare l'username).
+        </p>
+        <p>
+          Se si vuole modificare il proprio account non serve specificare
+          l'username.
+        </p>
+        <p>
+          In seguito mettere le informazioni che si vuole modificare (riempire
+          almeno un campo).
+        </p>
+      </section>
+    </b-container>
   </div>
 </template>
 
