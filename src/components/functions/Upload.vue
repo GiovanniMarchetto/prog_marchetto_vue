@@ -7,6 +7,7 @@
         :file.sync="file"
         :nameFile.sync="nameFile"
         :hashtag.sync="hashtag"
+        :extension.sync="extension"
       />
 
       <legend>Dati Consumer destinatario</legend>

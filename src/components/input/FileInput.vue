@@ -46,11 +46,16 @@
 <script>
 export default {
   name: "FileInput",
-  props: ["file", "nameFile", "hashtag"],
+  props: ["file", "nameFile", "hashtag", "extension"],
   data() {
     return {
-      fileInput:null
+      fileInput: null,
     };
+  },
+  watch: {
+    fileStringInput: function() {
+      if (this.fileStringInput === "") this.fileInput = null;
+    },
   },
   computed: {
     fileStringInput: {
@@ -83,7 +88,10 @@ export default {
     trasf64(imgObj) {
       const reader = new FileReader();
       reader.onload = (elem) => {
-        this.fileStringInput = elem.target.result.replace(/^data:.+;base64,/, "");
+        this.fileStringInput = elem.target.result.replace(
+          /^data:.+;base64,/,
+          ""
+        );
       };
       reader.onerror = function(error) {
         console.log("Error: ", error);
