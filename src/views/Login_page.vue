@@ -1,26 +1,26 @@
 <template>
-  <div>
-    <div v-show="sezione == ''">
+  <article>
+    <section v-show="sezione == ''">
       <Login @login="showMsg" @login_username="login_username_home" />
       <b-button @click="sezione = 'registration'"
         >Non hai ancora un account</b-button
       >
-    </div>
-    <div v-show="sezione == 'registration'">
+    </section>
+    <section v-show="sezione == 'registration'">
       <Registration
         :potere="'consumer'"
         :role="'consumer'"
         @registrazione="registrazione_home"
       />
       <b-button @click="sezione = ''">Ho già un account!</b-button>
-    </div>
+    </section>
 
     <Messages
       :msg_success="msg_success"
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-  </div>
+  </article>
 </template>
 
 <script>

@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <Navbar
-      :potere="ruolo"
-      :nomePrimaLista="'Lista consumer'"
-      :nomeSecondaLista="'File di un consumer'"
-      @mostraSezione="showSezione"
-      @ruoloForm="modificaRuoloForm"
-    />
-
-    <div v-show="sezione == ''">
+  <article>
+    <header>
+      <Navbar
+        :potere="ruolo"
+        :nomePrimaLista="'Lista consumer'"
+        :nomeSecondaLista="'File di un consumer'"
+        @mostraSezione="showSezione"
+        @ruoloForm="modificaRuoloForm"
+      />
+    </header>
+    
+    <section v-show="sezione == ''">
       <h2>Lista Consumer</h2>
       <Table
         :items="consumers"
@@ -16,41 +18,44 @@
         :caricamentoDati="caricamentoDati"
         @mostraFiles="showFiles"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'secondaLista'">
+    <section v-show="sezione == 'secondaLista'">
       <h2>Lista Files di {{ consumerScelto }}</h2>
       <Table
         :items="filesConsumer"
         :fields="fieldsListFileConsumer"
         :caricamentoDati="caricamentoDati"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'registration'">
+    <section v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
         :role="'consumer'"
         @registrazione_utente="registrazione_utente_home"
         @registrazione="showMsg"
       />
-    </div>
-    <div v-show="sezione == 'modInfo'">
+    </section>
+
+    <section v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
         :role="ruoloForm"
         @modInfo_utente="modInfo_utente_home"
         @modInfo="showMsg"
       />
-    </div>
-    <div v-show="sezione == 'upload'">
+    </section>
+
+    <section v-show="sezione == 'upload'">
       <Upload
         @upload_consumer="upload_consumer_home"
         @upload_file="upload_file_home"
         @upload="showMsg"
       />
-    </div>
-    <div v-show="sezione == 'delete'">
+    </section>
+
+    <section v-show="sezione == 'delete'">
       <Delete
         :potere="ruolo"
         :attoriOptions="attoriOptions"
@@ -59,14 +64,14 @@
         @delete_username="delete_username_home"
         @delete="showMsg"
       />
-    </div>
+    </section>
 
     <Messages
       :msg_success="msg_success"
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-  </div>
+  </article>
 </template>
 
 <script>

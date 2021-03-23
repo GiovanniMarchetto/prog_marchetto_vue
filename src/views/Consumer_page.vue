@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <article>
     <b-container id="logoUploader" fluid v-show="sezione == 'secondaLista'">
       <b-img
         v-bind="imgProps"
@@ -14,7 +14,7 @@
       @mostraSezione="showSezione"
     />
 
-    <div v-show="sezione == ''">
+    <section v-show="sezione == ''">
       <h2>Lista Uploader con documenti</h2>
       <Table
         :items="uploaders"
@@ -22,9 +22,9 @@
         :caricamentoDati="caricamentoDati"
         @mostraFiles="showFiles"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'secondaLista'">
+    <section v-show="sezione == 'secondaLista'">
       <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
 
       <b-form inline @submit.prevent="hashtagFilter">
@@ -53,18 +53,18 @@
         :caricamentoDati="caricamentoDati"
         @download-file="download"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'modInfo'">
+    <section v-show="sezione == 'modInfo'">
       <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="showMsg" />
-    </div>
+    </section>
 
     <Messages
       :msg_success="msg_success"
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-  </div>
+  </article>
 </template>
 
 <script>
@@ -217,5 +217,8 @@ export default {
 <style scoped>
 #logoUploader {
   background: #343a40;
+  position: fixed;
+  top:0;
+  left:0;
 }
 </style>

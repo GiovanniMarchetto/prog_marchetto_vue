@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <Navbar
-      :potere="ruolo"
-      :nomePrimaLista="'Resoconto'"
-      :nomeSecondaLista="'Amministratori'"
-      @mostraSezione="showSezione"
-      @ruoloForm="modificaRuoloForm"
-    />
+  <article>
+    <header>
+      <Navbar
+        :potere="ruolo"
+        :nomePrimaLista="'Resoconto'"
+        :nomeSecondaLista="'Amministratori'"
+        @mostraSezione="showSezione"
+        @ruoloForm="modificaRuoloForm"
+      />
+    </header>
 
-    <div v-show="sezione == ''">
+    <section v-show="sezione == ''">
       <h2>Resoconto uploader</h2>
 
       <h3>
@@ -26,58 +28,55 @@
         :caricamentoDati="caricamentoDati"
       />
 
-      <b-form
-        @submit.prevent="dataFilter"
-        @reset.prevent="datesForLastMonth"
-      >
+      <b-form @submit.prevent="dataFilter" @reset.prevent="datesForLastMonth">
         <DatesResume :dateFrom.sync="dateFrom" :dateTo.sync="dateTo" />
         <b-button type="submit" variant="primary">Resoconto</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
-    </div>
+    </section>
 
-    <div v-show="sezione == 'secondaLista'">
+    <section v-show="sezione == 'secondaLista'">
       <h2>Lista degli Amministratori</h2>
       <Table
         :items="administrators"
         :fields="fieldsListAdministrators"
         :caricamentoDati="caricamentoDati"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'registration'">
+    <section v-show="sezione == 'registration'">
       <Registration
         :potere="ruolo"
         :role="ruoloForm"
         @registrazione_utente="registrazione_utente_home"
         @registrazione="showMsg"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'modInfo'">
+    <section v-show="sezione == 'modInfo'">
       <ModInfo
         :potere="ruolo"
         :role="ruoloForm"
         @modInfo_utente="modInfo_utente_home"
         @modInfo="showMsg"
       />
-    </div>
+    </section>
 
-    <div v-show="sezione == 'delete'">
+    <section v-show="sezione == 'delete'">
       <Delete
         :potere="ruolo"
         :attoriOptions="attoriOptions"
         @delete_username="delete_username_home"
         @delete="showMsg"
       />
-    </div>
+    </section>
 
     <Messages
       :msg_success="msg_success"
       :msg_error="msg_error"
       :msg_warning="msg_warning"
     />
-  </div>
+  </article>
 </template>
 
 <script>
