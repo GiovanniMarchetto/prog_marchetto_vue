@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Caricamento file</h2>
+  <section>
+    <h3>Caricamento file</h3>
     <b-form @submit.prevent="upload" @reset.prevent="reset">
       <FileInput
         :file.sync="file"
@@ -33,7 +33,7 @@
     </b-form>
 
     <Spinner :attesa="attesa" />
-  </div>
+  </section>
 </template>
 
 <script>

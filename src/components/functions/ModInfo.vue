@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Modifica informazioni {{ role }}</h2>
+  <section>
+    <h3>Modifica informazioni {{ role }}</h3>
 
     <b-form @submit.prevent="modInfo" @reset="reset">
       <Credenziali
@@ -20,7 +20,7 @@
     </b-form>
 
     <Spinner :attesa="attesa" />
-  </div>
+  </section>
 </template>
 
 <script>

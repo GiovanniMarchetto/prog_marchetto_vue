@@ -1,26 +1,25 @@
 <template>
   <article>
-    <header>
-      <Navbar
-        :potere="ruolo"
-        :nomePrimaLista="'Resoconto'"
-        :nomeSecondaLista="'Amministratori'"
-        @mostraSezione="showSezione"
-        @ruoloForm="modificaRuoloForm"
-      />
-    </header>
+    <Header
+      :potere="ruolo"
+      :nomePrimaLista="'Resoconto'"
+      :nomeSecondaLista="'Amministratori'"
+      @mostraSezione="showSezione"
+      @ruoloForm="modificaRuoloForm"
+      >Administrator page</Header
+    >
 
     <section v-show="sezione == ''">
-      <h2>Resoconto uploader</h2>
+      <h3>Resoconto uploader</h3>
 
-      <h3>
+      <h4>
         Resoconto dal {{ dateFromSelected.substring(8, 10) }}-{{
           dateFromSelected.substring(5, 7)
         }}-{{ dateFromSelected.substring(0, 4) }} al
         {{ dateToSelected.substring(8, 10) }}-{{
           dateToSelected.substring(5, 7)
         }}-{{ dateToSelected.substring(0, 4) }}
-      </h3>
+      </h4>
 
       <Table
         :items="resume"
@@ -36,7 +35,7 @@
     </section>
 
     <section v-show="sezione == 'secondaLista'">
-      <h2>Lista degli Amministratori</h2>
+      <h3>Lista degli Amministratori</h3>
       <Table
         :items="administrators"
         :fields="fieldsListAdministrators"
@@ -44,32 +43,29 @@
       />
     </section>
 
-    <section v-show="sezione == 'registration'">
-      <Registration
-        :potere="ruolo"
-        :role="ruoloForm"
-        @registrazione_utente="registrazione_utente_home"
-        @registrazione="showMsg"
-      />
-    </section>
+    <Registration
+      v-show="sezione == 'registration'"
+      :potere="ruolo"
+      :role="ruoloForm"
+      @registrazione_utente="registrazione_utente_home"
+      @registrazione="showMsg"
+    />
 
-    <section v-show="sezione == 'modInfo'">
-      <ModInfo
-        :potere="ruolo"
-        :role="ruoloForm"
-        @modInfo_utente="modInfo_utente_home"
-        @modInfo="showMsg"
-      />
-    </section>
+    <ModInfo
+      v-show="sezione == 'modInfo'"
+      :potere="ruolo"
+      :role="ruoloForm"
+      @modInfo_utente="modInfo_utente_home"
+      @modInfo="showMsg"
+    />
 
-    <section v-show="sezione == 'delete'">
-      <Delete
-        :potere="ruolo"
-        :attoriOptions="attoriOptions"
-        @delete_username="delete_username_home"
-        @delete="showMsg"
-      />
-    </section>
+    <Delete
+      v-show="sezione == 'delete'"
+      :potere="ruolo"
+      :attoriOptions="attoriOptions"
+      @delete_username="delete_username_home"
+      @delete="showMsg"
+    />
 
     <Messages
       :msg_success="msg_success"
@@ -80,7 +76,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/layout/Navbar";
+import Header from "@/components/layout/Header";
 import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
@@ -98,7 +94,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 export default {
   name: "Administrator_page",
   components: {
-    Navbar,
+    Header,
     Table,
     Registration,
     ModInfo,

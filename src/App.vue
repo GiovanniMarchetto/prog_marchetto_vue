@@ -1,19 +1,20 @@
 <template>
   <div id="app">
-    <Header />
+    <header>
+      <img id="logoSito" src="./assets/logo.png" alt="Logo sito" />
+      <h1>Progetto Marchetto</h1>
+    </header>
     <router-view />
     <Footer />
   </div>
 </template>
 
 <script>
-import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
 export default {
   name: "App",
   components: {
-    Header,
     Footer,
   },
 };
@@ -33,14 +34,29 @@ header {
   background: #343a40;
 }
 
-h2 {
+#logoSito {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 64px;
+  height: 64px;
+}
+
+@media all and (max-width: 500px) {
+  h1 {
+    padding-left: 64px;
+  }
+}
+
+h3 {
   padding: 10px;
   color: #fff;
   background: #e66648;
 }
 
-h3 {
+h4 {
   padding: 10px;
+  background-color: beige;
 }
 
 form {

@@ -1,11 +1,14 @@
 <template>
   <article>
+    <header><h2>Pagina d'accesso</h2></header>
+    
     <section v-show="sezione == ''">
       <Login @login="showMsg" @login_username="login_username_home" />
       <b-button @click="sezione = 'registration'"
         >Non hai ancora un account</b-button
       >
     </section>
+
     <section v-show="sezione == 'registration'">
       <Registration
         :potere="'consumer'"

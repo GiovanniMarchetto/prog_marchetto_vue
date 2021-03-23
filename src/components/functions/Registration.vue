@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Registrazione {{ role }}</h2>
+  <section>
+    <h3>Registrazione {{ role }}</h3>
 
     <b-form @submit.prevent="registration" @reset="reset">
       <Credenziali
@@ -18,7 +18,7 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     <Spinner :attesa="attesa" />
-  </div>
+  </section>
 </template>
 
 <script>

@@ -16,10 +16,9 @@ export default {
 </script>
 
 <style scoped>
-/* Alla fine ho optato per un logout di questo tipo invece che metterlo nel nav */
 .btn-logout {
-  float: left;
   background-color: brown;
   color: aliceblue;
+  margin: 0;
 }
 </style>

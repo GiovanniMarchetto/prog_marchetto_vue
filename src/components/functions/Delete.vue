@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <h2>Eliminazione</h2>
+  <section>
+    <h3>Eliminazione</h3>
 
     <b-container fluid>
-      <h3>Elimina attore</h3>
+      <h4>Elimina attore</h4>
       <b-form @submit.prevent="deleteActor">
         <label for="username">Username attore da eliminare</label>
         <b-form-input
@@ -19,16 +19,17 @@
           id="attori-list"
           :options="attoriOptions"
         ></b-form-datalist>
-
+        <b-form-text>
+          Non puoi cancellare il tuo account
+        </b-form-text>
         <b-button type="submit" variant="danger">Elimina utente</b-button>
       </b-form>
-      <p>
-        NB: non puoi cancellare il tuo account
-      </p>
     </b-container>
+    
+    <hr>
 
     <b-container fluid v-if="potere === 'uploader'">
-      <h3>Elimina file</h3>
+      <h4>Elimina file</h4>
 
       <b-form @submit.prevent="deleteFile">
         <label for="fileId">Identificativo file da eliminare</label>
@@ -45,15 +46,15 @@
           id="fileId-list"
           :options="fileOptions"
         ></b-form-datalist>
+        <b-form-text>
+          Puoi cancellare solo i file da te caricati.
+        </b-form-text>
 
         <b-button type="submit" variant="danger">Elimina file</b-button>
       </b-form>
-      <p>
-        NB: puoi cancellare solo i file da te caricati
-      </p>
     </b-container>
     <Spinner :attesa="attesa" />
-  </div>
+  </section>
 </template>
 
 <script>

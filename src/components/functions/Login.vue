@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2>Login Page</h2>
+  <section>
+    <h3>Login</h3>
 
     <b-form @submit.prevent="login">
       <Credenziali
@@ -12,7 +12,7 @@
     </b-form>
 
     <Spinner :attesa="attesa" />
-  </div>
+  </section>
 </template>
 
 <script>

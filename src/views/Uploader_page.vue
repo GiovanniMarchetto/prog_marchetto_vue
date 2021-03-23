@@ -1,17 +1,16 @@
 <template>
   <article>
-    <header>
-      <Navbar
-        :potere="ruolo"
-        :nomePrimaLista="'Lista consumer'"
-        :nomeSecondaLista="'File di un consumer'"
-        @mostraSezione="showSezione"
-        @ruoloForm="modificaRuoloForm"
-      />
-    </header>
-    
+    <Header
+      :potere="ruolo"
+      :nomePrimaLista="'Lista consumer'"
+      :nomeSecondaLista="'File di un consumer'"
+      @mostraSezione="showSezione"
+      @ruoloForm="modificaRuoloForm"
+      >Uploader page</Header
+    >
+
     <section v-show="sezione == ''">
-      <h2>Lista Consumer</h2>
+      <h3>Lista Consumer</h3>
       <Table
         :items="consumers"
         :fields="fieldsListConsumers"
@@ -21,7 +20,7 @@
     </section>
 
     <section v-show="sezione == 'secondaLista'">
-      <h2>Lista Files di {{ consumerScelto }}</h2>
+      <h3>Lista Files di {{ consumerScelto }}</h3>
       <Table
         :items="filesConsumer"
         :fields="fieldsListFileConsumer"
@@ -29,42 +28,38 @@
       />
     </section>
 
-    <section v-show="sezione == 'registration'">
-      <Registration
-        :potere="ruolo"
-        :role="'consumer'"
-        @registrazione_utente="registrazione_utente_home"
-        @registrazione="showMsg"
-      />
-    </section>
+    <Registration
+      v-show="sezione == 'registration'"
+      :potere="ruolo"
+      :role="'consumer'"
+      @registrazione_utente="registrazione_utente_home"
+      @registrazione="showMsg"
+    />
 
-    <section v-show="sezione == 'modInfo'">
-      <ModInfo
-        :potere="ruolo"
-        :role="ruoloForm"
-        @modInfo_utente="modInfo_utente_home"
-        @modInfo="showMsg"
-      />
-    </section>
+    <ModInfo
+      v-show="sezione == 'modInfo'"
+      :potere="ruolo"
+      :role="ruoloForm"
+      @modInfo_utente="modInfo_utente_home"
+      @modInfo="showMsg"
+    />
 
-    <section v-show="sezione == 'upload'">
-      <Upload
-        @upload_consumer="upload_consumer_home"
-        @upload_file="upload_file_home"
-        @upload="showMsg"
-      />
-    </section>
+    <Upload
+      v-show="sezione == 'upload'"
+      @upload_consumer="upload_consumer_home"
+      @upload_file="upload_file_home"
+      @upload="showMsg"
+    />
 
-    <section v-show="sezione == 'delete'">
-      <Delete
-        :potere="ruolo"
-        :attoriOptions="attoriOptions"
-        :fileOptions="fileOptions"
-        @delete_file="delete_file_home"
-        @delete_username="delete_username_home"
-        @delete="showMsg"
-      />
-    </section>
+    <Delete
+      v-show="sezione == 'delete'"
+      :potere="ruolo"
+      :attoriOptions="attoriOptions"
+      :fileOptions="fileOptions"
+      @delete_file="delete_file_home"
+      @delete_username="delete_username_home"
+      @delete="showMsg"
+    />
 
     <Messages
       :msg_success="msg_success"
@@ -75,7 +70,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/layout/Navbar";
+import Header from "@/components/layout/Header";
 import Table from "@/components/layout/Table";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
@@ -93,7 +88,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 export default {
   name: "Uploader_page",
   components: {
-    Navbar,
+    Header,
     Table,
     Upload,
     Registration,

@@ -1,21 +1,15 @@
 <template>
   <article>
-    <b-container id="logoUploader" fluid v-show="sezione == 'secondaLista'">
-      <b-img
-        v-bind="imgProps"
-        :src="`${uploaderScelto.logo}`"
-        alt="Logo uploader"
-      ></b-img
-    ></b-container>
-    <Navbar
+    <Header
       :potere="ruolo"
       :nomePrimaLista="'Lista uploader'"
       :nomeSecondaLista="'File di un uploader'"
       @mostraSezione="showSezione"
-    />
+      >Consumer page</Header
+    >
 
     <section v-show="sezione == ''">
-      <h2>Lista Uploader con documenti</h2>
+      <h3>Lista Uploader con documenti</h3>
       <Table
         :items="uploaders"
         :fields="fieldsListUploaders"
@@ -25,7 +19,14 @@
     </section>
 
     <section v-show="sezione == 'secondaLista'">
-      <h2>Lista Files caricati da {{ uploaderScelto.name }}</h2>
+      <h3>Lista Files caricati da {{ uploaderScelto.name }}</h3>
+
+      <b-img
+        id="logoUploader"
+        rounded="circle"
+        :src="`${uploaderScelto.logo}`"
+        alt="Logo uploader"
+      ></b-img>
 
       <b-form inline @submit.prevent="hashtagFilter">
         <b-form-input
@@ -55,9 +56,12 @@
       />
     </section>
 
-    <section v-show="sezione == 'modInfo'">
-      <ModInfo :potere="ruolo" :role="'consumer'" @modInfo="showMsg" />
-    </section>
+    <ModInfo
+      v-show="sezione == 'modInfo'"
+      :potere="ruolo"
+      :role="'consumer'"
+      @modInfo="showMsg"
+    />
 
     <Messages
       :msg_success="msg_success"
@@ -68,7 +72,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/layout/Navbar";
+import Header from "@/components/layout/Header";
 import Table from "@/components/layout/Table";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
@@ -82,7 +86,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Consumer_page",
-  components: { Navbar, Table, ModInfo, Messages },
+  components: { Header, Table, ModInfo, Messages },
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -100,12 +104,6 @@ export default {
         "hashtag",
         "scarica",
       ],
-      imgProps: {
-        block: true,
-        rounded: "circle",
-        width: 150,
-        height: 150,
-      },
       caricamentoDati: false,
     };
   },
@@ -216,9 +214,11 @@ export default {
 
 <style scoped>
 #logoUploader {
-  background: #343a40;
-  position: fixed;
-  top:0;
-  left:0;
+  background-color: #343a40;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 64px;
+  height: 64px;
 }
 </style>
