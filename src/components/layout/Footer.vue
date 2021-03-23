@@ -1,11 +1,11 @@
 <template>
   <footer>
     <p>
-      Per vedere il progetto si possono visitare rispettivamente la parte
+      I sorgenti del progetto sono disponibili su GtHub: 
       <a href="https://github.com/GiovanniMarchetto/ProgettoMarchetto"
         >backend</a
       >
-      e quella del
+      e 
       <a href="https://github.com/GiovanniMarchetto/prog_marchetto_vue"
         >frontend</a
       >.

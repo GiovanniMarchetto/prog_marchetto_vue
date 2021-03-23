@@ -29,7 +29,6 @@
       <b-form
         @submit.prevent="dataFilter"
         @reset.prevent="datesForLastMonth"
-        style="margin-bottom:10px"
       >
         <DatesResume :dateFrom.sync="dateFrom" :dateTo.sync="dateTo" />
         <b-button type="submit" variant="primary">Resoconto</b-button>
