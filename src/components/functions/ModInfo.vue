@@ -6,6 +6,7 @@
       <Credenziali
         v-show="potere != 'consumer'"
         :required="false"
+        :ruolo="'modifica'"
         :username.sync="username"
         :password.sync="password"
       />
@@ -19,24 +20,6 @@
     </b-form>
 
     <Spinner :attesa="attesa" />
-
-    <b-container fluid v-show="potere != 'consumer'">
-      <section>
-        <h3>Istruzioni per l'inserimento</h3>
-        <p>
-          Immettere l'username dell'utente da modificare (quindi non si può
-          modificare l'username).
-        </p>
-        <p>
-          Se si vuole modificare il proprio account non serve specificare
-          l'username.
-        </p>
-        <p>
-          In seguito mettere le informazioni che si vuole modificare (riempire
-          almeno un campo).
-        </p>
-      </section>
-    </b-container>
   </div>
 </template>
 

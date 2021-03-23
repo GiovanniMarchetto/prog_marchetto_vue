@@ -25,6 +25,9 @@
         placeholder="name of file"
         required
       />
+      <b-form-text>
+        Non serve specificare l'estensione del file.
+      </b-form-text>
     </b-form-group>
 
     <b-form-group

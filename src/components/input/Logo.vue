@@ -1,19 +1,19 @@
 <template>
   <b-container fluid>
-    <b-form-group id="logoInput-group" label="Logo:" label-for="logoInput">
+    <b-form-group label="Logo:" :label-for="id">
       <b-form-file
         @change.native="trasf64"
-        id="logoInput"
+        :id="id"
         type="file"
         name="logoInput"
         v-model="logoInput"
         placeholder="Scegli un immagine o trascinala qui..."
         accept="image/*"
+        required
       />
 
       <figure v-show="logo">
         <b-img
-          id="anteprima-logo"
           center
           rounded
           :src="`${logoStringInput}`"
@@ -25,12 +25,15 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   name: "Logo",
   props: ["required", "logo"],
   data() {
     return {
       logoInput: null,
+      id: "",
     };
   },
   methods: {
@@ -56,14 +59,17 @@ export default {
     },
   },
   mounted() {
-    if (this.required)
-      document.getElementById("logoInput").setAttribute("required", "true");
+    if (this.required != true)
+      document.getElementById(this.id).removeAttribute("required");
+  },
+  created() {
+    this.id = uuidv4();
   },
 };
 </script>
 
-<style>
-#anteprima-logo {
+<style scoped>
+img {
   margin: 10px;
   background-color: black;
   max-height: 300px;

@@ -5,6 +5,7 @@
     <b-form @submit.prevent="registration" @reset="reset">
       <Credenziali
         :required="true"
+        :ruolo="role"
         :username.sync="username"
         :password.sync="password"
       />
@@ -17,21 +18,6 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     <Spinner :attesa="attesa" />
-    <b-container fluid>
-      <section>
-        <h3>Istruzioni per la registrazione</h3>
-        <p v-show="potere === 'consumer'">
-          Come username bisogna immettere un codice fiscale valido.
-        </p>
-        <p v-show="potere === 'uploader'">
-          Gli uploader devono avere come username un codice alfa-numerico di 4
-          caratteri.
-        </p>
-        <p v-show="potere === 'administrator'">
-          Gli administrator devono avere come username un'email valida.
-        </p>
-      </section>
-    </b-container>
   </div>
 </template>
 

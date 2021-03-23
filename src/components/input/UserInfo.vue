@@ -1,31 +1,41 @@
 <template>
   <b-container fluid>
-    <b-form-group id="nameInput-group" label="Name:" label-for="nameInput">
+    <b-form-group label="Name:" :label-for="nameInputId">
       <b-form-input
-        id="nameInput"
+        :id="nameInputId"
         type="text"
         name="nameInput"
         v-model="nameInput"
         placeholder="name"
+        required
       />
     </b-form-group>
 
-    <b-form-group id="emailInput-group" label="Email:" label-for="emailInput">
+    <b-form-group label="Email:" :label-for="emailInputId">
       <b-form-input
-        id="emailInput"
+        :id="emailInputId"
         type="email"
         name="emailInput"
         v-model="emailInput"
         placeholder="email"
+        required
       />
     </b-form-group>
   </b-container>
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   name: "UserInfo",
   props: ["required", "name", "email"],
+  data() {
+    return {
+      nameInputId: "",
+      emailInputId: "",
+    };
+  },
   computed: {
     nameInput: {
       get: function() {
@@ -45,10 +55,14 @@ export default {
     },
   },
   mounted() {
-    if (this.required) {
-      document.getElementById("nameInput").setAttribute("required", "true");
-      document.getElementById("emailInput").setAttribute("required", "true");
+    if (this.required != true) {
+      document.getElementById(this.nameInputId).removeAttribute("required");
+      document.getElementById(this.emailInputId).removeAttribute("required");
     }
+  },
+  created() {
+    this.nameInputId = uuidv4();
+    this.emailInputId = uuidv4();
   },
 };
 </script>

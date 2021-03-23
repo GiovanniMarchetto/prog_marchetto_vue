@@ -16,11 +16,11 @@
       <b-col sm="4" class="my-1">
         <b-form-group
           label="Per page:"
-          label-for="per-page-select"
+          :label-for="perPageSelectId"
           label-cols-sm="3"
         >
           <b-form-select
-            id="per-page-select"
+            :id="perPageSelectId"
             v-model="perPage"
             :options="pageOptions"
           ></b-form-select>
@@ -97,6 +97,8 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   name: "Table",
   props: ["items", "fields", "caricamentoDati"],
@@ -104,6 +106,7 @@ export default {
     return {
       currentPage: 1,
       perPage: 5,
+      perPageSelectId: "",
       pageOptions: [5, 10, 15, { value: 100, text: "Troppi" }],
       logoProps: {
         rounded: "circle",
@@ -121,6 +124,9 @@ export default {
     totalRows() {
       return this.items.length;
     },
+  },
+  created() {
+    this.perPageSelectId = uuidv4();
   },
 };
 </script>
