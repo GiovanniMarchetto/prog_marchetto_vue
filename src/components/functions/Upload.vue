@@ -1,6 +1,9 @@
 <template>
   <section>
-    <h3>Caricamento file</h3>
+    <header>
+      <h3>Caricamento file</h3>
+    </header>
+
     <b-form @submit.prevent="upload" @reset.prevent="reset">
       <FileInput
         :file.sync="file"

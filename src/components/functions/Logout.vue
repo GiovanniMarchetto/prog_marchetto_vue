@@ -1,11 +1,11 @@
 <template>
-  <b-button @click="logout" class="btn-logout">Logout</b-button>
+  <b-button @click="logout" variant="danger">Logout</b-button>
 </template>
 
 <script>
 export default {
   methods: {
-    logout: function() {
+    logout() {
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("nomeUtente");
       this.$emit("logout");
@@ -16,9 +16,7 @@ export default {
 </script>
 
 <style scoped>
-.btn-logout {
-  background-color: brown;
-  color: aliceblue;
+.btn {
   margin: 0;
 }
 </style>

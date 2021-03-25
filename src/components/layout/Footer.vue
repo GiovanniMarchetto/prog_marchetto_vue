@@ -3,11 +3,11 @@
     <p>
       I sorgenti del progetto sono disponibili su GtHub: 
       <a href="https://github.com/GiovanniMarchetto/ProgettoMarchetto"
-        >backend</a
+        >back-end</a
       >
       e 
       <a href="https://github.com/GiovanniMarchetto/prog_marchetto_vue"
-        >frontend</a
+        >front-end</a
       >.
     </p>
   </footer>
@@ -24,7 +24,7 @@ footer {
   margin-top: 20px;
   padding: 10px;
   color: #fff;
-  background: #343a40;
+  background-color: #343a40;
 }
 
 a {

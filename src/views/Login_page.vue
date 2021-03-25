@@ -1,15 +1,15 @@
 <template>
   <article>
     <header><h2>Pagina d'accesso</h2></header>
-    
-    <section v-show="sezione == ''">
+
+    <section v-show="sezione === ''">
       <Login @login="showMsg" @login_username="login_username_home" />
       <b-button @click="sezione = 'registration'"
         >Non hai ancora un account</b-button
       >
     </section>
 
-    <section v-show="sezione == 'registration'">
+    <section v-show="sezione === 'registration'">
       <Registration
         :potere="'consumer'"
         :role="'consumer'"
@@ -40,11 +40,11 @@ export default {
   methods: {
     login_username_home(username) {
       setTimeout(() => {
-        if (username.length == 4) {
+        if (username.length === 4) {
           this.$router.push("/uploader_page");
         } else if (username.includes("@")) {
           this.$router.push("/administrator_page");
-        } else if (username.length == 16) {
+        } else if (username.length === 16) {
           this.$router.push("/consumer_page");
         } else {
           this.showMsg("Error: Username non riscontrato...");

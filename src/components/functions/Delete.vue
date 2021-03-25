@@ -1,7 +1,9 @@
 <template>
   <section>
-    <h3>Eliminazione</h3>
-
+    <header>
+      <h3>Eliminazione</h3>
+    </header>
+    
     <b-container fluid>
       <h4>Elimina attore</h4>
       <b-form @submit.prevent="deleteActor">
@@ -25,8 +27,8 @@
         <b-button type="submit" variant="danger">Elimina utente</b-button>
       </b-form>
     </b-container>
-    
-    <hr>
+
+    <hr />
 
     <b-container fluid v-if="potere === 'uploader'">
       <h4>Elimina file</h4>

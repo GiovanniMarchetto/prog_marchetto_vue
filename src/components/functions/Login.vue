@@ -1,6 +1,8 @@
 <template>
   <section>
-    <h3>Login</h3>
+    <header>
+      <h3>Login</h3>
+    </header>
 
     <b-form @submit.prevent="login">
       <Credenziali

@@ -1,16 +1,16 @@
 <template>
   <article>
-    <Header
+    <Navbar
       :potere="ruolo"
       :nomePrimaLista="'Lista consumer'"
       :nomeSecondaLista="'File di un consumer'"
       @mostraSezione="showSezione"
       @ruoloForm="modificaRuoloForm"
-      >Uploader page</Header
+      >Uploader page</Navbar
     >
 
-    <section v-show="sezione == ''">
-      <h3>Lista Consumer</h3>
+    <section v-show="sezione === ''">
+      <header><h3>Lista Consumer</h3></header>
       <Table
         :items="consumers"
         :fields="fieldsListConsumers"
@@ -19,8 +19,10 @@
       />
     </section>
 
-    <section v-show="sezione == 'secondaLista'">
-      <h3>Lista Files di {{ consumerScelto }}</h3>
+    <section v-show="sezione === 'secondaLista'">
+      <header>
+        <h3>Lista Files di {{ consumerScelto }}</h3>
+      </header>
       <Table
         :items="filesConsumer"
         :fields="fieldsListFileConsumer"
@@ -29,7 +31,7 @@
     </section>
 
     <Registration
-      v-show="sezione == 'registration'"
+      v-show="sezione === 'registration'"
       :potere="ruolo"
       :role="'consumer'"
       @registrazione_utente="registrazione_utente_home"
@@ -37,7 +39,7 @@
     />
 
     <ModInfo
-      v-show="sezione == 'modInfo'"
+      v-show="sezione === 'modInfo'"
       :potere="ruolo"
       :role="ruoloForm"
       @modInfo_utente="modInfo_utente_home"
@@ -45,14 +47,14 @@
     />
 
     <Upload
-      v-show="sezione == 'upload'"
+      v-show="sezione === 'upload'"
       @upload_consumer="upload_consumer_home"
       @upload_file="upload_file_home"
       @upload="showMsg"
     />
 
     <Delete
-      v-show="sezione == 'delete'"
+      v-show="sezione === 'delete'"
       :potere="ruolo"
       :attoriOptions="attoriOptions"
       :fileOptions="fileOptions"
@@ -70,7 +72,7 @@
 </template>
 
 <script>
-import Header from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 import Table from "@/components/layout/Table";
 import Upload from "../components/functions/Upload";
 import Registration from "../components/functions/Registration";
@@ -88,7 +90,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 export default {
   name: "Uploader_page",
   components: {
-    Header,
+    Navbar,
     Table,
     Upload,
     Registration,

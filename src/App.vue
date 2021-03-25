@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <img id="logoSito" src="./assets/logo.png" alt="Logo sito" />
+      <img id="logoPagina" src="./assets/logo.png" alt="Logo sito" />
       <h1>Progetto Marchetto</h1>
     </header>
     <router-view />
@@ -31,10 +31,13 @@ export default {
 header {
   padding: 10px;
   color: #fff;
-  background: #343a40;
+  background-color: #343a40;
+}
+section > header {
+  padding: 0;
 }
 
-#logoSito {
+#logoPagina {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -51,7 +54,7 @@ header {
 h3 {
   padding: 10px;
   color: #fff;
-  background: #e66648;
+  background-color: #e66648;
 }
 
 h4 {

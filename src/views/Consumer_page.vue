@@ -1,15 +1,17 @@
 <template>
   <article>
-    <Header
+    <Navbar
       :potere="ruolo"
       :nomePrimaLista="'Lista uploader'"
       :nomeSecondaLista="'File di un uploader'"
       @mostraSezione="showSezione"
-      >Consumer page</Header
+      >Consumer page</Navbar
     >
 
-    <section v-show="sezione == ''">
-      <h3>Lista Uploader con documenti</h3>
+    <section v-show="sezione === ''">
+      <header>
+        <h3>Lista Uploader con documenti</h3>
+      </header>
       <Table
         :items="uploaders"
         :fields="fieldsListUploaders"
@@ -18,11 +20,13 @@
       />
     </section>
 
-    <section v-show="sezione == 'secondaLista'">
-      <h3>Lista Files caricati da {{ uploaderScelto.name }}</h3>
+    <section v-show="sezione === 'secondaLista'">
+      <header>
+        <h3>Lista Files caricati da {{ uploaderScelto.name }}</h3>
+      </header>
 
       <b-img
-        id="logoUploader"
+        id="logoPagina"
         rounded="circle"
         :src="`${uploaderScelto.logo}`"
         alt="Logo uploader"
@@ -57,7 +61,7 @@
     </section>
 
     <ModInfo
-      v-show="sezione == 'modInfo'"
+      v-show="sezione === 'modInfo'"
       :potere="ruolo"
       :role="'consumer'"
       @modInfo="showMsg"
@@ -72,7 +76,7 @@
 </template>
 
 <script>
-import Header from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 import Table from "@/components/layout/Table";
 import ModInfo from "../components/functions/ModInfo";
 import Messages from "../components/layout/Messages";
@@ -86,7 +90,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 
 export default {
   name: "Consumer_page",
-  components: { Header, Table, ModInfo, Messages },
+  components: { Navbar, Table, ModInfo, Messages },
   mixins: [messagesMixin, sectionsMixin],
   data() {
     return {
@@ -127,6 +131,7 @@ export default {
         return true;
       });
     },
+
     ordinamentoFile() {
       this.filesConsumer.sort(function(a, b) {
         if ((a.dataVisualizzazione === "") ^ (b.dataVisualizzazione === "")) {
@@ -141,15 +146,17 @@ export default {
         (file) => file.usernameUpl === this.uploaderScelto.username
       );
     },
-    download(id) {
+
+    download(fileId) {
       this.caricamentoDati = true;
       axios
-        .get(`${process.env.VUE_APP_APIROOT}/files/download/${id}`)
+        .get(`${process.env.VUE_APP_APIROOT}/files/download/${fileId}`)
         .then((res) => {
           let indexCurrent = this.filesConsumer.findIndex(
-            (file) => file.id === id
+            (file) => file.id === fileId
           );
 
+          // https://stackoverflow.com/questions/60915291/download-a-png-file-served-as-binary-octet-stream
           const link = document.createElement("a");
           link.style.display = "none";
           link.download = this.filesConsumer[indexCurrent].name;
@@ -162,7 +169,8 @@ export default {
             let dataScritta =
               dataCorrente.toISOString().substring(0, 10) +
               " " +
-              dataCorrente.toLocaleTimeString();
+              dataCorrente.getUTCHours() +
+              dataCorrente.toLocaleTimeString().substring(2);
             this.filesConsumer[indexCurrent].dataVisualizzazione = dataScritta;
             this.ordinamentoFile();
           }
@@ -200,7 +208,6 @@ export default {
       .get(`${process.env.VUE_APP_APIROOT}/list/filesConsumer`)
       .then((res) => {
         this.filesConsumer = res.data;
-        setTimeout(() => {}, 1000);
         if (this.uploaderScelto != "")
           this.showFiles(this.uploaderScelto.username);
       })
@@ -211,14 +218,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-#logoUploader {
-  background-color: #343a40;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 64px;
-  height: 64px;
-}
-</style>

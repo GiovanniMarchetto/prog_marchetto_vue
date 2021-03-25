@@ -1,6 +1,8 @@
 <template>
   <section>
-    <h3>Registrazione {{ role }}</h3>
+    <header>
+      <h3>Registrazione {{ role }}</h3>
+    </header>
 
     <b-form @submit.prevent="registration" @reset="reset">
       <Credenziali

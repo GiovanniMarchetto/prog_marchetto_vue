@@ -55,11 +55,11 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath },
       });
     } else if (from.matched.some((record) => record.meta.requiresAuth)) {
-      if (localStorage.getItem("nomeUtente").length == 4) {
+      if (localStorage.getItem("nomeUtente").length === 4) {
         this.$router.push("/uploader_page");
       } else if (localStorage.getItem("nomeUtente").includes("@")) {
         this.$router.push("/administrator_page");
-      } else if (localStorage.getItem("nomeUtente").length == 16) {
+      } else if (localStorage.getItem("nomeUtente").length === 16) {
         this.$router.push("/consumer_page");
       } else {
         this.showMsg("ERR- Username non riscontrato...");

@@ -1,30 +1,22 @@
 <template>
   <article>
-    <Header
+    <Navbar
       :potere="ruolo"
       :nomePrimaLista="'Resoconto'"
       :nomeSecondaLista="'Amministratori'"
       @mostraSezione="showSezione"
       @ruoloForm="modificaRuoloForm"
-      >Administrator page</Header
+      >Administrator page</Navbar
     >
 
-    <section v-show="sezione == ''">
-      <h3>Resoconto uploader</h3>
-
-      <h4>
-        Resoconto dal {{ dateFromSelected.substring(8, 10) }}-{{
-          dateFromSelected.substring(5, 7)
-        }}-{{ dateFromSelected.substring(0, 4) }} al
-        {{ dateToSelected.substring(8, 10) }}-{{
-          dateToSelected.substring(5, 7)
-        }}-{{ dateToSelected.substring(0, 4) }}
-      </h4>
+    <section v-show="sezione === ''">
+      <header><h3>Resoconto uploader</h3></header>
 
       <Table
         :items="resume"
         :fields="fieldsResume"
         :caricamentoDati="caricamentoDati"
+        :descrizioneTabella="descrizioneResoconto"
       />
 
       <b-form @submit.prevent="dataFilter" @reset.prevent="datesForLastMonth">
@@ -34,8 +26,8 @@
       </b-form>
     </section>
 
-    <section v-show="sezione == 'secondaLista'">
-      <h3>Lista degli Amministratori</h3>
+    <section v-show="sezione === 'secondaLista'">
+      <header><h3>Lista degli Amministratori</h3></header>
       <Table
         :items="administrators"
         :fields="fieldsListAdministrators"
@@ -44,7 +36,7 @@
     </section>
 
     <Registration
-      v-show="sezione == 'registration'"
+      v-show="sezione === 'registration'"
       :potere="ruolo"
       :role="ruoloForm"
       @registrazione_utente="registrazione_utente_home"
@@ -52,7 +44,7 @@
     />
 
     <ModInfo
-      v-show="sezione == 'modInfo'"
+      v-show="sezione === 'modInfo'"
       :potere="ruolo"
       :role="ruoloForm"
       @modInfo_utente="modInfo_utente_home"
@@ -60,7 +52,7 @@
     />
 
     <Delete
-      v-show="sezione == 'delete'"
+      v-show="sezione === 'delete'"
       :potere="ruolo"
       :attoriOptions="attoriOptions"
       @delete_username="delete_username_home"
@@ -76,7 +68,7 @@
 </template>
 
 <script>
-import Header from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 import Table from "@/components/layout/Table";
 import Registration from "../components/functions/Registration";
 import ModInfo from "../components/functions/ModInfo";
@@ -94,7 +86,7 @@ axios.defaults.headers["Authorization"] = `Bearer ${localStorage.getItem(
 export default {
   name: "Administrator_page",
   components: {
-    Header,
+    Navbar,
     Table,
     Registration,
     ModInfo,
@@ -137,6 +129,22 @@ export default {
         listAttori.push(el.username);
       });
       return listAttori;
+    },
+    descrizioneResoconto: function() {
+      return (
+        "Resoconto dal " +
+        this.dateFromSelected.substring(8, 10) +
+        "-" +
+        this.dateFromSelected.substring(5, 7) +
+        "-" +
+        this.dateFromSelected.substring(0, 4) +
+        " al " +
+        this.dateToSelected.substring(8, 10) +
+        "-" +
+        this.dateToSelected.substring(5, 7) +
+        "-" +
+        this.dateToSelected.substring(0, 4)
+      );
     },
   },
   methods: {
@@ -213,7 +221,7 @@ export default {
     },
     datesForLastMonth() {
       const today = new Date();
-      if (today.getMonth() == 0) {
+      if (today.getMonth() === 0) {
         this.dateFrom = today.getFullYear() - 1 + "-12-01";
       } else if (today.getMonth() > 9) {
         this.dateFrom =

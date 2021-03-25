@@ -49,6 +49,8 @@
         </div>
       </template>
 
+      <template #table-caption>{{ descrizioneTabella }}</template>
+
       <template #cell(logo)="row">
         <b-img
           v-bind="logoProps"
@@ -92,7 +94,7 @@
       </template>
     </b-table>
 
-    <div v-if="items.length == 0"><p>Nessun elemento</p></div>
+    <div v-if="items.length === 0"><p>Nessun elemento</p></div>
   </b-container>
 </template>
 
@@ -101,7 +103,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "Table",
-  props: ["items", "fields", "caricamentoDati"],
+  props: ["items", "fields", "caricamentoDati", "descrizioneTabella"],
   data() {
     return {
       currentPage: 1,

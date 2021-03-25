@@ -10,7 +10,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav>
           <b-nav-item @click="$emit('mostraSezione', '')">{{
             nomePrimaLista
           }}</b-nav-item>
@@ -98,7 +98,7 @@
 import Logout from "@/components/functions/Logout";
 
 export default {
-  name: "Header",
+  name: "Navbar",
   props: ["potere", "nomePrimaLista", "nomeSecondaLista"],
   components: {
     Logout,
@@ -106,4 +106,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

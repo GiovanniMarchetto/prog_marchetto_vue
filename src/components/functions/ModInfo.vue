@@ -1,6 +1,8 @@
 <template>
   <section>
-    <h3>Modifica informazioni {{ role }}</h3>
+    <header>
+      <h3>Modifica informazioni {{ role }}</h3>
+    </header>
 
     <b-form @submit.prevent="modInfo" @reset="reset">
       <Credenziali
