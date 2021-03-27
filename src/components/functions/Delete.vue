@@ -104,7 +104,7 @@ export default {
           this.$emit("delete", res.data);
         })
         .catch((err) => {
-          this.$emit("delete", err.err.response.data);
+          this.$emit("delete", err.response.data);
         })
         .finally(() => {
           this.attesa = false;

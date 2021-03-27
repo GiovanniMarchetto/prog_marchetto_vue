@@ -178,7 +178,7 @@ export default {
     modInfo_utente_home(modUtente) {
       const { utente, role } = modUtente;
       if (role === "administrator") {
-        let index = this.resume.findIndex(
+        let index = this.administrators.findIndex(
           (el) => el.username === utente.username
         );
         if (index !== -1) {

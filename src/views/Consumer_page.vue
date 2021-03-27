@@ -150,7 +150,9 @@ export default {
     download(fileId) {
       this.caricamentoDati = true;
       axios
-        .get(`${process.env.VUE_APP_APIROOT}/files/download/${fileId}`)
+        .get(`${process.env.VUE_APP_APIROOT}/files/download/${fileId}`, {
+          responseType: "arraybuffer",
+        })
         .then((res) => {
           let indexCurrent = this.filesConsumer.findIndex(
             (file) => file.id === fileId
@@ -160,9 +162,12 @@ export default {
           const link = document.createElement("a");
           link.style.display = "none";
           link.download = this.filesConsumer[indexCurrent].name;
-          var blob = new Blob([res.data], { type: "octet/stream" });
+          var blob = new Blob([res.data], { type: "application/octet-stream" });
           link.href = window.URL.createObjectURL(blob);
+          document.body.appendChild(link);
           link.click();
+          window.URL.revokeObjectURL(link.href);
+          link.remove();
 
           if (this.filesConsumer[indexCurrent].dataVisualizzazione === "") {
             let dataCorrente = new Date();
