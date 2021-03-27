@@ -166,8 +166,10 @@ export default {
           link.href = window.URL.createObjectURL(blob);
           document.body.appendChild(link);
           link.click();
-          window.URL.revokeObjectURL(link.href);
-          link.remove();
+          setTimeout(() => {
+            window.URL.revokeObjectURL(link.href);
+            link.remove();
+          }, 5000);
 
           if (this.filesConsumer[indexCurrent].dataVisualizzazione === "") {
             let dataCorrente = new Date();
