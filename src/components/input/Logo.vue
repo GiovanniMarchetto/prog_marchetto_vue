@@ -12,10 +12,10 @@
         required
       />
 
-      <figure v-show="logo">
+      <figure v-show="logoStringInput">
         <b-img
           center
-          rounded
+          rounded="circle"
           :src="`${logoStringInput}`"
           alt="Anteprima Logo"
         />
@@ -35,6 +35,11 @@ export default {
       logoInput: null,
       id: "",
     };
+  },
+  watch: {
+    logoStringInput: function() {
+      if (this.logoStringInput === "") this.logoInput = null;
+    },
   },
   methods: {
     trasf64(imgObj) {
@@ -71,10 +76,7 @@ export default {
 <style scoped>
 img {
   margin: 10px;
-  background-color: black;
-  max-height: 300px;
-  max-width: 300px;
-  /* width: 10em;
-  height: 10em; */
+  width: 150px;
+  height: 150px;
 }
 </style>
