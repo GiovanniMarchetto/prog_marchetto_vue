@@ -184,6 +184,7 @@ export default {
       if (fileCaricato.usernameCons === this.consumerScelto)
         this.filesConsumer.push(fileCaricato);
       this.fileOptions.push(fileCaricato.id);
+      this.ordinamentoFile();
     },
 
     delete_file_home(fileIdDel) {
@@ -203,6 +204,32 @@ export default {
       );
       this.attoriOptions = this.attoriOptions.filter(
         (cons) => cons !== usernameDel
+      );
+      this.filesUploader = this.filesUploader.filter(
+        (file) => file.usernameCons !== usernameDel
+      );
+      this.fileOptions = [];
+      this.filesUploader.forEach((file) => {
+        this.fileOptions.push(file.id);
+      });
+      if (usernameDel === this.consumerScelto) {
+        this.consumerScelto = "";
+        this.filesConsumer = [];
+      }
+    },
+
+    ordinamentoFile() {
+      this.filesUploader.sort(function(a, b) {
+        if ((a.dataVisualizzazione === "") ^ (b.dataVisualizzazione === "")) {
+          if (a.dataVisualizzazione < b.dataVisualizzazione) return -1;
+          if (a.dataVisualizzazione > b.dataVisualizzazione) return 1;
+        }
+        if (a.dataCaricamento < b.dataCaricamento) return 1;
+        if (a.dataCaricamento > b.dataCaricamento) return -1;
+        return 0;
+      });
+      this.filesConsumer = this.filesUploader.filter(
+        (file) => file.usernameCons === this.consumerScelto
       );
     },
   },

@@ -99,20 +99,12 @@ export default {
           };
           this.$emit("upload_consumer", consumer);
 
-          const dataCorrente = new Date();
-          const fileCaricato = {
-            id: res.data,
-            usernameUpl: localStorage.getItem("nomeUtente"),
-            usernameCons: this.usernameCons,
-            name: this.nameFile,
-            dataCaricamento: dataCorrente.toISOString().substring(0, 10),
-            dataVisualizzazione: "",
-            indirizzoIP: "",
-            hashtag: this.hashtag,
-          };
-          this.$emit("upload_file", fileCaricato);
+          this.$emit("upload_file", res.data);
+          this.$emit(
+            "upload",
+            "Upload file completato (" + this.nameFile + ")"
+          );
           this.reset();
-          this.$emit("upload", "Upload file completato (" + res.data + ")");
         })
         .catch((err) => {
           this.$emit("upload", err.response.data);

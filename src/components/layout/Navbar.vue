@@ -4,7 +4,7 @@
 
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand @click="$emit('mostraSezione', '')"
-        >Pannello di navigazione</b-navbar-brand
+        >Barra di navigazione</b-navbar-brand
       >
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

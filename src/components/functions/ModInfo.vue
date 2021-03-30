@@ -55,7 +55,7 @@ export default {
     modInfo() {
       this.attesa = true;
       axios
-        .patch(`${process.env.VUE_APP_APIROOT}/attori/modInfo`, {
+        .post(`${process.env.VUE_APP_APIROOT}/attori/modInfo`, {
           username: this.username,
           password: this.password,
           name: this.name,
