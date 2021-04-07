@@ -171,12 +171,12 @@ export default {
     },
 
     upload_consumer_home(nuovoConsumer) {
-      const { usernameCons } = nuovoConsumer;
+      const { username } = nuovoConsumer;
       if (
-        this.consumers.findIndex((el) => el.username === usernameCons) === -1
+        this.consumers.findIndex((el) => el.username === username) === -1
       ) {
         this.consumers.push(nuovoConsumer);
-        this.attoriOptions.push(usernameCons);
+        this.attoriOptions.push(username);
       }
     },
     upload_file_home(fileCaricato) {
