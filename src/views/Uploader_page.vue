@@ -157,7 +157,6 @@ export default {
         logo: logo,
       };
       this.consumers.push(infoConsumer);
-      this.attoriOptions.push(username);
     },
 
     modInfo_utente_home(modConsumer) {
@@ -176,14 +175,12 @@ export default {
         this.consumers.findIndex((el) => el.username === username) === -1
       ) {
         this.consumers.push(nuovoConsumer);
-        this.attoriOptions.push(username);
       }
     },
     upload_file_home(fileCaricato) {
       this.filesUploader.push(fileCaricato);
       if (fileCaricato.usernameCons === this.consumerScelto)
         this.filesConsumer.push(fileCaricato);
-      this.fileOptions.push(fileCaricato.id);
       this.ordinamentoFile();
     },
 
@@ -194,24 +191,14 @@ export default {
       this.filesConsumer = this.filesConsumer.filter(
         (file) => file.id !== fileIdDel
       );
-      this.fileOptions = this.fileOptions.filter(
-        (fileId) => fileId !== fileIdDel
-      );
     },
     delete_username_home(usernameDel) {
       this.consumers = this.consumers.filter(
         (cons) => cons.username !== usernameDel
       );
-      this.attoriOptions = this.attoriOptions.filter(
-        (cons) => cons !== usernameDel
-      );
       this.filesUploader = this.filesUploader.filter(
         (file) => file.usernameCons !== usernameDel
       );
-      this.fileOptions = [];
-      this.filesUploader.forEach((file) => {
-        this.fileOptions.push(file.id);
-      });
       if (usernameDel === this.consumerScelto) {
         this.consumerScelto = "";
         this.filesConsumer = [];
