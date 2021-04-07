@@ -194,10 +194,13 @@ export default {
       }
     },
 
-    delete_username_home(usernameUpl) {
-      this.resume = this.resume.filter((el) => el.username !== usernameUpl);
+    delete_username_home(usernameDel) {
+      if (usernameDel.length() === 4)
+        this.resume = this.resume.filter((el) => el.username !== usernameDel);
+      else
+        this.administrators = this.administrators.filter((el) => el.username !== usernameDel);
       this.attoriOptions = this.attoriOptions.filter(
-        (el) => el !== usernameUpl
+        (el) => el !== usernameDel
       );
     },
 
